@@ -1,5 +1,7 @@
 ---
+import { getImage } from 'astro:assets';
 import Logo from './Logo.astro';
+import { img } from '../lib/images';
 import { nav as navFor, site } from '../data/site';
 import { divisions, divisionUrl } from '../data/divisions';
 import { services, serviceUrl } from '../data/services';
@@ -8,17 +10,24 @@ import { routes, t, type Lang } from '../i18n/ui';
 type Props = { lang: Lang; alternate: string; overHero?: boolean };
 const { lang, alternate, overHero = true } = Astro.props;
 const tx = t(lang);
-const nav = navFor(lang);
+// "Contacto" no va en la lista: el botón "Contáctanos" (y "Escríbenos" en celular) lleva al mismo lugar
+const nav = navFor(lang).filter((n) => n.key !== 'contact');
 const contact = routes.contact[lang];
 const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const isActive = (href: string, children?: { href: string }[]) =>
   here === href || (href !== '/' && href !== '/en/' && here.startsWith(href)) || !!children?.some((c) => here === c.href);
 
-// Submenús: Nosotros (del menú), Divisiones y Servicios (de sus datos)
-const menus: Record<string, { label: string; href: string; note?: string }[]> = {
+// Submenús: Nosotros (del menú), Divisiones y Servicios (de sus datos, con foto de vista previa)
+const preview = async (key: string) => (await getImage({ src: img(key), width: 560, format: 'webp', quality: 72 })).src;
+type MenuItem = { label: string; href: string; note?: string; image?: string };
+const menus: Record<string, MenuItem[]> = {
   about: nav.find((n) => n.key === 'about')?.children ?? [],
-  divisions: divisions.map((d) => ({ label: d.short[lang], href: divisionUrl(lang, d), note: d.region[lang] })),
-  services: services.map((s) => ({ label: s.name[lang], href: serviceUrl(lang, s), note: s.summary[lang] })),
+  divisions: await Promise.all(
+    divisions.map(async (d) => ({ label: d.short[lang], href: divisionUrl(lang, d), note: d.region[lang], image: await preview(`divisiones/${d.id}/hero`) })),
+  ),
+  services: await Promise.all(
+    services.map(async (s) => ({ label: s.name[lang], href: serviceUrl(lang, s), note: s.summary[lang], image: await preview(`servicios/${s.id}/hero`) })),
+  ),
 };
 ---
 
@@ -51,8 +60,8 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
       </div>
     </div>
   </div>
-  <div class="mx-auto flex h-[var(--header-h)] max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
-    <a href={routes.home[lang]} class="relative z-10 flex items-center" aria-label={`${site.name}, ${tx.home.toLowerCase()}`}>
+  <div class="header-bar mx-auto flex h-[var(--header-now)] max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
+    <a href={routes.home[lang]} class="header-logo relative z-10 flex items-center" aria-label={`${site.name}, ${tx.home.toLowerCase()}`}>
       <Logo class="text-[1.2rem] lg:text-[1.6rem]" />
     </a>
 
@@ -79,31 +88,42 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
                 </a>
                 {sub && (
                   <div class="menu-panel invisible absolute top-[calc(100%-0.75rem)] left-1/2 w-max -translate-x-1/2 pt-3 opacity-0 transition-[opacity,visibility,translate] duration-300">
-                    <div class:list={['rounded-2xl bg-crema p-3 text-olivo shadow-2xl ring-1 shadow-olivo/15 ring-olivo/8', sub.length > 5 ? 'grid w-[44rem] grid-cols-2 gap-1' : 'grid w-[22rem] gap-1']}>
-                      {sub.map((s, i) => (
-                        <a href={s.href} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-gris/70">
-                          <span class="mt-0.5 font-serif text-sm text-hoja tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                          <span class="flex flex-col gap-0.5">
-                            <span class="flex items-center gap-2 text-[0.92rem] font-semibold">
-                              {s.label}
-                              <svg viewBox="0 0 16 16" class="arrow size-3 text-hoja opacity-0 transition-opacity group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                                <path d="M3 8h10m-4-4 4 4-4 4" />
-                              </svg>
+                    <div class:list={['menu-box grid rounded-2xl bg-crema p-3 text-olivo shadow-2xl ring-1 shadow-olivo/15 ring-olivo/8', sub[0]?.image && 'grid-cols-[1fr_15rem] gap-3']}>
+                      <div class:list={['grid content-start gap-1', sub.length > 5 ? 'w-[36rem] grid-cols-2' : 'w-[22rem]']}>
+                        {sub.map((s, i) => (
+                          <a href={s.href} data-preview={s.image ? i : undefined} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-gris/70 focus-visible:bg-gris/70">
+                            <span class="mt-0.5 font-serif text-sm text-hoja tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                            <span class="flex flex-col gap-0.5">
+                              <span class="flex items-center gap-2 text-[0.92rem] font-semibold">
+                                {s.label}
+                                <svg viewBox="0 0 16 16" class="arrow size-3 text-hoja opacity-0 transition-opacity group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                  <path d="M3 8h10m-4-4 4 4-4 4" />
+                                </svg>
+                              </span>
+                              {s.note && <span class="line-clamp-1 text-[0.78rem] text-niebla">{s.note}</span>}
                             </span>
-                            {s.note && <span class="line-clamp-1 text-[0.78rem] text-niebla">{s.note}</span>}
-                          </span>
-                        </a>
-                      ))}
-                      {item.key !== 'about' && (
-                        <a
-                          href={item.href}
-                          class:list={['mt-1 flex items-center justify-between rounded-2xl bg-olivo px-5 py-3.5 text-[0.8rem] font-semibold text-crema transition-colors hover:bg-hoja', sub.length > 5 && 'col-span-2']}
-                        >
-                          {tx.seeAll} {item.label.toLowerCase()}
-                          <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                            <path d="M3 8h10m-4-4 4 4-4 4" />
-                          </svg>
-                        </a>
+                          </a>
+                        ))}
+                        {item.key !== 'about' && (
+                          <a
+                            href={item.href}
+                            class:list={['mt-1 flex items-center justify-between rounded-2xl bg-olivo px-5 py-3.5 text-[0.8rem] font-semibold text-crema transition-colors hover:bg-hoja', sub.length > 5 && 'col-span-2']}
+                          >
+                            {tx.seeAll} {item.label.toLowerCase()}
+                            <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                              <path d="M3 8h10m-4-4 4 4-4 4" />
+                            </svg>
+                          </a>
+                        )}
+                      </div>
+                      {sub[0]?.image && (
+                        <div class="menu-preview relative overflow-hidden rounded-xl bg-olivo" aria-hidden="true">
+                          {sub.map((s, i) => (
+                            <img src={s.image} alt="" loading="lazy" decoding="async" data-k={i} class:list={['absolute inset-0 size-full object-cover', i === 0 && 'is-on']} />
+                          ))}
+                          <div class="absolute inset-0 bg-gradient-to-t from-olivo/70 to-transparent" />
+                          <span class="menu-preview-label display absolute inset-x-4 bottom-3.5 text-2xl text-crema">{sub[0].label}</span>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -117,7 +137,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
 
     <div class="relative z-10 flex items-center gap-2">
       <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} class="lang-switch grid size-11 place-items-center rounded-full font-serif text-[0.95rem] font-semibold tracking-[0.1em] lg:hidden" aria-label={tx.switchLangLabel}>{tx.switchLangShort}</a>
-      <a href={contact} class="btn btn-trigo hidden min-h-11 px-5 text-[0.9rem] md:inline-flex">{tx.contactUs}</a>
+      <a href={contact} aria-current={here.startsWith(contact) ? 'page' : undefined} class="btn btn-trigo hidden min-h-11 px-5 text-[0.9rem] ring-offset-2 ring-offset-transparent aria-[current=page]:ring-2 aria-[current=page]:ring-trigo/50 md:inline-flex">{tx.contactUs}</a>
       <button
         type="button"
         id="menu-toggle"
@@ -209,8 +229,33 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
   .menu-panel {
     translate: 0 8px;
   }
+  /* Vista previa: la foto de la división/servicio bajo el mouse */
+  .menu-preview img {
+    opacity: 0;
+    scale: 1.08;
+    transition:
+      opacity 0.5s var(--ease-out-soft),
+      scale 1.2s var(--ease-out-soft);
+  }
+  .menu-preview img.is-on {
+    opacity: 1;
+    scale: 1;
+  }
   .topbar {
     height: 2.5rem;
+  }
+  /* Escritorio: al bajar, el encabezado se compacta (no desaparece) */
+  .header-bar {
+    transition: height 0.5s var(--ease-out-soft);
+  }
+  .header-logo {
+    transform-origin: left center;
+    transition: transform 0.5s var(--ease-out-soft);
+  }
+  @media (min-width: 1024px) {
+    #site-header[data-solid='true'] .header-logo {
+      transform: scale(0.78);
+    }
   }
   #site-header[data-solid='true'] .topbar {
     height: 0;
@@ -252,14 +297,33 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
   const toggle = document.getElementById('menu-toggle')!;
   const menu = document.getElementById('mobile-menu')!;
 
-  // Fondo sólido al bajar; se esconde al bajar y reaparece al subir
+  // Fondo sólido al bajar. En celular se esconde al bajar y reaparece al subir.
+  // Se cuenta el recorrido acumulado en una misma dirección: el scroll suave frena con pasos de 1-2 px al final de
+  // cada movimiento, y reaccionar a esos pasos hacía que el menú se escondiera y volviera a aparecer (parpadeo).
+  const desktop = window.matchMedia('(min-width: 1024px)');
+  const HIDE_AFTER = 24; // px bajando seguidos para esconderlo
+  const SHOW_AFTER = 12; // px subiendo seguidos para mostrarlo
   let last = window.scrollY;
+  let run = 0;
+  const set = (key: 'solid' | 'hidden', value: boolean) => {
+    const v = String(value);
+    if (header.dataset[key] !== v) header.dataset[key] = v;
+  };
   const onScroll = () => {
     const y = window.scrollY;
-    header.dataset.solid = String(y > 24 || header.dataset.over === 'false');
-    if (menu.dataset.open !== 'true') header.dataset.hidden = String(y > 480 && y > last + 2);
-    if (y < last - 2) header.dataset.hidden = 'false';
+    const d = y - last;
     last = y;
+    set('solid', y > 24 || header.dataset.over === 'false');
+    if (menu.dataset.open === 'true') return;
+    // En escritorio el encabezado nunca se esconde: se compacta (CSS). En celular se esconde al bajar.
+    if (y < 480 || desktop.matches) {
+      run = 0;
+      return set('hidden', false);
+    }
+    if (d === 0) return;
+    run = Math.sign(d) === Math.sign(run) ? run + d : d;
+    if (run > HIDE_AFTER) set('hidden', true);
+    else if (run < -SHOW_AFTER) set('hidden', false);
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -273,6 +337,20 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
     document.documentElement.style.overflow = open ? 'hidden' : '';
   };
   toggle.addEventListener('click', () => setMenu(menu.dataset.open !== 'true'));
+
+  // Submenús con foto: al pasar por cada opción cambia la vista previa
+  document.querySelectorAll<HTMLElement>('.menu-box').forEach((box) => {
+    const imgs = box.querySelectorAll<HTMLImageElement>('.menu-preview img');
+    const label = box.querySelector('.menu-preview-label');
+    box.querySelectorAll<HTMLAnchorElement>('a[data-preview]').forEach((a) => {
+      const show = () => {
+        imgs.forEach((im) => im.classList.toggle('is-on', im.dataset.k === a.dataset.preview));
+        if (label) label.textContent = a.querySelector('.font-semibold')?.textContent?.trim() ?? '';
+      };
+      a.addEventListener('mouseenter', show);
+      a.addEventListener('focus', show);
+    });
+  });
   menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', (e) => e.key === 'Escape' && menu.dataset.open === 'true' && setMenu(false));
 </script>

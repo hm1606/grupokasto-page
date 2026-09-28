@@ -119,11 +119,17 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    /* --header-h: alto del encabezado arriba de la página (para márgenes fijos)
+       --header-now: alto que tiene en este momento (en escritorio se compacta al bajar) */
     --header-h: 4.5rem;
+    --header-now: var(--header-h);
   }
   @media (min-width: 1024px) {
     html {
       --header-h: 5.5rem;
+    }
+    html:has(#site-header[data-solid='true']) {
+      --header-now: 4rem;
     }
   }
   body {
@@ -137,7 +143,7 @@
     @apply outline-2 outline-offset-4 outline-hoja;
   }
   [id] {
-    scroll-margin-top: calc(var(--header-h) + 1rem);
+    scroll-margin-top: calc(var(--header-now) + 1rem);
   }
   /* Aparición suave al hacer scroll (solo con JS; sin JS todo se ve normal) */
   html.js [data-reveal] {
@@ -307,6 +313,120 @@
   }
 }
 
+/* Foto de cabecera que se descubre como cortina al entrar a la página */
+.hero-curtain {
+  animation: hero-curtain 1.5s var(--ease-in-out-soft) both;
+}
+@keyframes hero-curtain {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Titular de la portada: crece con el ancho pero también cabe en pantallas bajas (laptops de 768-900 px de alto) */
+.hero-title {
+  font-size: clamp(2.6rem, 9vw, 3.2rem);
+}
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: clamp(3.6rem, 10svh, 6rem);
+  }
+}
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: clamp(4.4rem, min(8.6vw, 11.5svh), 8.4rem);
+    line-height: 0.9;
+  }
+}
+
+/* "Grupo Kasto" en el titular de la portada: tipografía del logotipo (versalitas), sin mayúsculas forzadas */
+.hero-brand {
+  font-family: var(--font-marca);
+  font-weight: 400;
+  font-size: clamp(1.7rem, min(1.1rem + 3.2vw, 6.2svh), 4.4rem);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  animation-delay: 120ms;
+}
+
+/* La palabra resaltada del titular se subraya al final de la entrada */
+.hero-highlight {
+  position: relative;
+}
+.hero-highlight::after {
+  content: '';
+  position: absolute;
+  left: 0.02em;
+  right: 0.3em;
+  bottom: 0.04em;
+  height: 0.06em;
+  border-radius: 1em;
+  background: currentColor;
+  transform-origin: left;
+  animation: hero-underline 1s 1.15s var(--ease-in-out-soft) both;
+}
+html.has-intro .hero-highlight::after {
+  animation-play-state: paused;
+}
+@keyframes hero-underline {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Indicador "sigue bajando" */
+.rail-hint svg {
+  animation: rail-hint 1.8s var(--ease-in-out-soft) infinite;
+}
+@keyframes rail-hint {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* Transiciones entre páginas (navegadores que las soportan; en los demás se cambia de página como siempre).
+   El encabezado se queda en su lugar y el contenido se funde subiendo. */
+@view-transition {
+  navigation: auto;
+}
+#site-header {
+  view-transition-name: site-header;
+}
+::view-transition-old(root) {
+  animation: vt-out 0.35s var(--ease-in-out-soft) both;
+}
+::view-transition-new(root) {
+  animation: vt-in 0.65s var(--ease-out-soft) both;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
 /* Barra de progreso del carrusel de la portada */
 @keyframes gk-progress {
   from {
@@ -347,7 +467,16 @@ html.lenis body {
   transition: top 0.5s var(--ease-out-soft);
 }
 html:has(#site-header:not([data-hidden='true'])) .news-filter {
-  top: calc(var(--header-h) + 0.75rem);
+  top: calc(var(--header-now) + 0.75rem);
+}
+
+/* Láminas del Modelo de Sostenibilidad: sin seleccionar, arrastrar ni "guardar imagen" con toque largo */
+.gk-noselect,
+.gk-noselect img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
 }
 
 /* Barra de progreso de lectura (noticias) */

@@ -1,32 +1,34 @@
 // Sirve legacy/site/ en local con las mismas reglas que Nginx (deploy/nginx-snippet-grupokasto-legacy-site.conf),
-// para revisar el clon del sitio viejo sin servidor.  Uso:  npm run legacy:serve  ->  http://localhost:8102
+// para revisar el sitio anterior sin servidor.  Uso:  npm run legacy:serve  ->  http://localhost:8102
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 
 const SITE = path.join(import.meta.dirname, 'site');
 const PORT = Number(process.argv[2] || process.env.PORT || 8102);
-const ALIASES = JSON.parse(fs.readFileSync(path.join(SITE, '_apex', 'aliases.json'), 'utf8'));
+const API = process.env.API_URL || 'http://127.0.0.1:4012';
+const { pages, images } = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'redirects.json'), 'utf8'));
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'application/javascript', '.json': 'application/json',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.svg': 'image/svg+xml', '.webp': 'image/webp',
-  '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.eot': 'application/vnd.ms-fontobject', '.pdf': 'application/pdf',
+  '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.eot': 'application/vnd.ms-fontobject',
+  '.pdf': 'application/pdf', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8',
 };
 
-function apexPage(p) {
+/** f?p=102:<número o alias>[:sesión…] -> ruta limpia */
+function apexRoute(p) {
   const m = /^102(?::|%3A)([^:]+)/i.exec(p || '');
-  if (!m) return 'p1';
-  const key = m[1];
-  if (/^\d+$/.test(key)) return fs.existsSync(path.join(SITE, '_apex', `p${key}.html`)) ? `p${key}` : 'p1';
-  return `p${ALIASES[key.toUpperCase()] ?? 1}`;
+  return (m && pages[m[1].toLowerCase()]) || '/';
 }
+
+const redirect = (res, to) => {
+  res.writeHead(301, { Location: to });
+  res.end();
+};
 
 function file(res, f, status = 200) {
   fs.readFile(f, (err, buf) => {
-    if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      return res.end('404');
-    }
+    if (err) return file(res, path.join(SITE, '404.html'), 404);
     res.writeHead(status, { 'Content-Type': TYPES[path.extname(f).toLowerCase()] || 'application/octet-stream' });
     res.end(buf);
   });
@@ -36,27 +38,25 @@ http
   .createServer((req, res) => {
     const u = new URL(req.url, 'http://localhost');
     let p = decodeURIComponent(u.pathname);
-    if (req.method === 'POST') {
-      if (p === '/ords/PDB1/wwv_flow.ajax') {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        return res.end('{}');
-      }
-      if (p === '/ords/PDB1/wwv_flow.accept') {
-        const ref = req.headers.referer ? new URL(req.headers.referer) : null;
-        res.writeHead(303, { Location: ref?.pathname === '/ords/PDB1/f' ? ref.pathname + ref.search : '/ords/PDB1/f?p=102:1' });
-        return res.end();
-      }
-      res.writeHead(404);
-      return res.end();
+    if (p.startsWith('/api/')) {
+      // Formulario de contacto -> API local (npm run api)
+      const up = http.request(API + req.url, { method: req.method, headers: req.headers }, (r) => {
+        res.writeHead(r.statusCode, r.headers);
+        r.pipe(res);
+      });
+      up.on('error', () => {
+        res.writeHead(502);
+        res.end();
+      });
+      return req.pipe(up);
     }
-    if (p === '/ords/PDB1/f') return file(res, path.join(SITE, '_apex', `${apexPage(u.searchParams.get('p'))}.html`));
-    if (p.startsWith('/_apex/')) {
-      res.writeHead(404);
-      return res.end();
-    }
+    if (p === '/ords/PDB1/f') return redirect(res, apexRoute(u.searchParams.get('p')));
     const m = /^\/ords\/PDB1\/xxpokasto\/r\/102\/files\/static\/v\d+\/(.+)$/.exec(p);
-    if (m) p = `/static/${m[1]}`;
+    if (m) return redirect(res, `/static/${m[1]}`);
+    if (p === '/static/Modelo_de_Sostenibilidad_GK.pdf') return redirect(res, '/sostenibilidad/');
+    if (images[p]) return redirect(res, images[p]);
     if (p.endsWith('/')) p += 'index.html';
+    else if (!path.extname(p)) return redirect(res, `${p}/${u.search}`);
     const f = path.join(SITE, path.normalize(p));
     if (!f.startsWith(SITE)) {
       res.writeHead(403);
@@ -64,4 +64,4 @@ http
     }
     file(res, f);
   })
-  .listen(PORT, '127.0.0.1', () => console.log(`Sitio viejo en http://localhost:${PORT}/ords/PDB1/f?p=102:1`));
+  .listen(PORT, '127.0.0.1', () => console.log(`Sitio anterior en http://localhost:${PORT}/`));

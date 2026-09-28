@@ -17,10 +17,11 @@ type Props = {
   focus?: string;
 };
 const { eyebrow, title, intro, image, imageAlt = '', crumbs, focus = 'center' } = Astro.props;
+const words = title.replace(/\.$/, '').split(' ');
 ---
 
 <section class="relative isolate flex min-h-[72svh] items-end overflow-hidden bg-olivo text-white lg:min-h-[78svh]">
-  <div class="absolute inset-0 -z-10" data-parallax="0.12">
+  <div class="hero-curtain absolute inset-0 -z-10" data-parallax="0.12" data-intro-wait>
     <Image
       src={image}
       alt={imageAlt}
@@ -40,8 +41,17 @@ const { eyebrow, title, intro, image, imageAlt = '', crumbs, focus = 'center' } 
   <div class="mx-auto w-full max-w-[90rem] px-5 pt-40 pb-14 sm:px-8 lg:px-12 lg:pb-20">
     <Breadcrumbs crumbs={crumbs} light />
     <p class="eyebrow animate-fade-up mt-8 text-trigo" data-intro-wait>{eyebrow}</p>
-    <h1 class="display animate-fade-up mt-3 max-w-5xl text-[3.1rem] text-balance uppercase sm:text-7xl lg:text-[6.2rem]" style="animation-delay:120ms" data-intro-wait>
-      {title.replace(/\.$/, '')}
+    <h1 class="display mt-3 max-w-5xl text-[3.1rem] text-balance uppercase sm:text-7xl lg:text-[6.2rem]" aria-label={words.join(' ')}>
+      {
+        words.map((w, k) => (
+          <span class="inline-block overflow-hidden pb-[0.1em] align-bottom" aria-hidden="true">
+            <span class="hero-word inline-block" style={`animation-delay:${220 + k * 70}ms`} data-intro-wait>
+              {w}
+              {k < words.length - 1 ? '\u00a0' : ''}
+            </span>
+          </span>
+        ))
+      }
     </h1>
     <div class="animate-fade-up mt-5" style="animation-delay:200ms" data-intro-wait><Espiga /></div>
     {

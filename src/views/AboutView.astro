@@ -75,19 +75,31 @@ const years = new Date().getFullYear() - site.foundingYear;
       <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {
           teamVoices.map((v, i) => (
-            <figure class="group flex flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-olivo/8" data-reveal style={`--reveal-delay:${i * 90}ms`}>
-              <div class="zoom aspect-square overflow-hidden bg-gris">
-                <Image src={img(`personas/${v.image}`)} alt={v.name} widths={[320, 640]} sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw" class="size-full object-cover" />
+            <figure class="group relative flex flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-olivo/8 transition-shadow duration-700 hover:shadow-2xl hover:shadow-olivo/10" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <!-- Retrato vertical, anclado arriba: nunca corta la cabeza -->
+              <div class="zoom relative aspect-[3/4] overflow-hidden bg-gris">
+                <Image
+                  src={img(`personas/${v.image}`)}
+                  alt={v.name}
+                  widths={[320, 540]}
+                  sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+                  class="size-full object-cover object-[center_8%] saturate-[.8] transition-[filter] duration-700 group-hover:saturate-100"
+                />
+                <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-sombra/90 via-sombra/35 to-transparent" aria-hidden="true"></div>
               </div>
               <div class="flex flex-1 flex-col p-7">
-                <blockquote class="display flex-1 text-[1.6rem] leading-tight text-olivo">“{v.quote[lang]}”</blockquote>
-                <figcaption class="mt-6 flex items-baseline justify-between border-t border-olivo/10 pt-4">
-                  <span class="font-semibold text-olivo">{v.name}</span>
-                  <span class="text-sm text-niebla">
-                    {L('desde', 'since')} {v.since}
-                  </span>
-                </figcaption>
+                <svg viewBox="0 0 32 24" class="h-5 w-7 text-trigo" fill="currentColor" aria-hidden="true">
+                  <path d="M0 24V14C0 6 4 1 12 0l1 4c-4 1-6 4-6 8h5v12H0Zm19 0V14c0-8 4-13 12-14l1 4c-4 1-6 4-6 8h5v12H19Z" />
+                </svg>
+                <blockquote class="display mt-4 flex-1 text-[1.45rem] leading-snug text-olivo">{v.quote[lang]}</blockquote>
               </div>
+              <!-- Nombre sobre la foto -->
+              <figcaption class="pointer-events-none absolute inset-x-0 top-0 flex aspect-[3/4] items-end justify-between gap-3 p-6 text-white">
+                <span class="display text-[2rem] leading-none">{v.name}</span>
+                <span class="shrink-0 rounded-full bg-trigo px-3 py-1 font-serif text-[0.78rem] font-semibold tracking-[0.1em] text-olivo uppercase">
+                  {L('desde', 'since')} {v.since}
+                </span>
+              </figcaption>
             </figure>
           ))
         }

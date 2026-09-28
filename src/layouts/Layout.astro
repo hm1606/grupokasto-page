@@ -288,9 +288,14 @@ const jsonLd = {
         els.forEach((el) => io.observe(el));
       } else els.forEach((el) => el.classList.add('is-visible'));
 
-      // Parallax suave: data-parallax="0.08" (se mueve respecto al centro de la pantalla)
+      // Efectos ligados al scroll (un solo ciclo de animación para todos):
+      //   data-parallax="0.08"   se mueve en vertical respecto al centro de la pantalla
+      //   data-scroll-x="-0.3"   se desliza de lado mientras está en pantalla (franjas de palabras)
+      //   data-progress          recibe --p (0 → 1) según cuánto se ha recorrido la sección
       const parallax = reduce ? [] : [...document.querySelectorAll<HTMLElement>('[data-parallax]')];
-      if (parallax.length) {
+      const slide = reduce ? [] : [...document.querySelectorAll<HTMLElement>('[data-scroll-x]')];
+      const progress = [...document.querySelectorAll<HTMLElement>('[data-progress]')];
+      if (parallax.length || slide.length || progress.length) {
         const tick = () => {
           const vh = window.innerHeight;
           for (const el of parallax) {
@@ -298,6 +303,19 @@ const jsonLd = {
             if (r.bottom < -200 || r.top > vh + 200) continue;
             const y = (r.top + r.height / 2 - vh / 2) * -Number(el.dataset.parallax);
             el.style.translate = `0 ${y.toFixed(1)}px`;
+          }
+          for (const el of slide) {
+            const r = el.getBoundingClientRect();
+            if (r.bottom < -100 || r.top > vh + 100) continue;
+            const x = (r.top - vh) * Number(el.dataset.scrollX);
+            el.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
+          }
+          for (const el of progress) {
+            const r = el.getBoundingClientRect();
+            if (r.bottom < -vh || r.top > vh * 2) continue;
+            // 0 cuando la sección asoma por abajo; 1 cuando su final llega a media pantalla
+            const p = reduce ? 1 : Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
+            el.style.setProperty('--p', p.toFixed(4));
           }
           requestAnimationFrame(tick);
         };

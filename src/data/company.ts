@@ -359,3 +359,23 @@ export const presence: { state: string; name: string; cities: string; companies:
     companies: [same('Semillas y Fibras Internacionales (SEFINSA)'), same('Ferropuerto de Sonora')],
   },
 ];
+
+/**
+ * Alcance comercial (vista "Hasta dónde llegamos" del mapa de presencia). Cifras textuales del sitio anterior:
+ * portada ("más de 25 estados y exportando a Estados Unidos y Canadá"), Productos de consumo ("cobertura del 90% de la
+ * República Mexicana"), noticia de Molino La Concepción ("abastecer a más de 17 estados") e Invernaderos.
+ */
+export const reach: { stats: { value: T; label: T }[]; lines: { unit: T; text: T }[] } = {
+  stats: [
+    { value: same('4'), label: { es: 'estados con plantas, granjas y oficinas', en: 'states with plants, farms and offices' } },
+    { value: same('25+'), label: { es: 'estados a los que llegan nuestros productos', en: 'states our products reach' } },
+    { value: same('90 %'), label: { es: 'de la República con productos de consumo', en: 'of Mexico covered by our consumer goods' } },
+    { value: same('2'), label: { es: 'países de exportación: EUA y Canadá', en: 'export countries: US and Canada' } },
+  ],
+  lines: [
+    { unit: { es: 'Productos de consumo', en: 'Consumer goods' }, text: { es: 'líder nacional en distribución, con cobertura del 90 % del país.', en: 'a national distribution leader, covering 90% of Mexico.' } },
+    { unit: { es: 'Harinas', en: 'Flour' }, text: { es: 'Molino La Concepción abastece a más de 17 estados.', en: 'Molino La Concepción supplies more than 17 states.' } },
+    { unit: { es: 'Granos', en: 'Grain' }, text: { es: 'mercado nacional y de exportación.', en: 'national and export markets.' } },
+    { unit: { es: 'Invernaderos', en: 'Greenhouses' }, text: { es: 'exportación a Estados Unidos y Canadá con Red Sun Farms.', en: 'exports to the US and Canada through Red Sun Farms.' } },
+  ],
+};

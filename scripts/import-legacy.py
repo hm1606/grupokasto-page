@@ -312,9 +312,7 @@ def main():
         save_image(src, os.path.join(ASSETS, dest))
     print(f'{len(IMAGES)} imágenes')
     import_news()
-    # PDF del Modelo de Sostenibilidad (se descarga desde /sostenibilidad)
-    os.makedirs(os.path.join(ROOT, 'public', 'docs'), exist_ok=True)
-    shutil.copy(os.path.join(STATIC, 'Modelo_de_Sostenibilidad_GK.pdf'), os.path.join(ROOT, 'public', 'docs', 'modelo-de-sostenibilidad-grupo-kasto.pdf'))
+    # El Modelo de Sostenibilidad NO se copia como PDF (no se descarga): sus láminas se generan con scripts/model-pages.py
 
 
 if __name__ == '__main__':

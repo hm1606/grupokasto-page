@@ -1,10 +1,7 @@
 // Modelo de Sostenibilidad de Grupo Kasto (2024), en español e inglés. Fuente: página "Sostenibilidad" del sitio
-// anterior y el documento completo public/docs/modelo-de-sostenibilidad-grupo-kasto.pdf (se puede ver y descargar).
+// anterior y el documento completo, que se CONSULTA en la página pero no se descarga: sus láminas están como imágenes
+// en src/assets/sostenibilidad/modelo/pagina-NN.jpg (se generan del PDF con scripts/model-pages.py; el PDF no se publica).
 import type { T } from '../i18n/ui';
-
-export const pdf = '/docs/modelo-de-sostenibilidad-grupo-kasto.pdf';
-/** Páginas y tamaño del PDF (se muestran junto al botón "Ver modelo completo") */
-export const pdfInfo = { pages: 19, sizeMb: 10 };
 
 export const background: T[] = [
   {

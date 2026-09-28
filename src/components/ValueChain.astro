@@ -73,22 +73,27 @@ const steps: { title: T; text: T; href: string; unit: T; icon: string }[] = [
       </p>
     </div>
 
-    <ol class="chain relative mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-6 lg:gap-0" data-reveal>
-      <!-- Línea que se dibuja uniendo los eslabones (escritorio) -->
-      <span class="chain-line absolute top-[2.25rem] right-[8%] left-[8%] hidden h-px origin-left bg-trigo/60 lg:block" aria-hidden="true"></span>
+    <ol class="chain relative mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-6 lg:gap-0" data-progress>
+      <!-- Línea que se dibuja con el scroll uniendo los eslabones (escritorio), con un grano que la recorre -->
+      <span class="absolute top-[2.25rem] right-[8%] left-[8%] hidden h-px bg-trigo/15 lg:block" aria-hidden="true"></span>
+      <span class="chain-line absolute top-[2.25rem] right-[8%] left-[8%] hidden h-[2px] origin-left bg-gradient-to-r from-trigo/40 to-trigo lg:block" aria-hidden="true"></span>
+      <span class="chain-dot absolute top-[2.25rem] hidden size-3 -translate-1/2 rounded-full bg-trigo lg:block" aria-hidden="true"></span>
       {
         steps.map((s, i) => (
           <li class="chain-step relative lg:px-4" style={`--i:${i}`}>
             <a href={s.href} class="group flex h-full flex-col rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 transition-colors duration-500 hover:bg-white/10 lg:items-center lg:bg-transparent lg:p-0 lg:text-center lg:ring-0 lg:hover:bg-transparent">
-              <span class="relative z-10 grid size-[4.5rem] shrink-0 place-items-center rounded-full border border-trigo/50 bg-olivo text-trigo transition-colors duration-500 group-hover:bg-trigo group-hover:text-olivo">
+              <span class="chain-icon relative z-10 grid size-[4.5rem] shrink-0 place-items-center rounded-full border border-trigo/50 bg-olivo text-trigo transition-colors duration-500 group-hover:bg-trigo group-hover:text-olivo">
+                <span class="chain-glow absolute inset-0 -z-10 rounded-full bg-trigo/20" aria-hidden="true"></span>
                 <svg viewBox="0 0 24 24" class="size-7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
               </span>
-              <span class="mt-5 font-serif text-sm font-semibold tracking-[0.18em] text-brote uppercase">{String(i + 1).padStart(2, '0')}</span>
-              <span class="display mt-1 text-[1.7rem] leading-tight">{s.title[lang]}</span>
-              <span class="mt-3 text-[0.95rem] leading-relaxed text-crema/65">{s.text[lang]}</span>
-              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-trigo lg:mt-auto lg:pt-5">
-                {s.unit[lang]}
-                <svg viewBox="0 0 16 16" class="arrow size-3" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4" /></svg>
+              <span class="chain-text contents">
+                <span class="mt-5 font-serif text-sm font-semibold tracking-[0.18em] text-brote uppercase">{String(i + 1).padStart(2, '0')}</span>
+                <span class="display mt-1 text-[1.7rem] leading-tight">{s.title[lang]}</span>
+                <span class="mt-3 text-[0.95rem] leading-relaxed text-crema/65">{s.text[lang]}</span>
+                <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-trigo lg:mt-auto lg:pt-5">
+                  {s.unit[lang]}
+                  <svg viewBox="0 0 16 16" class="arrow size-3" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4" /></svg>
+                </span>
               </span>
             </a>
           </li>
@@ -99,28 +104,37 @@ const steps: { title: T; text: T; href: string; unit: T; icon: string }[] = [
 </section>
 
 <style is:global>
-  /* La línea se dibuja y los eslabones aparecen en orden cuando la sección entra en pantalla */
-  html.js .chain[data-reveal] {
-    opacity: 1;
-    transform: none;
+  /* El avance del scroll (--p, del Layout) dibuja la línea; cada eslabón se enciende cuando la línea lo alcanza */
+  .chain {
+    --p: 0;
+    --lp: clamp(0, (var(--p) - 0.18) / 0.5, 1);
   }
-  html.js .chain .chain-line {
-    transform: scaleX(0);
-    transition: transform 1.8s var(--ease-in-out-soft) 0.2s;
+  .chain .chain-line {
+    transform: translateY(-50%) scaleX(var(--lp));
   }
-  html.js .chain .chain-step {
-    opacity: 0;
-    transform: translateY(24px);
-    transition:
-      opacity 0.9s var(--ease-out-soft),
-      transform 0.9s var(--ease-out-soft);
-    transition-delay: calc(0.25s + var(--i) * 0.22s);
+  .chain .chain-dot {
+    left: calc(8% + 84% * var(--lp));
+    box-shadow: 0 0 0 6px rgb(237 221 94 / 0.18), 0 0 24px 4px rgb(237 221 94 / 0.45);
+    opacity: min(1, calc(var(--lp) * 20));
   }
-  html.js .chain.is-visible .chain-line {
-    transform: scaleX(1);
+  .chain .chain-step {
+    --on: clamp(0, (var(--lp) - var(--i) / 5) * 7 + 1, 1);
   }
-  html.js .chain.is-visible .chain-step {
-    opacity: 1;
-    transform: none;
+  .chain .chain-step > a {
+    opacity: calc(0.28 + var(--on) * 0.72);
+    transform: translateY(calc((1 - var(--on)) * 18px));
+  }
+  .chain .chain-icon {
+    scale: calc(0.86 + var(--on) * 0.14);
+  }
+  .chain .chain-glow {
+    opacity: var(--on);
+    scale: calc(1 + var(--on) * 0.45);
+  }
+  @media (max-width: 1023px) {
+    /* En celular los eslabones van en columna: se encienden según su propia posición */
+    .chain .chain-step {
+      --on: 1;
+    }
   }
 </style>

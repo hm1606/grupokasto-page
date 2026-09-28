@@ -1,9 +1,13 @@
 ---
-// Mapa de presencia: los estados donde Grupo Kasto tiene plantas y oficinas (Jalisco, Guanajuato, Michoacán y Sonora).
-// Al elegir un estado se muestran sus ciudades y empresas. Mapa base: @svg-maps/mexico (CC BY 4.0).
+// Mapa de presencia con dos vistas (abre en "Dónde estamos"):
+//   · "Hasta dónde llegamos": alcance comercial (productos en más de 25 estados, 90 % del país en productos de consumo,
+//     exportación a EUA y Canadá). La cobertura se pinta como una onda que sale del Bajío.
+//   · "Dónde estamos": los estados con plantas y oficinas (Jalisco, Guanajuato, Michoacán y Sonora) y sus empresas.
+// Las cifras son las del sitio anterior (src/data/company.ts). No se marca una lista de estados concreta porque los textos
+// oficiales no la dan: la cobertura se muestra como todo el país. Mapa base: @svg-maps/mexico (CC BY 4.0).
 import mexicoMap from '@svg-maps/mexico';
 import SectionHead from './SectionHead.astro';
-import { presence } from '../data/company';
+import { presence, reach } from '../data/company';
 import { t, type Lang } from '../i18n/ui';
 
 type MapLocation = { id: string; name: string; path: string };
@@ -12,6 +16,7 @@ const mexico = mexicoMap as unknown as { label: string; viewBox: string; locatio
 type Props = { lang: Lang };
 const { lang } = Astro.props;
 const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
 const active = new Map(presence.map((p) => [p.state, p]));
 
 /** Centro aproximado de un estado (caja que lo contiene), leyendo su trazo m/l/z */
@@ -36,68 +41,128 @@ function center(path: string) {
   }
   return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
 }
-const pins = presence.map((p) => {
-  const loc = mexico.locations.find((l) => l.id === p.state)!;
-  return { ...p, ...center(loc.path) };
-});
+const centers = new Map(mexico.locations.map((l) => [l.id, center(l.path)]));
+const pins = presence.map((p) => ({ ...p, ...centers.get(p.state)! }));
+
+// La onda de cobertura sale del Bajío (entre Guanajuato y Michoacán)
+const hub = { x: (centers.get('gua')!.x + centers.get('mic')!.x) / 2, y: (centers.get('gua')!.y + centers.get('mic')!.y) / 2 };
+const dist = (c: { x: number; y: number }) => Math.hypot(c.x - hub.x, c.y - hub.y);
+const maxDist = Math.max(...[...centers.values()].map(dist));
+const sonora = centers.get('son')!;
+
+// Espacio arriba del mapa para las flechas de exportación
+const [, , vbW, vbH] = mexico.viewBox.split(/\s+/).map(Number);
+const TOP = 90;
+const viewBox = `0 ${-TOP} ${vbW} ${vbH + TOP}`;
+const exportTo = { x: 330, y: -52 };
+const curve = (from: { x: number; y: number }, bend: number) =>
+  `M${from.x.toFixed(1)} ${from.y.toFixed(1)} Q${((from.x + exportTo.x) / 2 + bend).toFixed(1)} ${(Math.min(from.y, exportTo.y) - 10).toFixed(1)} ${exportTo.x} ${exportTo.y + 16}`;
 ---
 
-<section class="relative overflow-hidden bg-crema">
+<section class="presence relative overflow-hidden bg-crema" data-mode="sites">
   <div class="mx-auto grid max-w-[90rem] items-center gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
     <div class="lg:col-span-4">
       <SectionHead
-        eyebrow={lang === 'es' ? 'Presencia' : 'Where we are'}
-        title={lang === 'es' ? 'Del Bajío al <span class="text-hoja">Noroeste</span>' : 'From the Bajío to the <span class="text-hoja">Northwest</span>'}
-        text={lang === 'es'
-          ? 'Plantas, granjas, invernaderos y oficinas en cuatro estados; productos en más de 25 y exportación a Estados Unidos y Canadá.'
-          : 'Plants, farms, greenhouses and offices in four states; products in more than 25, and exports to the United States and Canada.'}
+        eyebrow={L('Presencia', 'Where we are')}
+        title={L('Del Bajío al Noroeste, <span class="text-hoja">y más allá</span>', 'From the Bajío to the Northwest, <span class="text-hoja">and beyond</span>')}
+        text={L(
+          'Operamos desde el Bajío, Occidente y Noroeste de México; nuestros productos llegan a más de 25 estados y se exportan a Estados Unidos y Canadá.',
+          'We operate from central, western and northwestern Mexico; our products reach more than 25 states and are exported to the United States and Canada.',
+        )}
       />
-      <div class="map-panels mt-10" data-reveal style="--reveal-delay:200ms">
-        {
-          presence.map((p, i) => (
-            <div class:list={['map-panel', i === 0 && 'is-active']} data-state={p.state} role="region" aria-live="polite">
-              <p class="display text-4xl text-olivo">{p.name}</p>
-              <p class="mt-1 text-sm font-semibold tracking-[0.04em] text-hoja">{p.cities}</p>
-              <ul class="mt-5 space-y-2.5">
-                {p.companies.map((c) => (
-                  <li class="flex gap-3 leading-snug text-tinta/75">
-                    <span class="mt-2 size-1.5 shrink-0 rounded-full bg-trigo ring-2 ring-trigo/30" aria-hidden="true" />
-                    {c[lang]}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
+
+      <!-- Cambio de vista -->
+      <div class="mode-switch mt-9 inline-grid grid-cols-2 rounded-xl bg-gris p-1" role="tablist" aria-label={L('Vista del mapa', 'Map view')} data-reveal>
+        <button type="button" role="tab" data-mode-btn="sites" aria-selected="true">{L('Dónde estamos', 'Where we operate')}</button>
+        <button type="button" role="tab" data-mode-btn="reach" aria-selected="false">{L('Hasta dónde llegamos', 'How far we reach')}</button>
       </div>
-      <div class="mt-8 flex flex-wrap gap-2" role="tablist" aria-label={lang === 'es' ? 'Estados' : 'States'}>
-        {
-          presence.map((p, i) => (
-            <button
-              type="button"
-              role="tab"
-              data-pick={p.state}
-              aria-selected={i === 0 ? 'true' : 'false'}
-              class="rounded-lg bg-gris px-4 py-2 font-serif text-[0.95rem] font-semibold tracking-[0.06em] text-olivo/70 uppercase transition-colors hover:text-olivo aria-selected:bg-olivo aria-selected:text-crema"
-            >
-              {p.name}
-            </button>
-          ))
-        }
+
+      <div class="mode-panels mt-8 grid" data-reveal style="--reveal-delay:150ms">
+        <!-- Alcance -->
+        <div class="mode-panel" data-panel="reach">
+          <dl class="grid grid-cols-2 gap-x-6 gap-y-7">
+            {
+              reach.stats.map((s) => (
+                <div class="border-t border-olivo/15 pt-4">
+                  <dt class="sr-only">{s.label[lang]}</dt>
+                  <dd>
+                    <span class="display block text-5xl text-olivo tabular-nums">{s.value[lang]}</span>
+                    <span class="mt-1.5 block text-[0.92rem] leading-snug text-tinta/70">{s.label[lang]}</span>
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+          <ul class="mt-8 space-y-2.5 text-[0.95rem]">
+            {
+              reach.lines.map((r) => (
+                <li class="flex gap-3 leading-snug text-tinta/75">
+                  <span class="mt-2 size-1.5 shrink-0 rounded-full bg-trigo ring-2 ring-trigo/30" aria-hidden="true" />
+                  <span>
+                    <strong class="font-semibold text-olivo">{r.unit[lang]}:</strong> {r.text[lang]}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- Instalaciones -->
+        <div class="mode-panel" data-panel="sites">
+          <div class="map-panels grid">
+            {
+              presence.map((p, i) => (
+                <div class:list={['map-panel', i === 0 && 'is-active']} data-state={p.state} role="region" aria-live="polite">
+                  <p class="display text-4xl text-olivo">{p.name}</p>
+                  <p class="mt-1 text-sm font-semibold tracking-[0.04em] text-hoja">{p.cities}</p>
+                  <ul class="mt-5 space-y-2.5">
+                    {p.companies.map((c) => (
+                      <li class="flex gap-3 leading-snug text-tinta/75">
+                        <span class="mt-2 size-1.5 shrink-0 rounded-full bg-trigo ring-2 ring-trigo/30" aria-hidden="true" />
+                        {c[lang]}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            }
+          </div>
+          <div class="mt-8 flex flex-wrap gap-2" role="tablist" aria-label={L('Estados', 'States')}>
+            {
+              presence.map((p, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  data-pick={p.state}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  class="rounded-lg bg-gris px-4 py-2 font-serif text-[0.95rem] font-semibold tracking-[0.06em] text-olivo/70 uppercase transition-colors hover:text-olivo aria-selected:bg-olivo aria-selected:text-crema"
+                >
+                  {p.name}
+                </button>
+              ))
+            }
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="relative lg:col-span-8" data-reveal>
-      <p class="absolute top-2 left-[8%] z-10 flex items-center gap-2 font-serif text-sm font-semibold tracking-[0.18em] text-niebla uppercase">
-        <svg viewBox="0 0 24 24" class="size-4 text-hoja" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"></path></svg>
-        {lang === 'es' ? 'Exportación a EUA y Canadá' : 'Exports to the US and Canada'}
-      </p>
-      <svg viewBox={mexico.viewBox} class="mexico-map h-auto w-full" role="img" aria-label={mexico.label}>
+      <svg viewBox={viewBox} class="mexico-map h-auto w-full" role="img" aria-label={L('Mapa de México con la presencia de Grupo Kasto', 'Map of Mexico showing where Grupo Kasto operates')}>
+        <defs>
+          <radialGradient id="map-glow">
+            <stop offset="0" stop-color="#eddd5e" stop-opacity="0.55"></stop>
+            <stop offset="1" stop-color="#eddd5e" stop-opacity="0"></stop>
+          </radialGradient>
+          <marker id="map-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 10 5 0 10z" fill="#5b8c51"></path>
+          </marker>
+        </defs>
         {
           mexico.locations.map((l) => (
             <path
               d={l.path}
               class:list={['state', active.has(l.id) && 'is-ours']}
+              style={`--d:${(dist(centers.get(l.id)!) / maxDist).toFixed(3)}`}
               data-state={active.has(l.id) ? l.id : undefined}
               tabindex={active.has(l.id) ? 0 : undefined}
               role={active.has(l.id) ? 'button' : undefined}
@@ -107,6 +172,21 @@ const pins = presence.map((p) => {
             </path>
           ))
         }
+
+        <!-- Alcance: onda que sale del Bajío y rutas de exportación -->
+        <g class="reach-layer" aria-hidden="true">
+          <circle cx={hub.x} cy={hub.y} r="150" fill="url(#map-glow)" class="reach-glow"></circle>
+          <circle cx={hub.x} cy={hub.y} r="40" class="reach-ring"></circle>
+          <circle cx={hub.x} cy={hub.y} r="40" class="reach-ring" style="animation-delay:1.2s"></circle>
+          <circle cx={hub.x} cy={hub.y} r="40" class="reach-ring" style="animation-delay:2.4s"></circle>
+          <path d={curve(hub, -40)} class="export-route" marker-end="url(#map-arrow)"></path>
+          <path d={curve(sonora, 30)} class="export-route" style="animation-delay:.3s" marker-end="url(#map-arrow)"></path>
+          <g transform={`translate(${exportTo.x} ${exportTo.y})`}>
+            <rect x="-118" y="-22" width="236" height="36" rx="18" class="export-pill"></rect>
+            <text y="2" text-anchor="middle" class="export-text">{L('EXPORTACIÓN · EUA Y CANADÁ', 'EXPORTS · US AND CANADA')}</text>
+          </g>
+        </g>
+
         {
           pins.map((p) => (
             <g class="pin" data-state={p.state} transform={`translate(${p.x} ${p.y})`} aria-hidden="true">
@@ -116,23 +196,78 @@ const pins = presence.map((p) => {
           ))
         }
       </svg>
-      <p class="mt-2 text-right text-[0.7rem] text-niebla/70">{tx.mapCredit}</p>
+
+      <!-- Leyenda -->
+      <div class="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[0.8rem] text-niebla">
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <span class="flex items-center gap-2"><span class="size-3 rounded-sm bg-hoja"></span>{L('Plantas y oficinas', 'Plants and offices')}</span>
+          <span class="legend-reach flex items-center gap-2"><span class="size-3 rounded-sm bg-[#c9dcc1]"></span>{L('Llegan nuestros productos', 'Where our products reach')}</span>
+        </div>
+        <p class="text-[0.7rem] text-niebla/70">{tx.mapCredit}</p>
+      </div>
     </div>
   </div>
 </section>
 
 <style is:global>
+  /* Cambio de vista */
+  .presence .mode-switch button {
+    padding: 0.7rem 1.1rem;
+    border-radius: 0.6rem;
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(64 74 61 / 0.65);
+    transition:
+      background-color 0.4s var(--ease-out-soft),
+      color 0.4s var(--ease-out-soft),
+      box-shadow 0.4s;
+  }
+  @media (max-width: 480px) {
+    .presence .mode-switch button {
+      padding: 0.65rem 0.7rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+  }
+  .presence .mode-switch button[aria-selected='true'] {
+    background: #fff;
+    color: var(--color-olivo);
+    box-shadow: 0 6px 18px rgb(64 74 61 / 0.12);
+  }
+  .presence .mode-panel {
+    grid-area: 1 / 1;
+    transition:
+      opacity 0.5s var(--ease-out-soft),
+      transform 0.5s var(--ease-out-soft),
+      visibility 0.5s;
+  }
+  .presence[data-mode='reach'] [data-panel='sites'],
+  .presence[data-mode='sites'] [data-panel='reach'] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+  }
+
+  /* Mapa */
   .mexico-map .state {
     fill: #e2e0d8;
     stroke: #f5f0e9;
     stroke-width: 1.2;
-    transition: fill 0.4s var(--ease-out-soft);
+    transition: fill 0.7s var(--ease-out-soft);
+  }
+  .presence[data-mode='reach'] .mexico-map .state:not(.is-ours) {
+    fill: #c9dcc1;
+    transition-delay: calc(var(--d) * 0.9s);
   }
   .mexico-map .state.is-ours {
     fill: #a9c89f;
     cursor: pointer;
     outline: none;
   }
+  .presence[data-mode='reach'] .mexico-map .state.is-ours,
   .mexico-map .state.is-ours:hover,
   .mexico-map .state.is-ours:focus-visible,
   .mexico-map .state.is-ours.is-active {
@@ -149,7 +284,7 @@ const pins = presence.map((p) => {
     transform-origin: center;
     transform-box: fill-box;
   }
-  .mexico-map .pin.is-active .pulse {
+  .presence[data-mode='sites'] .mexico-map .pin.is-active .pulse {
     animation: map-pulse 2s ease-out infinite;
   }
   @keyframes map-pulse {
@@ -162,9 +297,65 @@ const pins = presence.map((p) => {
       transform: scale(1.6);
     }
   }
-  .map-panels {
-    display: grid;
+
+  /* Capa de alcance */
+  .mexico-map .reach-layer {
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out-soft);
+    pointer-events: none;
   }
+  .presence[data-mode='reach'] .mexico-map .reach-layer {
+    opacity: 1;
+  }
+  .mexico-map .reach-ring {
+    fill: none;
+    stroke: #5b8c51;
+    stroke-width: 1.5;
+    opacity: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .presence[data-mode='reach'] .mexico-map .reach-ring {
+    animation: reach-wave 3.6s ease-out infinite;
+  }
+  @keyframes reach-wave {
+    from {
+      opacity: 0.55;
+      transform: scale(0.3);
+    }
+    to {
+      opacity: 0;
+      transform: scale(7);
+    }
+  }
+  .mexico-map .export-route {
+    fill: none;
+    stroke: #5b8c51;
+    stroke-width: 2;
+    stroke-dasharray: 6 7;
+  }
+  .presence[data-mode='reach'] .mexico-map .export-route {
+    animation: export-flow 1.4s linear infinite;
+  }
+  @keyframes export-flow {
+    to {
+      stroke-dashoffset: -26;
+    }
+  }
+  .mexico-map .export-pill {
+    fill: #404a3d;
+  }
+  .mexico-map .export-text {
+    fill: #eddd5e;
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+  .presence[data-mode='sites'] .legend-reach {
+    opacity: 0.35;
+  }
+
   .map-panel {
     grid-area: 1 / 1;
     opacity: 0;
@@ -180,23 +371,40 @@ const pins = presence.map((p) => {
     visibility: visible;
     transform: none;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .mexico-map .reach-ring,
+    .mexico-map .export-route {
+      animation: none !important;
+    }
+  }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>('.mexico-map').forEach((map) => {
-    const section = map.closest('section')!;
+  document.querySelectorAll<HTMLElement>('.presence').forEach((section) => {
+    const map = section.querySelector<SVGSVGElement>('.mexico-map')!;
+    const setMode = (mode: string) => {
+      section.dataset.mode = mode;
+      section.querySelectorAll<HTMLElement>('[data-mode-btn]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.modeBtn === mode)));
+    };
+    section.querySelectorAll<HTMLElement>('[data-mode-btn]').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.modeBtn!)));
+
     const pick = (id: string) => {
       section.querySelectorAll<HTMLElement>('[data-state]').forEach((el) => el.classList.toggle('is-active', el.dataset.state === id));
       section.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.pick === id)));
     };
     pick(section.querySelector<HTMLElement>('[data-pick]')?.dataset.pick ?? 'jal');
     section.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => pick(b.dataset.pick!)));
+    // Tocar un estado con instalaciones lleva a la vista "Dónde estamos" con ese estado
     map.querySelectorAll<SVGElement>('.state.is-ours').forEach((s) => {
       const id = (s as SVGElement & { dataset: DOMStringMap }).dataset.state!;
-      s.addEventListener('mouseenter', () => pick(id));
-      s.addEventListener('click', () => pick(id));
-      s.addEventListener('focus', () => pick(id));
-      s.addEventListener('keydown', (e) => (e as KeyboardEvent).key === 'Enter' && pick(id));
+      const go = () => {
+        setMode('sites');
+        pick(id);
+      };
+      s.addEventListener('mouseenter', () => section.dataset.mode === 'sites' && pick(id));
+      s.addEventListener('click', go);
+      s.addEventListener('focus', () => section.dataset.mode === 'sites' && pick(id));
+      s.addEventListener('keydown', (e) => (e as KeyboardEvent).key === 'Enter' && go());
     });
   });
 </script>

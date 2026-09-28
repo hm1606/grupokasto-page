@@ -5,8 +5,10 @@ import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Pillars from '../components/react/Pillars.tsx';
-import { background, context, contextQuote, materiality, milestones, pdf, pdfInfo, pillars, sdgs, stakeholders } from '../data/sustainability';
-import { img, pic } from '../lib/images';
+import ModelViewer from '../components/react/ModelViewer.tsx';
+import { getImage } from 'astro:assets';
+import { background, context, contextQuote, materiality, milestones, pillars, sdgs, stakeholders } from '../data/sustainability';
+import { hasImg, img, pic } from '../lib/images';
 import { breadcrumbs } from '../lib/seo';
 import { routes, t, type Lang } from '../i18n/ui';
 
@@ -24,8 +26,15 @@ const pillarImages = {
   social: await pic('sostenibilidad/social-foto', [480, 800, 1200]),
   gobernanza: await pic('sostenibilidad/gobernanza-foto', [480, 800, 1200]),
 };
-const viewLabel = L('Ver modelo completo', 'View the full model');
-const downloadLabel = L('Descargar PDF', 'Download PDF');
+const viewLabel = L('Consultar el modelo completo', 'Read the full model');
+// Láminas del documento (src/assets/sostenibilidad/modelo/pagina-NN.jpg)
+const modelKeys = Array.from({ length: 40 }, (_, k) => `sostenibilidad/modelo/pagina-${String(k + 1).padStart(2, '0')}`).filter(hasImg);
+const modelPages = await Promise.all(
+  modelKeys.map(async (key) => ({
+    image: await pic(key, [800, 1200, 1600, 2400]),
+    thumb: (await getImage({ src: img(key), width: 256, format: 'webp', quality: 70 })).src,
+  })),
+);
 ---
 
 <Layout
@@ -51,7 +60,6 @@ const downloadLabel = L('Descargar PDF', 'Download PDF');
   >
     <div class="animate-fade-up mt-10 flex flex-wrap gap-3" style="animation-delay:360ms" data-intro-wait>
       <a href="#modelo-completo" class="btn btn-trigo">{viewLabel}</a>
-      <a href={pdf} class="btn btn-outline-light" download>{downloadLabel}</a>
     </div>
   </PageHero>
 
@@ -182,57 +190,47 @@ const downloadLabel = L('Descargar PDF', 'Download PDF');
     </div>
   </section>
 
-  <!-- Documento completo -->
+  <!-- Documento completo: se consulta aquí mismo, lámina por lámina (no se descarga) -->
   <section id="modelo-completo" class="relative overflow-hidden bg-olivo text-crema">
     <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
-      <div class="lg:col-span-5">
+    <div class="relative mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <SectionHead
           light
           eyebrow={L('Documento completo', 'Full document')}
           title={L("Modelo de Sostenibilidad <span class='text-trigo'>Grupo Kasto</span>", "Grupo Kasto <span class='text-trigo'>Sustainability Model</span>")}
-          text={L(
-            'Aquí resumimos lo esencial. El documento completo reúne el diagnóstico, la matriz de materialidad, cada ámbito de acción con sus objetivos y la alineación con los ODS, con todo el detalle que preparó nuestro equipo.',
-            'This page covers the essentials. The full document brings together the assessment, the materiality matrix, every area of action with its objectives and the SDG alignment, in all the detail our team prepared.',
-          )}
         />
-        <dl class="mt-8 flex gap-10 border-t border-white/15 pt-6" data-reveal style="--reveal-delay:200ms">
-          <div>
-            <dt class="text-sm text-crema/60">{L('Páginas', 'Pages')}</dt>
-            <dd class="display text-4xl text-trigo">{pdfInfo.pages}</dd>
-          </div>
-          <div>
-            <dt class="text-sm text-crema/60">{L('Formato', 'Format')}</dt>
-            <dd class="display text-4xl text-trigo">PDF</dd>
-          </div>
-          <div>
-            <dt class="text-sm text-crema/60">{L('Tamaño', 'Size')}</dt>
-            <dd class="display text-4xl text-trigo">{pdfInfo.sizeMb} MB</dd>
-          </div>
-        </dl>
-        {lang === 'en' && <p class="mt-6 text-sm text-crema/60">The document is available in Spanish.</p>}
-        <div class="mt-10 flex flex-wrap gap-3" data-reveal style="--reveal-delay:260ms">
-          <a href={pdf} target="_blank" rel="noopener" class="btn btn-trigo group">
-            {viewLabel}
-            <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"></path></svg>
-          </a>
-          <a href={pdf} download class="btn btn-outline-light">
-            {downloadLabel}
-            <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v9m-4-4 4 4 4-4M3 14h10"></path></svg>
-          </a>
+        <div class="max-w-lg" data-reveal style="--reveal-delay:200ms">
+          <p class="text-lg leading-relaxed text-crema/75">
+            {
+              L(
+                'Aquí resumimos lo esencial. El documento completo reúne el diagnóstico, la matriz de materialidad, cada ámbito de acción con sus objetivos y la alineación con los ODS, con todo el detalle que preparó nuestro equipo.',
+                'This page covers the essentials. The full document brings together the assessment, the materiality matrix, every area of action with its objectives and the SDG alignment, in all the detail our team prepared.',
+              )
+            }
+          </p>
+          <p class="mt-4 text-sm text-crema/55">
+            {L(`${modelPages.length} láminas · usa las flechas, desliza o ábrelo en pantalla completa.`, `${modelPages.length} pages · use the arrows, swipe or open it full screen.`)}
+            {lang === 'en' && ' The document is in Spanish.'}
+          </p>
         </div>
       </div>
-      <a href={pdf} target="_blank" rel="noopener" class="group relative lg:col-span-6 lg:col-start-7" aria-label={viewLabel} data-reveal>
-        <!-- Hojas del documento apiladas -->
-        <span class="absolute inset-0 translate-x-5 translate-y-5 rotate-2 rounded-2xl bg-crema/15 transition-transform duration-700 group-hover:translate-x-7 group-hover:translate-y-7 group-hover:rotate-3" aria-hidden="true"></span>
-        <span class="absolute inset-0 translate-x-2.5 translate-y-2.5 rotate-1 rounded-2xl bg-crema/30 transition-transform duration-700 group-hover:translate-x-4 group-hover:translate-y-4" aria-hidden="true"></span>
-        <span class="relative block overflow-hidden rounded-2xl shadow-2xl shadow-black/30 transition-transform duration-700 group-hover:-translate-y-1">
-          <Image src={img('sostenibilidad/pdf-portada')} alt={L('Portada del Modelo de Sostenibilidad de Grupo Kasto', 'Cover of the Grupo Kasto Sustainability Model')} widths={[640, 1000, 1200]} sizes="(min-width:1024px) 45vw, 100vw" class="w-full" />
-          <span class="absolute right-4 bottom-4 inline-flex items-center gap-2 rounded-lg bg-olivo/90 px-4 py-2 font-serif text-sm font-semibold tracking-[0.1em] text-crema uppercase opacity-0 backdrop-blur transition-opacity duration-500 group-hover:opacity-100">
-            {viewLabel} ↗
-          </span>
-        </span>
-      </a>
+      <div class="mt-14" data-reveal style="--reveal-delay:120ms">
+        <ModelViewer
+          client:visible
+          pages={modelPages}
+          title={L('Modelo de Sostenibilidad Grupo Kasto', 'Grupo Kasto Sustainability Model')}
+          copy={{
+            page: L('Lámina', 'Page'),
+            of: L('de', 'of'),
+            prev: L('Lámina anterior', 'Previous page'),
+            next: L('Lámina siguiente', 'Next page'),
+            expand: L('Pantalla completa', 'Full screen'),
+            close: L('Cerrar', 'Close'),
+            pages: L('Visor de láminas', 'Page viewer'),
+          }}
+        />
+      </div>
     </div>
   </section>
 
@@ -245,7 +243,7 @@ const downloadLabel = L('Descargar PDF', 'Download PDF');
         'Write to us if you would like to partner with us on a sustainability initiative or learn more about our model.',
       )}
       image="portada/trigo-verde"
-      secondary={{ label: downloadLabel, href: pdf, download: true }}
+      secondary={{ label: viewLabel, href: '#modelo-completo' }}
     />
   </div>
 </Layout>

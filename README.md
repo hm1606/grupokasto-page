@@ -5,13 +5,16 @@ Sitio de Grupo Kasto, migrado desde Oracle APEX (app 102). El repo tiene **dos s
 | | Qué es | Dónde vive |
 | --- | --- | --- |
 | **Sitio nuevo** (español en `/`, inglés en `/en/`) | Astro + React + Tailwind + Motion + Lenis. Portada animada, 8 divisiones, 4 servicios, noticias, sostenibilidad con el PDF completo, mapa de presencia, contacto con API propia. | `src/`, `server/`, `public/` |
-| **Sitio viejo (clon idéntico)** | El HTML que entregaba APEX, capturado página por página, con los mismos CSS/JS/imágenes, servido en sus URLs originales `/ords/PDB1/f?p=102:<página>`. Respaldo por si hace falta volver. | `legacy/` |
+| **Sitio anterior (mismo diseño, sin APEX)** | El HTML que entregaba APEX, capturado página por página, con los mismos CSS/JS/imágenes, pero ya como sitio web normal: **las mismas URLs del sitio nuevo** (`/nosotros/`, `/divisiones/granos/`…), menú que funciona y fotos optimizadas. Para migrar el dominio primero sin cambiar el diseño. | `legacy/` |
 
 **Stack del sitio nuevo:** [Astro](https://astro.build) + [React](https://react.dev) + [Tailwind CSS 4](https://tailwindcss.com)
 + [Motion](https://motion.dev) (animaciones) + [Lenis](https://lenis.dev) (scroll suave). Astro genera HTML real por página
-(ideal para Google) y las partes interactivas son componentes React en `src/components/react/`: carrusel de la portada,
-contadores, explorador de divisiones, línea del tiempo, galerías con visor, filtro de noticias, pestañas de sostenibilidad,
-selector de avisos de privacidad y formulario de contacto.
+(ideal para Google) y las partes interactivas son componentes React en `src/components/react/`: portada (fotos que entran
+como cortina y se recogen en una tarjeta al bajar), recorrido horizontal de las divisiones, contadores, línea del tiempo,
+galerías con visor, filtro de noticias, pestañas de sostenibilidad, selector de avisos de privacidad y formulario de contacto.
+Los efectos ligados al scroll más simples (franjas de palabras, parallax, la cadena de valor que se dibuja) no usan React:
+son atributos `data-scroll-x`, `data-parallax` y `data-progress` que mueve el script de `src/layouts/Layout.astro`. Entre
+páginas hay transición suave (View Transitions del navegador, sin JavaScript).
 
 ## Desarrollo
 
@@ -21,8 +24,8 @@ npm run dev            # sitio nuevo en http://localhost:4321
 npm run api            # API del formulario en :4012 (el dev server le hace proxy a /api)
 npm run build          # genera dist/
 npm run og             # regenera favicon, íconos e imágenes para compartir (public/og/)
-npm run legacy         # reconstruye el clon del sitio viejo en legacy/site/ (requiere old-page-recursos/, ver abajo)
-npm run legacy:serve   # sirve el clon en http://localhost:8102/ords/PDB1/f?p=102:1
+npm run legacy         # reconstruye el sitio anterior en legacy/site/ (requiere old-page-recursos/, ver abajo)
+npm run legacy:serve   # sirve el sitio anterior en http://localhost:8102/
 ```
 
 Requiere Node 22.12 o superior (y Python 3 con Pillow solo para `legacy/build.py` y `scripts/import-legacy.py`).
@@ -85,10 +88,14 @@ el idioma; `src/pages/` (español) y `src/pages/en/` (inglés) solo las llaman.
 
 ### Sostenibilidad: el documento completo
 
-La página resume el Modelo de Sostenibilidad y, al final, tiene la sección **"Ver modelo completo"** con la portada del
-PDF (`public/docs/modelo-de-sostenibilidad-grupo-kasto.pdf`), el botón para verlo en el navegador y el de descarga.
-Si cambian el PDF, reemplaza el archivo con el mismo nombre, actualiza `pdfInfo` en `src/data/sustainability.ts` y la
-portada con: `sips -s format png --resampleWidth 1200 public/docs/modelo-de-sostenibilidad-grupo-kasto.pdf --out src/assets/sostenibilidad/pdf-portada.png`.
+La página resume el Modelo de Sostenibilidad y, al final, tiene el **visor del documento completo**: se consulta lámina
+por lámina (flechas, teclado, deslizar con el dedo, miniaturas y pantalla completa) y **no se puede descargar**; el PDF
+no se publica en ninguno de los dos sitios y sus URLs viejas llevan al visor. Las láminas son imágenes en
+`src/assets/sostenibilidad/modelo/pagina-NN.jpg`. Si cambia el documento, regenéralas con `scripts/model-pages.py`
+(instrucciones dentro del archivo) y corre `npm run legacy` para que el sitio anterior también las tome.
+
+> Nada que se ve en una página es imposible de copiar (alguien puede hacer captura de pantalla), pero ya no hay archivo
+> que descargar, ni clic derecho → "Guardar imagen", ni toque largo en celular.
 
 ### Mapa de presencia
 
@@ -101,20 +108,49 @@ aparece bajo el mapa). Los estados y empresas que se muestran están en `presenc
 `grupokasto-api`, puerto 4012), que manda el correo a **comunicacion@grupokasto.com** (igual que el `APEX_MAIL` del sitio
 anterior) con el mismo diseño verde/amarillo. Con `RESEND_API_KEY` usa Resend; sin ella, FormSubmit (la primera vez
 FormSubmit manda un correo de activación a esa dirección). Tiene trampa para bots, límite de envíos por IP y exige aceptar
-el aviso de privacidad. **El clon del sitio viejo usa la misma API**, así su formulario de Contacto sigue funcionando.
+el aviso de privacidad. **El sitio anterior usa la misma API**, así su formulario de Contacto sigue funcionando.
 
-## Sitio viejo (clon de APEX)
+## Sitio anterior (el diseño de APEX, sin APEX)
+
+Sirve para pasar `www.grupokasto.com` a este servidor **sin cambiar todavía el diseño**. Se ve igual que el sitio de
+APEX, pero ya es un sitio web normal:
+
+- **Mismas URLs que el sitio nuevo** (`/`, `/nosotros/`, `/filosofia/`, `/divisiones/granos/`, `/servicios/…/`,
+  `/noticias/<nota>/`, `/sostenibilidad/`, `/contacto/`…). Al cambiar al sitio nuevo ninguna dirección cambia y Google no
+  pierde nada. Las URLs de APEX (`/ords/PDB1/f?p=102:<página o alias>`) responden 301 a su ruta limpia.
+- **Menú que funciona:** los submenús se abren al tocarlos en celular, la sección actual se marca, sin enlaces rotos
+  (`#`, `wwwgk.nyva.io`) ni la opción suelta "Noticias detalladas".
+- **Rápido:** sin el runtime de APEX (~600 KB de JavaScript que ya no hacía nada); las fotos de más de 150 KB pasan a WebP
+  de máximo 2000 px (la portada bajó de 46 MB a ~3 MB; el sitio completo de 330 MB a ~70 MB). Las URLs de las fotos
+  originales redirigen a la versión optimizada. La cortinilla de carga ya no espera a que bajen todas las fotos.
+- **SEO completo por página:** título, descripción e imagen para compartir (las mismas del sitio nuevo, que tiene las
+  mismas rutas), Open Graph/X, canonical, un solo `<h1>` por página (en noticias, el título de la nota), datos
+  estructurados (`NewsArticle`, migas de pan), textos alternativos, `sitemap.xml`, `robots.txt` y página 404.
+- **Íconos:** los mismos del sitio nuevo (favicon, SVG, iPhone, Android y manifest).
+- **Contacto rediseñado:** oficinas en tarjetas (correo, teléfono que se puede marcar, "Ver en el mapa", "Cómo llegar"),
+  formulario completo con validación, aviso de privacidad y mensajes claros, y mapa con pestañas por oficina (el mapa
+  anterior era un My Maps de Google que ya no existe y mostraba un error 404).
+- **Fotos:** visor propio en la galería y en cada noticia; las fotos de las noticias en cuadrícula pareja; el carrusel de
+  instalaciones de cada división con todas las fotos del mismo alto.
+- Enlaces que no llevaban a ningún lado quitados (etiquetas, nombres, logos, autor de la nota); en Avisos de privacidad
+  elegir una empresa ya no regresa la página hasta arriba; teléfonos que se pueden marcar; logo ESR roto reemplazado.
+- Se quitaron los botones de idioma de APEX (solo cambiaban la sesión), el "Built with Oracle APEX" y las páginas que
+  nadie enlazaba (login de APEX, SendMail, una nota ajena al grupo y dos duplicados); sus URLs viejas redirigen.
+- Se repararon 3 fotos que ya estaban rotas en el sitio en vivo (venían de otra aplicación de APEX que ya no existe).
+
+Cómo se arma:
 
 - `legacy/capture.py` descargó el HTML renderizado de las 47 páginas públicas (`legacy/capture/pages/`) y los pocos
   recursos que no venían en la copia del servidor (`legacy/capture/extra/`). Solo hace falta volver a correrlo si
   cambia el sitio viejo.
-- `legacy/build.py` arma `legacy/site/` con esas páginas y la raíz web del servidor viejo (`old-page-recursos/grupokasto/`,
-  no se sube a git; la carpeta `static/` es byte a byte lo que APEX servía como `#APP_IMAGES#`). También regenera
-  `deploy/nginx-grupokasto-apex-map.conf` (página y alias de APEX → archivo).
-- Cambios mínimos respecto al original: enlaces absolutos a `www.grupokasto.com/ords/…` vueltos relativos (para poder
-  revisarlo en otro dominio), la sesión de APEX en 0, imágenes de molinosgrupokasto.com copiadas localmente y el
-  formulario de Contacto conectado a la API. Lo que ya estaba roto en el sitio en vivo (p. ej. imágenes de
-  apex.oracle.com, la página de Quejas con texto "Lorem ipsum", errores de `appear.js`) se dejó igual.
+- `legacy/polish.py` tiene todas esas mejoras (SEO, Contacto, visor de fotos, estilos); `legacy/build.py` lo aplica.
+  Conviene correr `npm run build` antes de `npm run legacy`: las descripciones de cada página salen del sitio nuevo
+  (`dist/`); sin él se usa una descripción general.
+- `legacy/build.py` (`npm run legacy`) arma `legacy/site/` con esas páginas y la raíz web del servidor viejo
+  (`old-page-recursos/grupokasto/`, no se sube a git). Las rutas las toma de los datos del sitio nuevo
+  (`src/data/divisions.ts`, `src/data/services.ts`, `legacyPage` de cada noticia). También genera
+  `legacy/redirects.json` y `deploy/nginx-grupokasto-apex-map.conf` (URL de APEX → ruta; foto original → foto optimizada).
+  Las fotos optimizadas se guardan en `legacy/.cache/` para que los siguientes builds tarden segundos.
 - `legacy/apex-export/` es el export de la aplicación 102 (referencia).
 
 ## SEO
@@ -143,16 +179,16 @@ automática si algo falla; hay otros sitios en ese servidor).
 
 | Dominio | Qué sirve | Carpeta |
 | --- | --- | --- |
-| `grupokasto.82-180-133-158.sslip.io` (revisión, `noindex`) | Sitio nuevo | `/var/www/grupokasto-site` |
-| `grupokasto-legacy.82-180-133-158.sslip.io` (revisión, `noindex`) | Clon del sitio viejo | `/var/www/grupokasto-legacy` |
+| `dev.grupokasto.com` (revisión, `noindex`) | Sitio nuevo | `/var/www/grupokasto-site` |
+| `grupokasto-legacy.82-180-133-158.sslip.io` (revisión, `noindex`) | Sitio anterior | `/var/www/grupokasto-legacy` |
 | `www.grupokasto.com` (cuando el DNS apunte a este servidor) | El que se elija con `GK_PROD` | — |
 
-- HTTPS para la revisión: `certbot certonly --nginx -d grupokasto.82-180-133-158.sslip.io` y volver a correr `deploy.sh`.
+- HTTPS para la revisión: `certbot certonly --nginx -d dev.grupokasto.com` y volver a correr `deploy.sh`.
 - Secretos de la API en `/var/www/grupokasto-page/.env` (ver `.env.example`).
 
 ### Pasar www.grupokasto.com a este servidor
 
 1. Apuntar el DNS de `grupokasto.com` y `www.grupokasto.com` (registro A) a `82.180.133.158`.
 2. `certbot certonly --nginx -d www.grupokasto.com -d grupokasto.com`
-3. Primero con el sitio viejo idéntico: `GK_PROD=legacy bash deploy/deploy.sh`
+3. Primero con el sitio anterior (mismo diseño): `GK_PROD=legacy bash deploy/deploy.sh`
 4. Cuando aprueben el sitio nuevo: `GK_PROD=nuevo bash deploy/deploy.sh` (activa las redirecciones 301 y la indexación).

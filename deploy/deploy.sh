@@ -3,11 +3,11 @@
 # Uso (en el servidor):  bash /var/www/grupokasto-page/deploy/deploy.sh
 #
 # Siempre publica:
-#   - sitio nuevo (Astro)          -> /var/www/grupokasto-site     revisión: grupokasto.82-180-133-158.sslip.io
-#   - clon del sitio viejo (APEX)  -> /var/www/grupokasto-legacy   revisión: grupokasto-legacy.82-180-133-158.sslip.io
+#   - sitio nuevo (Astro)          -> /var/www/grupokasto-site     revisión: dev.grupokasto.com
+#   - sitio anterior (legacy/site) -> /var/www/grupokasto-legacy   revisión: grupokasto-legacy.82-180-133-158.sslip.io
 #   - API del formulario (PM2 grupokasto-api, puerto 4012)
 # Producción (www.grupokasto.com) solo cuando se indica, porque requiere DNS y certificado:
-#   GK_PROD=legacy bash deploy/deploy.sh   -> www.grupokasto.com sirve el clon del sitio viejo
+#   GK_PROD=legacy bash deploy/deploy.sh   -> www.grupokasto.com sirve el sitio anterior (mismo diseño, sin APEX)
 #   GK_PROD=nuevo  bash deploy/deploy.sh   -> www.grupokasto.com sirve el sitio nuevo (301 desde las URLs viejas)
 # Después, GK_PROD ya no hace falta: se respeta lo que esté instalado.
 set -euo pipefail
@@ -17,7 +17,7 @@ SITE=/var/www/grupokasto-site
 LEGACY=/var/www/grupokasto-legacy
 BRANCH=${DEPLOY_BRANCH:-main}
 PROD_CONF=/etc/nginx/sites-available/grupokasto.com
-REVIEW_CERT=/etc/letsencrypt/live/grupokasto.82-180-133-158.sslip.io/fullchain.pem
+REVIEW_CERT=/etc/letsencrypt/live/dev.grupokasto.com/fullchain.pem
 
 cd "$APP"
 # git reset puede reescribir este script mientras bash lo lee: tras actualizar, se vuelve a ejecutar
@@ -38,7 +38,7 @@ fi
 if [ "$MODE" = nuevo ]; then
   export SITE_URL=https://www.grupokasto.com NOINDEX=0
 else
-  if [ -f "$REVIEW_CERT" ]; then export SITE_URL=https://grupokasto.82-180-133-158.sslip.io; else export SITE_URL=http://grupokasto.82-180-133-158.sslip.io; fi
+  if [ -f "$REVIEW_CERT" ]; then export SITE_URL=https://dev.grupokasto.com; else export SITE_URL=http://dev.grupokasto.com; fi
   export NOINDEX=1
 fi
 
@@ -53,7 +53,7 @@ echo "→ Publicando sitio nuevo…"
 mkdir -p "$SITE"
 rsync -a --delete --exclude /nginx dist/ "$SITE/"
 
-echo "→ Publicando clon del sitio viejo…"
+echo "→ Publicando sitio anterior…"
 mkdir -p "$LEGACY"
 rsync -a --delete legacy/site/ "$LEGACY/"
 
@@ -69,7 +69,6 @@ CONFS=(
   "deploy/nginx-snippet-grupokasto-nuevo-site.conf:/etc/nginx/snippets/grupokasto-nuevo-site.conf"
   "deploy/nginx-snippet-grupokasto-legacy-site.conf:/etc/nginx/snippets/grupokasto-legacy-site.conf"
   "deploy/nginx-grupokasto-apex-map.conf:/etc/nginx/conf.d/grupokasto-apex-map.conf"
-  "deploy/nginx-grupokasto-legacy.conf:/etc/nginx/conf.d/grupokasto-legacy.conf"
   "dist/nginx/grupokasto-redirects.conf:/etc/nginx/conf.d/grupokasto-redirects.conf"
 )
 SITES=(grupokasto-revision)
@@ -86,6 +85,10 @@ if [ "$changed" = 1 ]; then
   for pair in "${CONFS[@]}"; do mkdir -p "$(dirname "${pair#*:}")"; cp "${pair%%:*}" "${pair#*:}"; done
   for s in "${SITES[@]}"; do ln -sf "/etc/nginx/sites-available/$s" "/etc/nginx/sites-enabled/$s"; done
   if nginx -t 2>/dev/null; then
+    # Mapa de la versión anterior del clon (páginas de APEX); ya no lo usa nadie
+    if [ -f /etc/nginx/conf.d/grupokasto-legacy.conf ]; then
+      mv /etc/nginx/conf.d/grupokasto-legacy.conf "$BK/" && nginx -t 2>/dev/null || cp -a "$BK/grupokasto-legacy.conf" /etc/nginx/conf.d/
+    fi
     systemctl reload nginx
     echo "  Nginx actualizado y recargado"
   else
@@ -106,6 +109,6 @@ fi
 sleep 1
 curl -fsS http://127.0.0.1:4012/api/health >/dev/null && echo "  API OK" || echo "  ⚠ La API no responde (pm2 logs grupokasto-api)"
 echo "✓ Desplegado: $(git log -1 --format='%h — %s')"
-echo "  Sitio nuevo: $SITE_URL · Sitio viejo: http://grupokasto-legacy.82-180-133-158.sslip.io/ords/PDB1/f?p=102:1"
+echo "  Sitio nuevo: $SITE_URL · Sitio anterior: http://grupokasto-legacy.82-180-133-158.sslip.io/"
 [ -n "$MODE" ] && echo "  Producción www.grupokasto.com: $MODE"
 exit 0

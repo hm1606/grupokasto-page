@@ -80,7 +80,14 @@ const sections = [
           </a>
         ))
       }
-      <a href={routes.contact[lang]} class="btn btn-primary my-2 ml-auto hidden min-h-10 shrink-0 px-4 text-[0.85rem] md:inline-flex">{tx.contactUs}</a>
+      <!-- Contacto con el tema de esta división ya elegido (el botón general "Contáctanos" está en el encabezado) -->
+      <a
+        href={`${routes.contact[lang]}?tema=${encodeURIComponent(d.short.es.toLowerCase())}`}
+        class="group ml-auto hidden shrink-0 items-center gap-2 px-4 py-4 font-serif text-[0.95rem] font-semibold tracking-[0.08em] text-hoja uppercase transition-colors hover:text-hoja-oscuro md:inline-flex"
+      >
+        {L(`Escribir a ${d.short.es}`, `Contact ${d.short.en}`)}
+        <svg viewBox="0 0 16 16" class="arrow size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"></path></svg>
+      </a>
     </div>
   </nav>
 
@@ -207,6 +214,6 @@ const sections = [
     transition: top 0.5s var(--ease-out-soft);
   }
   html:has(#site-header:not([data-hidden='true'])[data-solid='true']) .subnav {
-    top: var(--header-h);
+    top: var(--header-now);
   }
 </style>

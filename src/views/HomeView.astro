@@ -8,7 +8,8 @@ import PresenceMap from '../components/PresenceMap.astro';
 import ScrollText from '../components/react/ScrollText.tsx';
 import HomeHero from '../components/react/HomeHero.tsx';
 import CountUp from '../components/react/CountUp.tsx';
-import DivisionsExplorer from '../components/react/DivisionsExplorer.tsx';
+import DivisionsRail from '../components/react/DivisionsRail.tsx';
+import WordBand from '../components/WordBand.astro';
 import { experience, site, stats } from '../data/site';
 import { divisionById, divisionUrl, divisions } from '../data/divisions';
 import { brands, leaders, valueOffer } from '../data/company';
@@ -62,6 +63,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     wheat={wheat}
     copy={{
       eyebrow: L(`Contribuimos al desarrollo · Desde ${site.foundingYear}`, `Contributing to development · Since ${site.foundingYear}`),
+      brand: site.name,
       words: L('Del campo a la mesa de México', 'From the field to Mexico’s table').split(' '),
       highlight: L('mesa', 'table'),
       text: L(
@@ -71,6 +73,8 @@ const maxYears = Math.max(...experience.map((e) => e.years));
       primary: { label: L('Conoce las divisiones', 'Explore our divisions'), href: routes.divisions[lang] },
       secondary: { label: L('Nuestra historia', 'Our history'), href: routes.about[lang] },
       view: L('Ver', 'View'),
+      next: L('Sigue', 'Up next'),
+      scroll: L('Desliza', 'Scroll'),
     }}
   />
 
@@ -166,21 +170,26 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     </div>
   </section>
 
-  <!-- Divisiones -->
-  <section class="bg-gris/60">
-    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-36">
-      <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHead
-          eyebrow={L('Nuestras divisiones', 'Our divisions')}
-          title={L("Ocho negocios, <span class='text-hoja'>una sola</span> cadena de valor", "Eight businesses, <span class='text-hoja'>one</span> value chain")}
-        />
-        <p class="max-w-md text-lg leading-relaxed text-tinta/70" data-reveal style="--reveal-delay:200ms">{valueOffer.intro[lang]}</p>
-      </div>
-      <div class="mt-16">
-        <DivisionsExplorer client:visible items={divisionCards} cta={tx.viewDivision} />
-      </div>
-    </div>
-  </section>
+  <!-- Divisiones: recorrido horizontal -->
+  <DivisionsRail
+    client:idle
+    items={divisionCards}
+    copy={{
+      eyebrow: L('Nuestras divisiones', 'Our divisions'),
+      title: L("Ocho divisiones, <span class='text-trigo'>una sola</span> cadena de valor", "Eight divisions, <span class='text-trigo'>one</span> value chain"),
+      text: valueOffer.intro[lang],
+      cta: tx.viewDivision,
+      all: L('Ver todas', 'See all'),
+      allHref: routes.divisions[lang],
+      hint: L('Sigue bajando para recorrerlas', 'Keep scrolling to explore'),
+      swipe: L('Desliza para ver las ocho', 'Swipe to see all eight'),
+    }}
+  />
+
+  <WordBand
+    words={L('Granos,Harinas,Pecuaria,Invernaderos', 'Grain,Flour,Livestock,Greenhouses').split(',')}
+    alt={L('Panadería,Consumo,Logística,Desde 1945', 'Bakery,Consumer goods,Logistics,Since 1945').split(',')}
+  />
 
   <ValueChain lang={lang} />
 
@@ -226,17 +235,24 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     </div>
   </section>
 
-  <!-- Frase con parallax -->
-  <section class="relative isolate flex min-h-[80svh] items-center overflow-hidden bg-olivo text-white">
-    <div class="absolute inset-0 -z-10" data-parallax="0.15">
-      <Image src={img('portada/bodega')} alt="" widths={[800, 1400, 2000, 2400]} sizes="100vw" class="h-[125%] w-full object-cover" />
+  <!-- Frase: la foto se acerca y el texto se ilumina palabra por palabra al bajar -->
+  <section class="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-sombra text-white">
+    <div class="absolute inset-0 -z-10" data-parallax="0.18">
+      <Image src={img('portada/bodega')} alt="" widths={[800, 1400, 2000, 2400]} sizes="100vw" class="h-[130%] w-full object-cover" />
     </div>
-    <div class="absolute inset-0 -z-10 bg-olivo/60"></div>
-    <div class="mx-auto max-w-[90rem] px-5 text-center sm:px-8 lg:px-12">
-      <p class="eyebrow text-trigo" data-reveal>Grupo Kasto</p>
-      <p class="display mx-auto mt-6 max-w-5xl text-5xl text-balance uppercase sm:text-7xl lg:text-8xl" data-reveal style="--reveal-delay:100ms">
-        {L('La agricultura es importante para el ', 'Agriculture matters for ')}<span class="text-trigo">{L('desarrollo futuro', 'our future')}</span>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-sombra/85 via-sombra/55 to-sombra/85"></div>
+    <div class="mx-auto max-w-[90rem] px-5 py-32 text-center sm:px-8 lg:px-12">
+      <p class="eyebrow flex items-center justify-center gap-3 text-trigo" data-reveal>
+        <span class="h-px w-8 bg-trigo/60" aria-hidden="true"></span>Grupo Kasto<span class="h-px w-8 bg-trigo/60" aria-hidden="true"></span>
       </p>
+      <ScrollText
+        client:visible
+        text={L('La agricultura es importante para el desarrollo futuro', 'Agriculture matters for our future')}
+        highlight={lang === 'es' ? ['desarrollo', 'futuro'] : ['our', 'future']}
+        highlightClass="text-trigo"
+        dim={0.14}
+        className="display mx-auto mt-8 max-w-6xl text-[3.4rem] leading-[0.95] uppercase sm:text-8xl lg:text-[8.5rem]"
+      />
     </div>
   </section>
 
