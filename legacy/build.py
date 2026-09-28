@@ -562,6 +562,9 @@ def main():
     sep = '(?::|%3A)'
     rules = [
         '# Generado por legacy/build.py — no editar a mano. Va en /etc/nginx/conf.d/ (contexto http).',
+        '# Las rutas de las fotos son largas: el valor por omisión (64) no alcanza para la tabla del mapa.',
+        'map_hash_bucket_size 128;',
+        '',
         '# URLs de Oracle APEX (/ords/PDB1/f?p=102:<página o alias>[:sesión[:…]]) -> ruta limpia del sitio',
         'map $arg_p $grupokasto_legacy_path {',
         '    default "/";',
