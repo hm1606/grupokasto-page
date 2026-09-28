@@ -1,7 +1,25 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
-type Props = { topics: string[]; privacyVersion: string; email: string };
+type Topic = { id: string; label: string };
+type Props = { topics: Topic[]; privacyVersion: string; email: string; privacyHref: string; lang?: 'es' | 'en' };
+
+const TX = {
+  es: {
+    name: 'Nombre completo *', company: 'Empresa (opcional)', email: 'Correo electrónico *', phone: 'Teléfono', topic: '¿Sobre qué tema nos escribes? *',
+    message: 'Tu mensaje *', complaint: 'Cuéntanos tu queja o sugerencia *', trap: 'No llenar',
+    accept: 'Acepto el', notice: 'aviso de privacidad', acceptEnd: 'y que Grupo Kasto use mis datos para responder a este mensaje.',
+    send: 'Enviar mensaje', sending: 'Enviando…', fail: 'No se pudo enviar el mensaje.', alt: 'También puedes escribirnos a',
+    okTitle: 'Gracias, recibimos tu mensaje.', okText: 'Lo turnamos al área indicada y te respondemos a la brevedad por correo o teléfono.', again: 'Enviar otro mensaje',
+  },
+  en: {
+    name: 'Full name *', company: 'Company (optional)', email: 'Email *', phone: 'Phone', topic: 'What is your message about? *',
+    message: 'Your message *', complaint: 'Tell us your complaint or suggestion *', trap: 'Do not fill',
+    accept: 'I accept the', notice: 'privacy notice', acceptEnd: 'and allow Grupo Kasto to use my data to reply to this message.',
+    send: 'Send message', sending: 'Sending…', fail: 'The message could not be sent.', alt: 'You can also email us at',
+    okTitle: 'Thank you, we received your message.', okText: 'We will forward it to the right team and get back to you shortly by email or phone.', again: 'Send another message',
+  },
+};
 type Status = { kind: 'idle' | 'sending' | 'ok' | 'error'; message?: string };
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
@@ -11,7 +29,8 @@ const label =
   'pointer-events-none absolute top-4 left-5 origin-left text-[0.95rem] text-niebla transition-all duration-300 peer-focus:top-2 peer-focus:scale-[0.78] peer-focus:text-hoja peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:scale-[0.78]';
 
 /** Formulario de contacto: envía a /api/contacto (server/api.mjs), que manda el correo a Grupo Kasto. */
-export default function ContactForm({ topics, privacyVersion, email }: Props) {
+export default function ContactForm({ topics, privacyVersion, email, privacyHref, lang = 'es' }: Props) {
+  const tx = TX[lang];
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [topic, setTopic] = useState('');
 
@@ -19,8 +38,8 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
   useEffect(() => {
     const t = new URLSearchParams(location.search).get('tema')?.toLowerCase();
     if (!t) return;
-    const match = topics.find((x) => x.toLowerCase().includes(t));
-    if (match) setTopic(match);
+    const match = topics.find((x) => x.id.toLowerCase().includes(t));
+    if (match) setTopic(match.id);
   }, [topics]);
 
   const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -34,6 +53,7 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           kind: d.topic === 'Quejas y sugerencias' ? 'queja' : 'contacto',
+          locale: lang,
           name: d.name,
           email: d.email,
           phone: d.phone,
@@ -47,12 +67,12 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
         }),
       });
       const j = await r.json().catch(() => ({}));
-      if (!r.ok || !j.ok) throw new Error(j.message || 'No se pudo enviar el mensaje.');
+      if (!r.ok || !j.ok) throw new Error(j.message || tx.fail);
       setStatus({ kind: 'ok' });
       form.reset();
       setTopic('');
     } catch (err) {
-      setStatus({ kind: 'error', message: err instanceof Error ? err.message : 'No se pudo enviar el mensaje.' });
+      setStatus({ kind: 'error', message: err instanceof Error ? err.message : tx.fail });
     }
   };
 
@@ -74,12 +94,12 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
                 <path d="m5 12 5 5 9-10" />
               </svg>
             </span>
-            <h3 className="display mt-8 text-4xl sm:text-5xl">Gracias, recibimos tu mensaje.</h3>
+            <h3 className="display mt-8 text-4xl sm:text-5xl">{tx.okTitle}</h3>
             <p className="mt-5 max-w-md text-lg leading-relaxed text-crema/75">
-              Lo turnamos al área indicada y te respondemos a la brevedad por correo o teléfono.
+              {tx.okText}
             </p>
             <button type="button" onClick={() => setStatus({ kind: 'idle' })} className="btn btn-outline-light mt-10">
-              Enviar otro mensaje
+              {tx.again}
             </button>
           </motion.div>
         ) : (
@@ -95,25 +115,25 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
             <div className="relative">
               <input id="cf-name" name="name" required autoComplete="name" placeholder="Nombre" className={field} maxLength={120} />
               <label htmlFor="cf-name" className={label}>
-                Nombre completo *
+                {tx.name}
               </label>
             </div>
             <div className="relative">
               <input id="cf-company" name="company" autoComplete="organization" placeholder="Empresa" className={field} maxLength={160} />
               <label htmlFor="cf-company" className={label}>
-                Empresa (opcional)
+                {tx.company}
               </label>
             </div>
             <div className="relative">
               <input id="cf-email" name="email" type="email" required autoComplete="email" placeholder="Correo" className={field} maxLength={160} />
               <label htmlFor="cf-email" className={label}>
-                Correo electrónico *
+                {tx.email}
               </label>
             </div>
             <div className="relative">
               <input id="cf-phone" name="phone" type="tel" autoComplete="tel" placeholder="Teléfono" className={field} maxLength={40} />
               <label htmlFor="cf-phone" className={label}>
-                Teléfono
+                {tx.phone}
               </label>
             </div>
             <div className="relative sm:col-span-2">
@@ -127,13 +147,13 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
               >
                 <option value="" disabled hidden />
                 {topics.map((t) => (
-                  <option key={t} value={t} className="text-tinta">
-                    {t}
+                  <option key={t.id} value={t.id} className="text-tinta">
+                    {t.label}
                   </option>
                 ))}
               </select>
               <label htmlFor="cf-topic" className={`${label} ${topic ? 'top-2 scale-[0.78]' : ''}`}>
-                ¿Sobre qué tema nos escribes? *
+                {tx.topic}
               </label>
               <svg viewBox="0 0 12 12" className="pointer-events-none absolute top-1/2 right-5 size-3 -translate-y-1/2 text-niebla" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                 <path d="m3 4.5 3 3 3-3" />
@@ -142,23 +162,23 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
             <div className="relative sm:col-span-2">
               <textarea id="cf-message" name="message" required rows={5} placeholder="Mensaje" className={`${field} resize-y`} maxLength={5000} />
               <label htmlFor="cf-message" className={label}>
-                {topic === 'Quejas y sugerencias' ? 'Cuéntanos tu queja o sugerencia *' : 'Tu mensaje *'}
+                {topic === 'Quejas y sugerencias' ? tx.complaint : tx.message}
               </label>
             </div>
             {/* Trampa para bots: invisible para personas */}
             <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
               <label>
-                No llenar <input name="website" tabIndex={-1} autoComplete="off" />
+                {tx.trap} <input name="website" tabIndex={-1} autoComplete="off" />
               </label>
             </div>
             <label className="flex items-start gap-3 text-sm leading-relaxed text-tinta/70 sm:col-span-2">
               <input name="privacy" type="checkbox" required className="mt-1 size-4 shrink-0 accent-hoja" />
               <span>
-                Acepto el{' '}
-                <a href="/avisos-de-privacidad/" target="_blank" className="font-semibold text-hoja underline decoration-hoja/40 underline-offset-4">
-                  aviso de privacidad
+                {tx.accept}{' '}
+                <a href={privacyHref} target="_blank" className="font-semibold text-hoja underline decoration-hoja/40 underline-offset-4">
+                  {tx.notice}
                 </a>{' '}
-                y que Grupo Kasto use mis datos para responder a este mensaje.
+                {tx.acceptEnd}
               </span>
             </label>
             <div className="flex flex-col gap-4 pt-2 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
@@ -171,7 +191,7 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                   >
-                    {status.message} También puedes escribirnos a{' '}
+                    {status.message} {tx.alt}{' '}
                     <a href={`mailto:${email}`} className="font-semibold underline">
                       {email}
                     </a>
@@ -183,11 +203,11 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
                 {status.kind === 'sending' ? (
                   <>
                     <span className="size-4 animate-spin rounded-full border-2 border-white/30 border-t-white" aria-hidden="true" />
-                    Enviando…
+                    {tx.sending}
                   </>
                 ) : (
                   <>
-                    Enviar mensaje
+                    {tx.send}
                     <svg viewBox="0 0 16 16" className="arrow size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                       <path d="M3 8h10m-4-4 4 4-4 4" />
                     </svg>

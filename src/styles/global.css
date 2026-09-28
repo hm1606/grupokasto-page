@@ -341,3 +341,17 @@ html.lenis body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Barra de filtros de noticias: baja cuando el encabezado está visible */
+.news-filter {
+  transition: top 0.5s var(--ease-out-soft);
+}
+html:has(#site-header:not([data-hidden='true'])) .news-filter {
+  top: calc(var(--header-h) + 0.75rem);
+}
+
+/* Barra de progreso de lectura (noticias) */
+#reading-progress {
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}

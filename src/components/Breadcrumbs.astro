@@ -1,10 +1,13 @@
 ---
 import type { Crumb } from '../lib/seo';
+import { langFromUrl, t } from '../i18n/ui';
+
 type Props = { crumbs: Crumb[]; light?: boolean };
 const { crumbs, light = false } = Astro.props;
+const label = t(langFromUrl(Astro.url)).breadcrumbs;
 ---
 
-<nav aria-label="Migas de pan" class:list={['text-[0.78rem] font-medium', light ? 'text-white/65' : 'text-niebla']}>
+<nav aria-label={label} class:list={['text-[0.78rem] font-medium', light ? 'text-white/65' : 'text-niebla']}>
   <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
     {
       crumbs.map((c, i) => (

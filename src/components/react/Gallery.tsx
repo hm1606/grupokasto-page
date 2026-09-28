@@ -9,7 +9,13 @@ const ease = [0.2, 0.7, 0.2, 1] as const;
  * Cuadrícula de fotos con visor a pantalla completa (flechas, Esc y deslizar en celular).
  * layout="mosaic" alterna tamaños; "grid" las deja parejas.
  */
-export default function Gallery({ items, layout = 'mosaic' }: { items: GalleryItem[]; layout?: 'mosaic' | 'grid' }) {
+const TX = {
+  es: { zoom: 'Ampliar foto', viewer: 'Visor de fotos', close: 'Cerrar', prev: 'Foto anterior', next: 'Foto siguiente' },
+  en: { zoom: 'Enlarge photo', viewer: 'Photo viewer', close: 'Close', prev: 'Previous photo', next: 'Next photo' },
+};
+
+export default function Gallery({ items, layout = 'mosaic', lang = 'es' }: { items: GalleryItem[]; layout?: 'mosaic' | 'grid'; lang?: 'es' | 'en' }) {
+  const tx = TX[lang];
   const [open, setOpen] = useState<number | null>(null);
   const close = useCallback(() => setOpen(null), []);
   const go = useCallback((d: number) => setOpen((n) => (n === null ? n : (n + d + items.length) % items.length)), [items.length]);
@@ -47,7 +53,7 @@ export default function Gallery({ items, layout = 'mosaic' }: { items: GalleryIt
               type="button"
               onClick={() => setOpen(k)}
               className={`group zoom relative block w-full overflow-hidden rounded-2xl bg-gris text-left ${layout === 'mosaic' ? 'h-full' : 'aspect-[4/3]'}`}
-              aria-label={`Ampliar foto: ${it.caption}`}
+              aria-label={`${tx.zoom}: ${it.caption}`}
             >
               <img
                 src={it.thumb.src}
@@ -82,7 +88,7 @@ export default function Gallery({ items, layout = 'mosaic' }: { items: GalleryIt
             className="fixed inset-0 z-[120] flex flex-col bg-tinta/95 text-white backdrop-blur-md"
             role="dialog"
             aria-modal="true"
-            aria-label="Visor de fotos"
+            aria-label={tx.viewer}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -93,7 +99,7 @@ export default function Gallery({ items, layout = 'mosaic' }: { items: GalleryIt
               <p className="text-sm text-white/70 tabular-nums">
                 {open + 1} / {items.length}
               </p>
-              <button type="button" onClick={close} className="grid size-11 place-items-center rounded-full bg-white/10 transition-colors hover:bg-white/20" aria-label="Cerrar" autoFocus>
+              <button type="button" onClick={close} className="grid size-11 place-items-center rounded-full bg-white/10 transition-colors hover:bg-white/20" aria-label={tx.close} autoFocus>
                 <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <path d="m3 3 10 10M13 3 3 13" />
                 </svg>
@@ -122,12 +128,12 @@ export default function Gallery({ items, layout = 'mosaic' }: { items: GalleryIt
               </AnimatePresence>
               {items.length > 1 && (
                 <>
-                  <button type="button" onClick={() => go(-1)} className="absolute left-3 hidden size-12 place-items-center rounded-full bg-white/10 transition-colors hover:bg-white/20 sm:left-6 sm:grid" aria-label="Foto anterior">
+                  <button type="button" onClick={() => go(-1)} className="absolute left-3 hidden size-12 place-items-center rounded-full bg-white/10 transition-colors hover:bg-white/20 sm:left-6 sm:grid" aria-label={tx.prev}>
                     <svg viewBox="0 0 16 16" className="size-4 rotate-180" fill="none" stroke="currentColor" strokeWidth="1.6">
                       <path d="M3 8h10m-4-4 4 4-4 4" />
                     </svg>
                   </button>
-                  <button type="button" onClick={() => go(1)} className="absolute right-3 hidden size-12 place-items-center rounded-full bg-white/10 transition-colors hover:bg-white/20 sm:right-6 sm:grid" aria-label="Foto siguiente">
+                  <button type="button" onClick={() => go(1)} className="absolute right-3 hidden size-12 place-items-center rounded-full bg-white/10 transition-colors hover:bg-white/20 sm:right-6 sm:grid" aria-label={tx.next}>
                     <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6">
                       <path d="M3 8h10m-4-4 4 4-4 4" />
                     </svg>

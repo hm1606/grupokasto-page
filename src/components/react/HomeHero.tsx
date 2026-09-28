@@ -8,7 +8,18 @@ const DURATION = 6500;
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
 /** Portada: fotos reales de las divisiones que se suceden con zoom lento, y el titular que entra palabra por palabra. */
-export default function HomeHero({ slides, since, wheat }: { slides: HeroSlide[]; since: number; wheat: string }) {
+export type HeroCopy = {
+  eyebrow: string;
+  /** Palabras del titular; la que coincide con `highlight` va en amarillo */
+  words: string[];
+  highlight: string;
+  text: string;
+  primary: { label: string; href: string };
+  secondary: { label: string; href: string };
+  view: string;
+};
+
+export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[]; wheat: string; copy: HeroCopy }) {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
@@ -26,7 +37,7 @@ export default function HomeHero({ slides, since, wheat }: { slides: HeroSlide[]
     return () => mo.disconnect();
   }, []);
 
-  const words = ['Del', 'campo', 'a', 'la', 'mesa', 'de', 'México'];
+  const words = copy.words;
   const s = slides[i];
 
   return (
@@ -70,13 +81,13 @@ export default function HomeHero({ slides, since, wheat }: { slides: HeroSlide[]
         {/* Las animaciones del texto son CSS (se ven sin esperar a React; se pausan durante el telón) */}
         <p className="eyebrow animate-fade-up flex items-center gap-3 text-trigo" data-intro-wait>
           <span className="h-px w-8 bg-trigo/60" aria-hidden="true" />
-          Contribuimos al desarrollo · Desde {since}
+          {copy.eyebrow}
         </p>
-        <h1 className="display mt-4 max-w-6xl text-[3.4rem] uppercase sm:text-8xl lg:text-[8.6rem]" aria-label="Del campo a la mesa de México">
+        <h1 className="display mt-4 max-w-6xl text-[3.4rem] uppercase sm:text-8xl lg:text-[8.6rem]" aria-label={words.join(' ')}>
           {words.map((w, k) => (
             <span key={k} className="inline-block overflow-hidden pb-[0.12em] align-bottom" aria-hidden="true">
               <span
-                className={`hero-word inline-block ${w === 'mesa' ? 'text-trigo' : ''}`}
+                className={`hero-word inline-block ${w === copy.highlight ? 'text-trigo' : ''}`}
                 style={{ animationDelay: `${150 + k * 70}ms` }}
                 data-intro-wait
               >
@@ -92,17 +103,17 @@ export default function HomeHero({ slides, since, wheat }: { slides: HeroSlide[]
           data-intro-wait
         >
           <p className="max-w-xl text-lg leading-relaxed text-white/80 sm:text-xl">
-            Granos, harinas, pecuaria, invernaderos, panadería y productos de consumo: ocho divisiones que trabajan juntas en el Bajío, Occidente y Noroeste del país.
+            {copy.text}
           </p>
           <div className="flex flex-wrap gap-3">
-            <a href="/divisiones/" className="btn btn-trigo group">
-              Conoce las divisiones
+            <a href={copy.primary.href} className="btn btn-trigo group">
+              {copy.primary.label}
               <svg viewBox="0 0 16 16" className="arrow size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <path d="M3 8h10m-4-4 4 4-4 4" />
               </svg>
             </a>
-            <a href="/nosotros/" className="btn btn-outline-light">
-              Nuestra historia
+            <a href={copy.secondary.href} className="btn btn-outline-light">
+              {copy.secondary.label}
             </a>
           </div>
         </div>
@@ -121,7 +132,7 @@ export default function HomeHero({ slides, since, wheat }: { slides: HeroSlide[]
               type="button"
               onClick={() => setI(k)}
               className={`group py-2 text-left transition-opacity sm:py-0 ${k === i ? 'opacity-100' : 'opacity-55 hover:opacity-90'}`}
-              aria-label={`Ver ${sl.label}`}
+              aria-label={`${copy.view} ${sl.label}`}
               aria-current={k === i}
             >
               <span className="relative block h-[2px] overflow-hidden rounded bg-white/20">

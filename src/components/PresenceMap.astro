@@ -1,0 +1,202 @@
+---
+// Mapa de presencia: los estados donde Grupo Kasto tiene plantas y oficinas (Jalisco, Guanajuato, Michoacán y Sonora).
+// Al elegir un estado se muestran sus ciudades y empresas. Mapa base: @svg-maps/mexico (CC BY 4.0).
+import mexicoMap from '@svg-maps/mexico';
+import SectionHead from './SectionHead.astro';
+import { presence } from '../data/company';
+import { t, type Lang } from '../i18n/ui';
+
+type MapLocation = { id: string; name: string; path: string };
+const mexico = mexicoMap as unknown as { label: string; viewBox: string; locations: MapLocation[] };
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
+const active = new Map(presence.map((p) => [p.state, p]));
+
+/** Centro aproximado de un estado (caja que lo contiene), leyendo su trazo m/l/z */
+function center(path: string) {
+  const tokens = path.match(/[mMlLzZ]|-?\d*\.?\d+(?:e-?\d+)?/g) ?? [];
+  let x = 0, y = 0, cmd = 'm', i = 0, minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, first = true;
+  while (i < tokens.length) {
+    const tk = tokens[i];
+    if (/[a-zA-Z]/.test(tk)) {
+      cmd = tk;
+      i++;
+      continue;
+    }
+    const dx = Number(tokens[i]), dy = Number(tokens[i + 1]);
+    i += 2;
+    if (cmd === 'M' || cmd === 'L' || (first && cmd === 'm')) [x, y] = cmd === 'm' ? [x + dx, y + dy] : [dx, dy];
+    else [x, y] = [x + dx, y + dy];
+    if (cmd === 'm') cmd = 'l';
+    if (cmd === 'M') cmd = 'L';
+    first = false;
+    minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+  }
+  return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
+}
+const pins = presence.map((p) => {
+  const loc = mexico.locations.find((l) => l.id === p.state)!;
+  return { ...p, ...center(loc.path) };
+});
+---
+
+<section class="relative overflow-hidden bg-crema">
+  <div class="mx-auto grid max-w-[90rem] items-center gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+    <div class="lg:col-span-4">
+      <SectionHead
+        eyebrow={lang === 'es' ? 'Presencia' : 'Where we are'}
+        title={lang === 'es' ? 'Del Bajío al <span class="text-hoja">Noroeste</span>' : 'From the Bajío to the <span class="text-hoja">Northwest</span>'}
+        text={lang === 'es'
+          ? 'Plantas, granjas, invernaderos y oficinas en cuatro estados; productos en más de 25 y exportación a Estados Unidos y Canadá.'
+          : 'Plants, farms, greenhouses and offices in four states; products in more than 25, and exports to the United States and Canada.'}
+      />
+      <div class="map-panels mt-10" data-reveal style="--reveal-delay:200ms">
+        {
+          presence.map((p, i) => (
+            <div class:list={['map-panel', i === 0 && 'is-active']} data-state={p.state} role="region" aria-live="polite">
+              <p class="display text-4xl text-olivo">{p.name}</p>
+              <p class="mt-1 text-sm font-semibold tracking-[0.04em] text-hoja">{p.cities}</p>
+              <ul class="mt-5 space-y-2.5">
+                {p.companies.map((c) => (
+                  <li class="flex gap-3 leading-snug text-tinta/75">
+                    <span class="mt-2 size-1.5 shrink-0 rounded-full bg-trigo ring-2 ring-trigo/30" aria-hidden="true" />
+                    {c[lang]}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <div class="mt-8 flex flex-wrap gap-2" role="tablist" aria-label={lang === 'es' ? 'Estados' : 'States'}>
+        {
+          presence.map((p, i) => (
+            <button
+              type="button"
+              role="tab"
+              data-pick={p.state}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              class="rounded-lg bg-gris px-4 py-2 font-serif text-[0.95rem] font-semibold tracking-[0.06em] text-olivo/70 uppercase transition-colors hover:text-olivo aria-selected:bg-olivo aria-selected:text-crema"
+            >
+              {p.name}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="relative lg:col-span-8" data-reveal>
+      <p class="absolute top-2 left-[8%] z-10 flex items-center gap-2 font-serif text-sm font-semibold tracking-[0.18em] text-niebla uppercase">
+        <svg viewBox="0 0 24 24" class="size-4 text-hoja" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"></path></svg>
+        {lang === 'es' ? 'Exportación a EUA y Canadá' : 'Exports to the US and Canada'}
+      </p>
+      <svg viewBox={mexico.viewBox} class="mexico-map h-auto w-full" role="img" aria-label={mexico.label}>
+        {
+          mexico.locations.map((l) => (
+            <path
+              d={l.path}
+              class:list={['state', active.has(l.id) && 'is-ours']}
+              data-state={active.has(l.id) ? l.id : undefined}
+              tabindex={active.has(l.id) ? 0 : undefined}
+              role={active.has(l.id) ? 'button' : undefined}
+              aria-label={active.has(l.id) ? l.name : undefined}
+            >
+              <title>{l.name}</title>
+            </path>
+          ))
+        }
+        {
+          pins.map((p) => (
+            <g class="pin" data-state={p.state} transform={`translate(${p.x} ${p.y})`} aria-hidden="true">
+              <circle r="14" class="pulse" />
+              <circle r="5.5" class="dot" />
+            </g>
+          ))
+        }
+      </svg>
+      <p class="mt-2 text-right text-[0.7rem] text-niebla/70">{tx.mapCredit}</p>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .mexico-map .state {
+    fill: #e2e0d8;
+    stroke: #f5f0e9;
+    stroke-width: 1.2;
+    transition: fill 0.4s var(--ease-out-soft);
+  }
+  .mexico-map .state.is-ours {
+    fill: #a9c89f;
+    cursor: pointer;
+    outline: none;
+  }
+  .mexico-map .state.is-ours:hover,
+  .mexico-map .state.is-ours:focus-visible,
+  .mexico-map .state.is-ours.is-active {
+    fill: #5b8c51;
+  }
+  .mexico-map .pin .dot {
+    fill: #eddd5e;
+    stroke: #404a3d;
+    stroke-width: 2;
+  }
+  .mexico-map .pin .pulse {
+    fill: #eddd5e;
+    opacity: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .mexico-map .pin.is-active .pulse {
+    animation: map-pulse 2s ease-out infinite;
+  }
+  @keyframes map-pulse {
+    from {
+      opacity: 0.6;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+  .map-panels {
+    display: grid;
+  }
+  .map-panel {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition:
+      opacity 0.5s var(--ease-out-soft),
+      transform 0.5s var(--ease-out-soft),
+      visibility 0.5s;
+  }
+  .map-panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.mexico-map').forEach((map) => {
+    const section = map.closest('section')!;
+    const pick = (id: string) => {
+      section.querySelectorAll<HTMLElement>('[data-state]').forEach((el) => el.classList.toggle('is-active', el.dataset.state === id));
+      section.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.pick === id)));
+    };
+    pick(section.querySelector<HTMLElement>('[data-pick]')?.dataset.pick ?? 'jal');
+    section.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => pick(b.dataset.pick!)));
+    map.querySelectorAll<SVGElement>('.state.is-ours').forEach((s) => {
+      const id = (s as SVGElement & { dataset: DOMStringMap }).dataset.state!;
+      s.addEventListener('mouseenter', () => pick(id));
+      s.addEventListener('click', () => pick(id));
+      s.addEventListener('focus', () => pick(id));
+      s.addEventListener('keydown', (e) => (e as KeyboardEvent).key === 'Enter' && pick(id));
+    });
+  });
+</script>

@@ -1,0 +1,62 @@
+---
+// Compartir una noticia: WhatsApp, LinkedIn, Facebook, X y copiar el enlace.
+import { t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang; url: string; title: string; vertical?: boolean };
+const { lang, url, title, vertical = false } = Astro.props;
+const tx = t(lang);
+const u = encodeURIComponent(url);
+const text = encodeURIComponent(title);
+const links = [
+  { name: 'WhatsApp', href: `https://wa.me/?text=${text}%20${u}`, icon: '<path d="M4 20l1.3-3.8A8 8 0 1 1 8 19Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2Z"/>' },
+  { name: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`, icon: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V16M8 7.8v.01M11.5 16v-5.5M11.5 13c0-1.7 1-2.7 2.4-2.7 1.4 0 2.1 1 2.1 2.7V16"/>' },
+  { name: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${u}`, icon: '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v7h4v-7h3l1-4h-4V8Z"/>' },
+  { name: 'X', href: `https://twitter.com/intent/tweet?url=${u}&text=${text}`, icon: '<path d="m4 4 16 16M20 4 4 20"/>' },
+];
+---
+
+<div class:list={['share flex items-center gap-2', vertical && 'lg:flex-col']}>
+  <p class:list={['eyebrow text-niebla', vertical ? 'mr-2 lg:mr-0 lg:mb-2' : 'mr-2']}>{tx.share}</p>
+  {
+    links.map((l) => (
+      <a
+        href={l.href}
+        target="_blank"
+        rel="noopener"
+        aria-label={`${tx.share}: ${l.name}`}
+        title={l.name}
+        class="grid size-10 place-items-center rounded-full border border-olivo/15 text-olivo transition-colors hover:border-hoja hover:bg-hoja hover:text-white"
+      >
+        <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={l.icon} />
+      </a>
+    ))
+  }
+  <button
+    type="button"
+    data-copy={url}
+    data-copied={tx.copied}
+    aria-label={tx.copyLink}
+    title={tx.copyLink}
+    class="relative grid size-10 place-items-center rounded-full border border-olivo/15 text-olivo transition-colors hover:border-hoja hover:bg-hoja hover:text-white"
+  >
+    <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+      <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path>
+    </svg>
+    <span class="copied pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-olivo px-2.5 py-1 text-xs whitespace-nowrap text-crema opacity-0 transition-opacity" role="status"></span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
+    b.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(b.dataset.copy ?? location.href);
+        const tip = b.querySelector<HTMLElement>('.copied');
+        if (!tip) return;
+        tip.textContent = b.dataset.copied ?? '';
+        tip.style.opacity = '1';
+        setTimeout(() => (tip.style.opacity = '0'), 1600);
+      } catch {}
+    }),
+  );
+</script>

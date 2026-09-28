@@ -4,6 +4,7 @@ import type { Pic } from '../../lib/images';
 
 export type DivisionCard = {
   slug: string;
+  href: string;
   name: string;
   short: string;
   summary: string;
@@ -15,7 +16,7 @@ export type DivisionCard = {
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
 /** Portada: lista de divisiones; al pasar el mouse (o tocar) cambia la foto grande y el resumen. */
-export default function DivisionsExplorer({ items }: { items: DivisionCard[] }) {
+export default function DivisionsExplorer({ items, cta }: { items: DivisionCard[]; cta: string }) {
   const [active, setActive] = useState(0);
   const d = items[active];
 
@@ -25,7 +26,7 @@ export default function DivisionsExplorer({ items }: { items: DivisionCard[] }) 
         {items.map((it, k) => (
           <li key={it.slug} className="border-b border-olivo/12 first:border-t">
             <a
-              href={`/divisiones/${it.slug}/`}
+              href={it.href}
               onMouseEnter={() => setActive(k)}
               onFocus={() => setActive(k)}
               className="group flex items-center gap-5 py-5 lg:py-6"
@@ -115,8 +116,8 @@ export default function DivisionsExplorer({ items }: { items: DivisionCard[] }) 
                       <span className="display block text-4xl text-trigo">{d.highlight.value}</span>
                       <span className="text-sm text-white/70">{d.highlight.label}</span>
                     </p>
-                    <a href={`/divisiones/${d.slug}/`} className="btn btn-outline-light min-h-11 px-5 text-[0.7rem]">
-                      Ver división
+                    <a href={d.href} className="btn btn-outline-light min-h-11 px-5 text-[0.7rem]">
+                      {cta}
                     </a>
                   </div>
                 </motion.div>

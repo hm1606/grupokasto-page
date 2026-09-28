@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import PrivacyPicker from '../components/react/PrivacyPicker.tsx';
+import { privacyCompanies } from '../data/privacy';
+import { noticeIntro, noticeResponsible, noticeSections, purposes, translationDisclaimer } from '../data/privacy-notice';
+import { img } from '../lib/images';
+import { breadcrumbs } from '../lib/seo';
+import { routes, t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
+const path = routes.privacy[lang];
+const crumbs = [
+  { name: tx.home, path: routes.home[lang] },
+  { name: tx.privacyNotices, path },
+];
+---
+
+<Layout
+  lang={lang}
+  alternate={routes.privacy[lang === 'es' ? 'en' : 'es']}
+  title={L('Avisos de privacidad de las empresas', 'Privacy notices of our companies')}
+  description={L(
+    'Avisos de privacidad de las empresas de Grupo Kasto conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares. Derechos ARCO: datospersonales@grupokasto.com.',
+    'Privacy notices of Grupo Kasto companies under Mexico’s Federal Law on the Protection of Personal Data Held by Private Parties. ARCO rights: datospersonales@grupokasto.com.',
+  )}
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs)]}
+>
+  <PageHero eyebrow={L('Tu información en manos seguras', 'Your information in safe hands')} title={L('Avisos de privacidad de las empresas', 'Privacy notices of our companies')} image={img('portada/aviso')} crumbs={crumbs} />
+
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      {lang === 'en' && <p class="mb-10 rounded-xl bg-gris/80 px-5 py-3 text-sm text-niebla">{translationDisclaimer.en}</p>}
+      <PrivacyPicker client:load lang={lang} companies={privacyCompanies} />
+    </div>
+  </section>
+
+  <section class="bg-crema">
+    <div class="prose-gk mx-auto max-w-3xl px-5 pb-28 sm:px-8">
+      <h2 class="display text-5xl text-olivo">{L('Aviso de privacidad', 'Privacy notice')}</h2>
+      <p class="mt-6">{noticeIntro[lang]}</p>
+      <p class="rounded-xl bg-gris/70 px-5 py-3 text-base">{L('La empresa que elegiste arriba', 'The company you selected above')}</p>
+      <p>{noticeResponsible[lang]}</p>
+      <ul>
+        {purposes.map((p) => <li>{p[lang]}</li>)}
+      </ul>
+      {
+        noticeSections.map((s) => (
+          <>
+            {s.title && <h3 class="display mt-12 text-3xl text-olivo">{s.title[lang]}</h3>}
+            {s.paragraphs.map((p) => (
+              <p>{p[lang]}</p>
+            ))}
+          </>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

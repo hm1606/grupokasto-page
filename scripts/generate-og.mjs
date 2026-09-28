@@ -37,6 +37,7 @@ async function photoUri(file) {
 }
 
 async function card({ photo, eyebrow, title, out }) {
+  const foot = out.includes(`${path.sep}og${path.sep}en${path.sep}`) ? 'grupokasto.com · Since 1945' : 'grupokasto.com · Desde 1945';
   const size = title.length > 70 ? 56 : title.length > 45 ? 66 : 80;
   const tree = h({ width: W, height: H, position: 'relative', background: C.olivo, fontFamily: 'Barlow' }, [
     { type: 'img', props: { src: await photoUri(photo), style: { position: 'absolute', left: 0, top: 0, width: W, height: H } } },
@@ -50,7 +51,7 @@ async function card({ photo, eyebrow, title, out }) {
         h({ color: C.trigo, fontFamily: 'Barlow Condensed', fontSize: 24, fontWeight: 600, letterSpacing: 4, textTransform: 'uppercase' }, eyebrow),
         h({ marginTop: 14, color: C.crema, fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: size, lineHeight: 1.02, textTransform: 'uppercase' }, title.replace(/\.$/, '')),
       ]),
-      h({ color: 'rgba(245,240,233,.75)', fontSize: 21 }, 'grupokasto.com · Desde 1945'),
+      h({ color: 'rgba(245,240,233,.75)', fontSize: 21 }, foot),
     ]),
   ]);
   const svg = await satori(tree, { width: W, height: H, fonts });
@@ -70,27 +71,45 @@ const asset = async (key) => {
   throw new Error(`No existe src/assets/${key}`);
 };
 
-// Datos: se leen de los .ts sin compilar (solo slug, nombre y titular)
+// Datos: se leen de los .ts sin compilar (id, nombre y titular en ambos idiomas)
 const readTs = (file) => fs.readFile(path.join(root, 'src/data', file), 'utf8');
-const pick = (src, re) => [...src.matchAll(re)].map((m) => m.slice(1));
-const divisions = pick(await readTs('divisions.ts'), /slug: '([^']+)',\s*name: '([^']+)',[\s\S]*?headline: '([^']+)'/g);
-const services = pick(await readTs('services.ts'), /slug: '([^']+)',\s*name: '([^']+)',\s*headline: '([^']+)'/g);
+const bi = (field) => `${field}: \\{ es: '((?:[^'\\\\]|\\\\.)*)', en: '((?:[^'\\\\]|\\\\.)*)' \\}`;
+const pickItems = (src) =>
+  [...src.matchAll(new RegExp(`id: '([^']+)',[\\s\\S]*?${bi('name')}[\\s\\S]*?${bi('headline')}`, 'g'))].map((m) => ({
+    id: m[1],
+    name: { es: m[2], en: m[3] },
+    headline: { es: m[4], en: m[5] },
+  }));
+const divisions = pickItems(await readTs('divisions.ts'));
+const services = pickItems(await readTs('services.ts'));
+const dir = (lang, ...p) => (lang === 'es' ? pub('og', ...p) : pub('og', 'en', ...p));
 
-await card({ photo: await asset('portada/bodega'), eyebrow: 'Grupo agroindustrial mexicano', title: 'Del campo a la mesa de México.', out: pub('og', 'home.jpg') });
-for (const [slug, name, headline] of divisions) {
-  await card({ photo: await asset(`divisiones/${slug}/hero`), eyebrow: name, title: headline, out: pub('og', 'divisiones', `${slug}.jpg`) });
-}
-for (const [slug, name, headline] of services) {
-  await card({ photo: await asset(`servicios/${slug}/hero`), eyebrow: `Servicios · ${name}`, title: headline, out: pub('og', 'servicios', `${slug}.jpg`) });
-}
-const newsDir = path.join(root, 'src/content/noticias');
-for (const file of await fs.readdir(newsDir)) {
-  if (!file.endsWith('.md')) continue;
-  const md = await fs.readFile(path.join(newsDir, file), 'utf8');
-  const title = JSON.parse(md.match(/^title: (".*")$/m)[1]);
-  const cover = path.resolve(newsDir, JSON.parse(md.match(/^cover: (".*")$/m)[1]));
-  const category = JSON.parse(md.match(/^category: (".*")$/m)[1]);
-  await card({ photo: cover, eyebrow: `Noticias · ${category}`, title, out: pub('og', 'noticias', file.replace(/\.md$/, '.jpg')) });
+for (const lang of ['es', 'en']) {
+  const es = lang === 'es';
+  await card({
+    photo: await asset('portada/bodega'),
+    eyebrow: es ? 'Grupo agroindustrial mexicano' : 'Mexican agribusiness group',
+    title: es ? 'Del campo a la mesa de México.' : 'From the field to Mexico’s table.',
+    out: dir(lang, 'home.jpg'),
+  });
+  for (const d of divisions) {
+    await card({ photo: await asset(`divisiones/${d.id}/hero`), eyebrow: d.name[lang], title: d.headline[lang], out: dir(lang, 'divisiones', `${d.id}.jpg`) });
+  }
+  for (const s of services) {
+    await card({ photo: await asset(`servicios/${s.id}/hero`), eyebrow: `${es ? 'Servicios' : 'Services'} · ${s.name[lang]}`, title: s.headline[lang], out: dir(lang, 'servicios', `${s.id}.jpg`) });
+  }
+  // Noticias: el archivo se nombra con el slug en español (así lo buscan ambas versiones)
+  const newsDir = path.join(root, 'src/content/noticias', lang);
+  const categories = { Comunidad: 'Community', Divisiones: 'Divisions', Eventos: 'Events', 'Nuestra gente': 'Our people', 'Seguridad y bienestar': 'Safety and well-being', Sostenibilidad: 'Sustainability' };
+  for (const file of await fs.readdir(newsDir)) {
+    if (!file.endsWith('.md')) continue;
+    const md = await fs.readFile(path.join(newsDir, file), 'utf8');
+    const title = JSON.parse(md.match(/^title: (".*")$/m)[1]);
+    const cover = path.resolve(newsDir, JSON.parse(md.match(/^cover: (".*")$/m)[1]));
+    const category = JSON.parse(md.match(/^category: (".*")$/m)[1]);
+    const key = md.match(/^translationOf: "(.*)"$/m)?.[1] ?? file.replace(/\.md$/, '');
+    await card({ photo: cover, eyebrow: `${es ? 'Noticias' : 'News'} · ${es ? category : (categories[category] ?? category)}`, title, out: dir(lang, 'noticias', `${key}.jpg`) });
+  }
 }
 
 // Íconos: balanza amarilla sobre el olivo de la marca
@@ -135,4 +154,4 @@ await fs.writeFile(
     2,
   ),
 );
-console.log(`✓ ${3 + divisions.length + services.length} + noticias: imágenes para compartir e íconos en public/`);
+console.log(`✓ ${divisions.length} divisiones y ${services.length} servicios (+ portada y noticias) × 2 idiomas: imágenes para compartir e íconos en public/`);

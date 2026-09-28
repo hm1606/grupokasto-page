@@ -91,9 +91,10 @@ async function handleContact(req, res) {
   try {
     body = await readJson(req);
   } catch {
-    return send(res, 400, { ok: false, message: 'Solicitud inválida.' });
+    return send(res, 400, { ok: false, message: 'Solicitud inválida / Invalid request.' });
   }
 
+  const es = body.locale !== 'en';
   // Trampa para bots: si llenaron el campo oculto, fingimos éxito
   if (clean(body.website, 200)) return send(res, 200, { ok: true });
 
@@ -109,11 +110,11 @@ async function handleContact(req, res) {
     privacyVersion: clean(body.privacyVersion, 30),
   };
 
-  if (body.privacy !== true) return send(res, 400, { ok: false, message: 'Necesitas aceptar el aviso de privacidad.' });
+  if (body.privacy !== true) return send(res, 400, { ok: false, message: es ? 'Necesitas aceptar el aviso de privacidad.' : 'You must accept the privacy notice.' });
   if (!d.name || !isEmail(d.email) || !d.message) {
-    return send(res, 400, { ok: false, message: 'Faltan datos: nombre, correo válido y mensaje.' });
+    return send(res, 400, { ok: false, message: es ? 'Faltan datos: nombre, correo válido y mensaje.' : 'Missing name, valid email or message.' });
   }
-  if (limited(ip)) return send(res, 429, { ok: false, message: 'Demasiados envíos. Intenta en unos minutos.' });
+  if (limited(ip)) return send(res, 429, { ok: false, message: es ? 'Demasiados envíos. Intenta en unos minutos.' : 'Too many requests. Please try again in a few minutes.' });
 
   const subject =
     d.kind === 'queja'
@@ -126,6 +127,7 @@ async function handleContact(req, res) {
     ['Empresa', d.company || '—'],
     ['Tema / unidad de negocio', d.unit || '—'],
     ['Página', d.page || '—'],
+    ['Idioma del sitio', es ? 'Español' : 'Inglés'],
     ['Aviso de privacidad', `Aceptado (versión ${d.privacyVersion || '—'}) · ${new Date().toISOString()}`],
   ];
   const text = `Se recibió un nuevo mensaje:\n\n${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\nMensaje:\n${d.message}\n\nEnviado desde grupokasto.com`;
@@ -158,7 +160,7 @@ async function handleContact(req, res) {
     return send(res, 200, { ok: true });
   } catch (e) {
     console.error('[contacto] error', e.message);
-    return send(res, 502, { ok: false, message: 'No se pudo enviar el mensaje. Intenta de nuevo.' });
+    return send(res, 502, { ok: false, message: es ? 'No se pudo enviar el mensaje. Intenta de nuevo.' : 'The message could not be sent. Please try again.' });
   }
 }
 

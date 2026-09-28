@@ -6,7 +6,13 @@ import type { PrivacyCompany } from '../../data/privacy';
  * Selector de empresa del aviso de privacidad: el texto legal es común; aquí cambia el responsable.
  * Recuerda la empresa en la URL (#empresa) para poder compartir el aviso de una empresa en particular.
  */
-export default function PrivacyPicker({ companies }: { companies: PrivacyCompany[] }) {
+const TX = {
+  es: { pick: 'Elige la empresa', responsible: 'Responsable de tus datos', phone: 'Teléfono', phones: 'Teléfonos', arco: 'Para ejercer tus derechos ARCO escribe a' },
+  en: { pick: 'Choose the company', responsible: 'Data controller', phone: 'Phone', phones: 'Phones', arco: 'To exercise your ARCO rights, write to' },
+};
+
+export default function PrivacyPicker({ companies, lang = 'es' }: { companies: PrivacyCompany[]; lang?: 'es' | 'en' }) {
+  const tx = TX[lang];
   const [id, setId] = useState(companies[0].id);
   const current = companies.find((c) => c.id === id) ?? companies[0];
 
@@ -22,15 +28,15 @@ export default function PrivacyPicker({ companies }: { companies: PrivacyCompany
 
   const groups = useMemo(() => {
     const m = new Map<string, PrivacyCompany[]>();
-    for (const c of companies) m.set(c.division, [...(m.get(c.division) ?? []), c]);
+    for (const c of companies) m.set(c.division[lang], [...(m.get(c.division[lang]) ?? []), c]);
     return [...m.entries()];
-  }, [companies]);
+  }, [companies, lang]);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
       <div>
         <label htmlFor="pp-company" className="eyebrow text-hoja">
-          Elige la empresa
+          {tx.pick}
         </label>
         <div className="relative mt-3 lg:hidden">
           <select
@@ -80,7 +86,7 @@ export default function PrivacyPicker({ companies }: { companies: PrivacyCompany
 
       <div className="lg:sticky lg:top-28 lg:self-start">
         <div className="relative overflow-hidden rounded-[2rem] bg-olivo p-8 text-crema sm:p-10">
-          <p className="eyebrow text-trigo">Responsable de tus datos</p>
+          <p className="eyebrow text-trigo">{tx.responsible}</p>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={current.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.35 }} aria-live="polite">
               <p className="display mt-4 text-3xl">{current.name}</p>
@@ -92,13 +98,13 @@ export default function PrivacyPicker({ companies }: { companies: PrivacyCompany
                 ))}
               </address>
               <p className="mt-4 text-crema/75">
-                {current.phones.length > 1 ? 'Teléfonos' : 'Teléfono'}: {current.phones.join(' · ')}
+                {current.phones.length > 1 ? tx.phones : tx.phone}: {current.phones.join(' · ')}
               </p>
               {current.web && <p className="mt-1 text-crema/75">{current.web}</p>}
             </motion.div>
           </AnimatePresence>
           <div className="mt-8 border-t border-white/15 pt-6 text-sm leading-relaxed text-crema/70">
-            Para ejercer tus derechos ARCO escribe a{' '}
+            {tx.arco}{' '}
             <a href="mailto:datospersonales@grupokasto.com" className="font-semibold text-trigo underline decoration-trigo/40 underline-offset-4">
               datospersonales@grupokasto.com
             </a>

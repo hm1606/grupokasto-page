@@ -1,21 +1,23 @@
 ---
 import { Image } from 'astro:assets';
 import Logo from './Logo.astro';
-import { img } from '../lib/images';
 import SocialIcon from './SocialIcon.astro';
-import { site } from '../data/site';
-import { divisions } from '../data/divisions';
-import { services } from '../data/services';
+import { img } from '../lib/images';
+import { nav, site } from '../data/site';
+import { divisions, divisionUrl } from '../data/divisions';
+import { services, serviceUrl } from '../data/services';
+import { routes, t, type Lang } from '../i18n/ui';
 
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
 const year = new Date().getFullYear();
+const about = nav(lang).find((n) => n.key === 'about')?.children ?? [];
 const company = [
-  { label: 'Historia', href: '/nosotros/' },
-  { label: 'Filosofía', href: '/filosofia/' },
-  { label: 'Certificaciones', href: '/certificaciones/' },
-  { label: 'Sostenibilidad', href: '/sostenibilidad/' },
-  { label: 'Galería', href: '/galeria/' },
-  { label: 'Noticias', href: '/noticias/' },
-  { label: 'Contacto', href: '/contacto/' },
+  ...about,
+  { label: lang === 'es' ? 'Sostenibilidad' : 'Sustainability', href: routes.sustainability[lang] },
+  { label: lang === 'es' ? 'Noticias' : 'News', href: routes.news[lang] },
+  { label: lang === 'es' ? 'Contacto' : 'Contact', href: routes.contact[lang] },
 ];
 ---
 
@@ -27,12 +29,10 @@ const company = [
   <div class="relative mx-auto max-w-[90rem] px-5 pt-20 pb-10 sm:px-8 lg:px-12 lg:pt-28">
     <div class="grid gap-14 lg:grid-cols-12">
       <div class="lg:col-span-4">
-        <a href="/" class="inline-flex text-crema" aria-label="Grupo Kasto, inicio">
+        <a href={routes.home[lang]} class="inline-flex text-crema" aria-label={`Grupo Kasto, ${tx.home.toLowerCase()}`}>
           <Logo class="text-[1.6rem]" />
         </a>
-        <p class="mt-8 max-w-sm text-lg leading-relaxed text-crema/75">
-          Contribuimos al desarrollo integral de nuestras comunidades, llevando felicidad a la mesa de todos los hogares.
-        </p>
+        <p class="mt-8 max-w-sm text-lg leading-relaxed text-crema/75">{tx.footerAbout}</p>
         <div class="mt-8 flex gap-2">
           <SocialIcon network="linkedin" url={site.social.linkedin} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
           <SocialIcon network="facebook" url={site.social.facebook} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
@@ -42,13 +42,13 @@ const company = [
 
       <div class="grid gap-10 sm:grid-cols-3 lg:col-span-8">
         <div>
-          <p class="eyebrow text-brote">Divisiones</p>
-          <ul class="mt-5 space-y-2.5 text-[0.92rem] text-crema/75">
+          <p class="eyebrow text-brote">{tx.footerDivisions}</p>
+          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-crema/75">
             {
               divisions.map((d) => (
                 <li>
-                  <a href={`/divisiones/${d.slug}/`} class="link-line hover:text-white">
-                    {d.short}
+                  <a href={divisionUrl(lang, d)} class="link-line hover:text-white">
+                    {d.short[lang]}
                   </a>
                 </li>
               ))
@@ -56,8 +56,8 @@ const company = [
           </ul>
         </div>
         <div>
-          <p class="eyebrow text-brote">Grupo Kasto</p>
-          <ul class="mt-5 space-y-2.5 text-[0.92rem] text-crema/75">
+          <p class="eyebrow text-brote">{tx.footerCompany}</p>
+          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-crema/75">
             {
               company.map((c) => (
                 <li>
@@ -68,13 +68,13 @@ const company = [
               ))
             }
           </ul>
-          <p class="eyebrow mt-9 text-brote">Servicios</p>
-          <ul class="mt-5 space-y-2.5 text-[0.92rem] text-crema/75">
+          <p class="eyebrow mt-9 text-brote">{tx.footerServices}</p>
+          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-crema/75">
             {
               services.map((s) => (
                 <li>
-                  <a href={`/servicios/${s.slug}/`} class="link-line hover:text-white">
-                    {s.name}
+                  <a href={serviceUrl(lang, s)} class="link-line hover:text-white">
+                    {s.name[lang]}
                   </a>
                 </li>
               ))
@@ -82,27 +82,27 @@ const company = [
           </ul>
         </div>
         <div>
-          <p class="eyebrow text-brote">Oficinas corporativas</p>
-          <address class="mt-5 text-[0.92rem] leading-relaxed text-crema/75 not-italic">
+          <p class="eyebrow text-brote">{tx.footerOffices}</p>
+          <address class="mt-5 text-[0.95rem] leading-relaxed text-crema/75 not-italic">
             {site.address.street}<br />
             {site.address.city}, {site.address.stateShort}<br />
             C.P. {site.address.zip}
           </address>
-          <ul class="mt-5 space-y-2.5 text-[0.92rem]">
+          <ul class="mt-5 space-y-2.5 text-[0.95rem]">
             <li><a href={`mailto:${site.email}`} class="link-line text-crema hover:text-trigo">{site.email}</a></li>
             <li><a href={site.phoneHref} class="link-line text-crema hover:text-trigo">{site.phone}</a></li>
           </ul>
-          <a href="/contacto/" class="btn btn-trigo mt-8 min-h-11 px-5 text-[0.7rem]">Escríbenos</a>
+          <a href={routes.contact[lang]} class="btn btn-trigo mt-8 min-h-11 px-5 text-[0.85rem]">{tx.writeUs}</a>
         </div>
       </div>
     </div>
 
-    <div class="mt-20 flex flex-col gap-4 border-t border-white/10 pt-8 text-[0.8rem] text-crema/55 sm:flex-row sm:items-center sm:justify-between">
-      <p>© {year} Grupo Kasto. Todos los derechos reservados.</p>
+    <div class="mt-20 flex flex-col gap-4 border-t border-white/10 pt-8 text-[0.82rem] text-crema/55 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} Grupo Kasto. {tx.rights}</p>
       <div class="flex flex-wrap gap-x-6 gap-y-2">
-        <a href="/avisos-de-privacidad/" class="link-line hover:text-crema">Avisos de privacidad</a>
-        <a href="/contacto/?tema=quejas" class="link-line hover:text-crema">Quejas y sugerencias</a>
-        <a href="/sitemap-index.xml" class="link-line hover:text-crema">Mapa del sitio</a>
+        <a href={routes.privacy[lang]} class="link-line hover:text-crema">{tx.privacyNotices}</a>
+        <a href={`${routes.contact[lang]}?tema=quejas`} class="link-line hover:text-crema">{tx.complaints}</a>
+        <a href="/sitemap-index.xml" class="link-line hover:text-crema">{tx.sitemap}</a>
       </div>
     </div>
   </div>

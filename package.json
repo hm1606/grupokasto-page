@@ -38,6 +38,7 @@
     "@fontsource/barlow-condensed": "^5.3.0",
     "@fontsource/marcellus-sc": "^5.3.0",
     "@resvg/resvg-js": "^2.6.2",
+    "@svg-maps/mexico": "^2.0.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "satori": "^0.33.5",

@@ -1,0 +1,205 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ShareBar from '../components/ShareBar.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Gallery from '../components/react/Gallery.tsx';
+import { pic } from '../lib/images';
+import { abs, article, breadcrumbs } from '../lib/seo';
+import { categoryLabel, formatDate, newsUrl, readingTime, type News } from '../lib/news';
+import { routes, t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang; n: News; all: News[]; alternate?: string };
+const { lang, n, all, alternate } = Astro.props;
+const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
+const { Content } = await render(n);
+const path = newsUrl(lang, n.slug);
+const crumbs = [
+  { name: tx.home, path: routes.home[lang] },
+  { name: L('Noticias', 'News'), path: routes.news[lang] },
+  { name: n.data.title, path },
+];
+const i = all.findIndex((x) => x.slug === n.slug);
+const newer = all[i - 1];
+const older = all[i + 1];
+const ogImage = `/og/${lang === 'en' ? 'en/' : ''}noticias/${n.key}.jpg`;
+const category = categoryLabel(n.data.category, lang);
+const minutes = readingTime(n.body);
+
+const gallery = await Promise.all(
+  n.data.gallery.map(async (g, k) => ({
+    thumb: await pic(g, [480, 800, 1200]),
+    full: await pic(g, [1200, 1800, 2400]),
+    caption: `${n.data.title} · ${tx.photo} ${k + 1}`,
+  })),
+);
+const related = all.filter((x) => x.slug !== n.slug && x.data.category === n.data.category).slice(0, 3);
+const more = related.length >= 2 ? related : all.filter((x) => x.slug !== n.slug).slice(0, 3);
+---
+
+<Layout
+  lang={lang}
+  alternate={alternate}
+  title={n.data.title}
+  description={n.data.excerpt}
+  image={ogImage}
+  imageAlt={n.data.title}
+  ogType="article"
+  hasBreadcrumb
+  schema={[
+    breadcrumbs(path, crumbs),
+    article({ lang, path, title: n.data.title, description: n.data.excerpt, image: ogImage, date: n.data.date, section: category }),
+  ]}
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={n.data.date.toISOString()} />
+    <meta property="article:section" content={category} />
+  </Fragment>
+
+  <!-- Progreso de lectura -->
+  <div class="pointer-events-none fixed inset-x-0 top-0 z-[60] h-1 bg-transparent" aria-hidden="true">
+    <div id="reading-progress" class="h-full bg-trigo"></div>
+  </div>
+
+  <article>
+    <!-- Portada de la noticia -->
+    <header class="relative isolate flex min-h-[78svh] items-end overflow-hidden bg-olivo text-white">
+      <div class="absolute inset-0 -z-10" data-parallax="0.12">
+        <Image src={n.data.cover} alt="" widths={[800, 1400, 2000]} sizes="100vw" class="animate-ken-burns size-full scale-110 object-cover" loading="eager" fetchpriority="high" data-intro-wait />
+      </div>
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-olivo via-olivo/55 to-olivo/25"></div>
+      <div class="mx-auto w-full max-w-[90rem] px-5 pt-40 pb-14 sm:px-8 lg:px-12 lg:pb-20">
+        <Breadcrumbs crumbs={crumbs.slice(0, 2)} light />
+        <p class="animate-fade-up mt-8 flex flex-wrap items-center gap-3 text-sm" data-intro-wait>
+          <span class="rounded-md bg-trigo px-3 py-1.5 font-serif font-semibold tracking-[0.1em] text-olivo uppercase">{category}</span>
+          <time datetime={n.data.date.toISOString().slice(0, 10)} class="text-white/85">{formatDate(n.data.date, lang)}</time>
+          <span aria-hidden="true" class="text-white/50">·</span>
+          <span class="text-white/85">{minutes} {tx.minRead}</span>
+        </p>
+        <h1 class="display animate-fade-up mt-5 max-w-5xl text-[2.6rem] text-balance sm:text-6xl lg:text-7xl" style="animation-delay:120ms" data-intro-wait>{n.data.title}</h1>
+      </div>
+    </header>
+
+    <div class="grano">
+      <div class="mx-auto grid max-w-[90rem] gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[5rem_minmax(0,46rem)_1fr] lg:gap-14 lg:px-12 lg:py-24">
+        <!-- Compartir (fijo al hacer scroll en escritorio) -->
+        <aside class="order-2 lg:order-none">
+          <div class="lg:sticky lg:top-32"><ShareBar lang={lang} url={abs(path)} title={n.data.title} vertical /></div>
+        </aside>
+
+        <div>
+          {
+            lang === 'en' && alternate && (
+              <p class="mb-8 rounded-xl bg-gris/80 px-5 py-3 text-sm text-niebla">
+                {tx.newsOriginal}{' '}
+                <a href={alternate} hreflang="es" lang="es" class="font-semibold text-hoja underline underline-offset-4">
+                  Leer en español
+                </a>
+              </p>
+            )
+          }
+          <div class="article prose-gk text-[1.125rem]">
+            <Content />
+          </div>
+          <p class="mt-10 border-t border-olivo/10 pt-6 text-sm text-niebla">
+            {tx.source}: {n.data.source}
+          </p>
+          <div class="mt-8 lg:hidden"><ShareBar lang={lang} url={abs(path)} title={n.data.title} /></div>
+        </div>
+
+        <!-- Más noticias (escritorio) -->
+        <aside class="hidden xl:block">
+          <div class="sticky top-32">
+            <p class="eyebrow text-hoja">{tx.moreNews}</p>
+            <ul class="mt-5 divide-y divide-olivo/10">
+              {
+                more.map((m) => (
+                  <li class="py-4 first:pt-0">
+                    <a href={newsUrl(lang, m.slug)} class="group grid grid-cols-[4.5rem_1fr] gap-4">
+                      <div class="zoom aspect-square overflow-hidden rounded-lg bg-gris">
+                        <Image src={m.data.cover} alt="" widths={[160, 320]} sizes="4.5rem" class="size-full object-cover" />
+                      </div>
+                      <span>
+                        <span class="display block text-lg leading-tight text-olivo group-hover:text-hoja">{m.data.title}</span>
+                        <time datetime={m.data.date.toISOString().slice(0, 10)} class="mt-1 block text-xs text-niebla">{formatDate(m.data.date, lang, 'short')}</time>
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      {
+        gallery.length > 0 && (
+          <div class="mx-auto max-w-[90rem] px-5 pb-20 sm:px-8 lg:px-12">
+            <p class="eyebrow text-hoja">{tx.gallery}</p>
+            <div class="mt-6">
+              <Gallery client:visible lang={lang} items={gallery} layout={gallery.length >= 4 ? 'mosaic' : 'grid'} />
+            </div>
+          </div>
+        )
+      }
+    </div>
+
+    <!-- Anterior / siguiente -->
+    <nav aria-label={tx.moreNews} class="grid bg-olivo sm:grid-cols-2">
+      {
+        older && (
+          <a href={newsUrl(lang, older.slug)} class="group relative isolate flex min-h-52 flex-col justify-end gap-2 overflow-hidden px-5 py-10 text-white sm:px-8 lg:px-12">
+            <Image src={older.data.cover} alt="" widths={[640, 1000]} sizes="50vw" class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+            <span class="absolute inset-0 -z-10 bg-olivo/80 transition-colors duration-500 group-hover:bg-olivo/65" />
+            <span class="eyebrow text-trigo">{tx.olderNews}</span>
+            <span class="display max-w-xl text-3xl">{older.data.title}</span>
+          </a>
+        )
+      }
+      {
+        newer && (
+          <a href={newsUrl(lang, newer.slug)} class="group relative isolate flex min-h-52 flex-col items-end justify-end gap-2 overflow-hidden px-5 py-10 text-right text-white sm:col-start-2 sm:px-8 lg:px-12">
+            <Image src={newer.data.cover} alt="" widths={[640, 1000]} sizes="50vw" class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+            <span class="absolute inset-0 -z-10 bg-olivo/80 transition-colors duration-500 group-hover:bg-olivo/65" />
+            <span class="eyebrow text-trigo">{tx.newerNews}</span>
+            <span class="display max-w-xl text-3xl">{newer.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+
+  <div class="pt-3 sm:pt-4"><CtaBand lang={lang} /></div>
+</Layout>
+
+<style is:global>
+  /* Primer párrafo más grande con capitular en verde */
+  .article > p:first-child {
+    font-size: 1.3rem;
+    line-height: 1.65;
+    color: var(--color-olivo);
+  }
+  .article > p:first-child::first-letter {
+    float: left;
+    margin: 0.35rem 0.6rem 0 0;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 4.6rem;
+    line-height: 0.8;
+    color: var(--color-hoja);
+  }
+</style>
+
+<script>
+  // Barra de progreso de lectura
+  const bar = document.getElementById('reading-progress');
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar?.style.setProperty('--p', String(max > 0 ? Math.min(1, window.scrollY / max) : 0));
+  };
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+</script>

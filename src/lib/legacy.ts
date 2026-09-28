@@ -1,6 +1,6 @@
-import { getCollection } from 'astro:content';
-import { divisions } from '../data/divisions';
-import { services } from '../data/services';
+import { divisions, divisionUrl } from '../data/divisions';
+import { services, serviceUrl } from '../data/services';
+import { getNews } from './news';
 
 /**
  * Páginas del sitio viejo en Oracle APEX (f?p=102:<número o alias>) -> ruta nueva.
@@ -26,12 +26,12 @@ export async function legacyMap(): Promise<Record<string, string>> {
     '9999': '/',
     'login_desktop': '/',
   };
-  for (const d of divisions) map[String(d.legacyPage)] = `/divisiones/${d.slug}/`;
+  for (const d of divisions) map[String(d.legacyPage)] = divisionUrl('es', d);
   map['molino-de-trigo'] = '/divisiones/molinos-de-trigo/';
-  for (const s of services) map[String(s.legacyPage)] = `/servicios/${s.slug}/`;
-  for (const n of await getCollection('noticias')) {
+  for (const s of services) map[String(s.legacyPage)] = serviceUrl('es', s);
+  for (const n of await getNews('es')) {
     if (!n.data.legacyPage) continue;
-    map[String(n.data.legacyPage)] = `/noticias/${n.id}/`;
+    map[String(n.data.legacyPage)] = `/noticias/${n.slug}/`;
   }
   // Alias "NOTICIAS-DETALLADAS-<n>" de APEX (n = número de la noticia, no de la página)
   const aliasToPage: Record<string, number> = { 8: 31, 9: 29, 10: 32, 11: 33, 12: 34, 13: 35, 14: 36, 15: 37, 16: 38, 17: 39, 18: 40, 19: 41, 20: 42, 21: 43, 22: 44 };

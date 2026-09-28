@@ -1,0 +1,10 @@
+---
+import DivisionView from '../../../views/DivisionView.astro';
+import { divisions } from '../../../data/divisions';
+
+export function getStaticPaths() {
+  return divisions.map((d) => ({ params: { slug: d.slug.en }, props: { d } }));
+}
+---
+
+<DivisionView lang="en" d={Astro.props.d} />

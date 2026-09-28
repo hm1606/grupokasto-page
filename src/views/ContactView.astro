@@ -1,0 +1,134 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import SocialIcon from '../components/SocialIcon.astro';
+import PresenceMap from '../components/PresenceMap.astro';
+import ContactForm from '../components/react/ContactForm.tsx';
+import { contactTopics, offices, site, telHref } from '../data/site';
+import { img } from '../lib/images';
+import { breadcrumbs } from '../lib/seo';
+import { routes, t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
+const path = routes.contact[lang];
+const crumbs = [
+  { name: tx.home, path: routes.home[lang] },
+  { name: L('Contacto', 'Contact'), path },
+];
+---
+
+<Layout
+  lang={lang}
+  alternate={routes.contact[lang === 'es' ? 'en' : 'es']}
+  title={L('Contacto', 'Contact')}
+  description={L(
+    'Escríbenos o llama a Grupo Kasto: oficinas corporativas en Santa Ana Pacueco, Gto., y contacto de las divisiones Granos, Molinos y Pecuaria. Tel. 352 526 1939.',
+    'Write to or call Grupo Kasto: corporate offices in Santa Ana Pacueco, Guanajuato, and contacts for the Grain, Flour Mills and Livestock divisions. Tel. +52 352 526 1939.',
+  )}
+  pageType="ContactPage"
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs)]}
+>
+  <PageHero
+    eyebrow={L('Contacto', 'Contact')}
+    title={L('Hablemos', 'Let’s talk')}
+    intro={L(
+      'A través de las empresas que conforman nuestras unidades de negocio, podemos ofrecer a nuestros clientes una variedad de productos y servicios para satisfacer sus necesidades.',
+      'Through the companies in our business units, we can offer our customers a wide range of products and services to meet their needs.',
+    )}
+    image={img('portada/espigas-cielo')}
+    crumbs={crumbs}
+  />
+
+  <section class="grano">
+    <div class="mx-auto grid max-w-[90rem] gap-16 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+      <div class="lg:col-span-7">
+        <SectionHead
+          eyebrow={L('Contáctanos', 'Contact us')}
+          title={L('Escribe tu mensaje', 'Write your message')}
+          text={L(
+            'Tu mensaje llega a nuestro equipo de comunicación y lo turnamos a la división indicada. También recibimos aquí tus quejas y sugerencias.',
+            'Your message goes to our communications team, who forward it to the right division. You can also send complaints and suggestions here.',
+          )}
+        />
+        <div class="mt-10">
+          <ContactForm
+            client:load
+            lang={lang}
+            topics={contactTopics.map((c) => ({ id: c.id, label: c.label[lang] }))}
+            privacyVersion={site.privacyVersion}
+            email={site.email}
+            privacyHref={routes.privacy[lang]}
+          />
+        </div>
+      </div>
+
+      <aside class="lg:col-span-4 lg:col-start-9">
+        <div class="space-y-4 lg:sticky lg:top-32">
+          <div class="relative isolate overflow-hidden rounded-[1.75rem] bg-olivo p-8 text-crema">
+            <svg viewBox="0 0 60 48" class="absolute -right-10 -bottom-10 -z-10 w-56 text-white/5" aria-hidden="true"><use href="#gk-mark"></use></svg>
+            <p class="eyebrow text-trigo">{L('Directo', 'Direct')}</p>
+            <a href={site.phoneHref} class="display mt-4 block text-4xl hover:text-trigo">{site.phone}</a>
+            <a href={`mailto:${site.email}`} class="link-line mt-2 inline-block text-crema/85 hover:text-white">{site.email}</a>
+            <address class="mt-6 border-t border-white/10 pt-5 text-sm leading-relaxed text-crema/70 not-italic">
+              {site.address.street}<br />{site.address.city}, {site.address.stateShort} · C.P. {site.address.zip}
+            </address>
+            <div class="mt-6 flex gap-2">
+              <SocialIcon network="linkedin" url={site.social.linkedin} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
+              <SocialIcon network="facebook" url={site.social.facebook} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
+              <SocialIcon network="instagram" url={site.social.instagram} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
+            </div>
+          </div>
+          <p class="px-2 text-sm leading-relaxed text-niebla">
+            {L('¿Buscas empleo? Elige “Bolsa de trabajo” en el formulario. Para temas de datos personales escribe a', 'Looking for a job? Choose “Careers” in the form. For personal data matters, write to')}
+            <a href={`mailto:${site.privacyEmail}`} class="font-semibold text-hoja">{site.privacyEmail}</a>.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Oficinas -->
+  <section class="bg-gris/60">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
+      <SectionHead eyebrow={L('Oficinas', 'Offices')} title={L('Dónde estamos', 'Where we are')} />
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          offices.map((o, i) => (
+            <article class="flex flex-col rounded-[1.75rem] bg-crema p-8 ring-1 ring-olivo/8" data-reveal style={`--reveal-delay:${i * 80}ms`}>
+              <p class="eyebrow text-hoja">{o.name[lang]}</p>
+              <h3 class="display mt-3 text-2xl leading-tight text-olivo">{o.company}</h3>
+              <address class="mt-4 flex-1 leading-relaxed text-tinta/70 not-italic">
+                {o.lines.map((l) => (
+                  <span class="block">{l}</span>
+                ))}
+              </address>
+              <div class="mt-6 space-y-1.5 border-t border-olivo/10 pt-5 text-[0.95rem]">
+                <a href={telHref(o.phone)} class="block font-semibold text-olivo hover:text-hoja">{o.phone}</a>
+                <a href={`mailto:${o.email}`} class="block text-tinta/70 hover:text-hoja">{o.email}</a>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${o.company} ${o.lines.join(' ')}`)}`}
+                  target="_blank"
+                  rel="noopener"
+                  class="link-line inline-block pt-2 text-sm font-semibold text-hoja"
+                >
+                  {L('Cómo llegar', 'Get directions')} ↗
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mt-10 text-tinta/70" data-reveal>
+        {L('¿Buscas otra empresa del grupo? Consulta el directorio completo en cada', 'Looking for another company in the group? See the full directory in each')}
+        <a href={routes.divisions[lang]} class="font-semibold text-hoja underline decoration-hoja/40 underline-offset-4">{L('división', 'division')}</a>.
+      </p>
+    </div>
+  </section>
+
+  <PresenceMap lang={lang} />
+</Layout>

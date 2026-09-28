@@ -5,7 +5,20 @@ type Milestone = { year: number; title: string; text: string };
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
 /** Historia: línea del tiempo con años seleccionables (flechas del teclado incluidas) */
-export default function Timeline({ items }: { items: Milestone[] }) {
+const TX = {
+  es: { step: 'Hito', of: 'de', prev: 'Hito anterior', next: 'Hito siguiente', years: 'Años' },
+  en: { step: 'Milestone', of: 'of', prev: 'Previous milestone', next: 'Next milestone', years: 'Years' },
+};
+
+// Colores según el fondo: claro (crema) u oscuro (olivo)
+const TONE = {
+  light: { accent: 'text-hoja', title: 'text-olivo', text: 'text-tinta/70', ghost: 'border-olivo/20 text-olivo hover:bg-olivo hover:text-crema disabled:hover:text-olivo', solid: 'bg-olivo text-crema hover:bg-hoja', line: 'bg-olivo/15', fill: 'bg-hoja', dotOn: 'border-hoja bg-hoja', dotPast: 'border-hoja bg-crema', dotOff: 'border-olivo/25 bg-crema group-hover:border-hoja', yearOn: 'text-hoja', yearOff: 'text-olivo/45 group-hover:text-olivo' },
+  dark: { accent: 'text-trigo', title: 'text-crema', text: 'text-crema/70', ghost: 'border-crema/25 text-crema hover:bg-crema hover:text-olivo disabled:hover:text-crema', solid: 'bg-trigo text-olivo hover:bg-white', line: 'bg-crema/15', fill: 'bg-trigo', dotOn: 'border-trigo bg-trigo', dotPast: 'border-trigo bg-olivo', dotOff: 'border-crema/30 bg-olivo group-hover:border-trigo', yearOn: 'text-trigo', yearOff: 'text-crema/45 group-hover:text-crema' },
+};
+
+export default function Timeline({ items, lang = 'es', tone = 'light' }: { items: Milestone[]; lang?: 'es' | 'en'; tone?: 'light' | 'dark' }) {
+  const tx = TX[lang];
+  const c = TONE[tone];
   const [i, setI] = useState(0);
   const rail = useRef<HTMLDivElement>(null);
   const m = items[i];
@@ -28,7 +41,7 @@ export default function Timeline({ items }: { items: Milestone[] }) {
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.p
               key={m.year}
-              className="display absolute bottom-0 text-[8rem] leading-none text-hoja sm:text-[11rem] lg:text-[14rem]"
+              className={`display absolute bottom-0 text-[8rem] leading-none sm:text-[11rem] lg:text-[14rem] ${c.accent}`}
               initial={{ y: '100%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: '-60%', opacity: 0 }}
@@ -41,9 +54,9 @@ export default function Timeline({ items }: { items: Milestone[] }) {
         <div className="min-h-[10rem] lg:pb-6">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={m.year} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.45, ease }}>
-              <p className="eyebrow text-hoja">Hito {String(i + 1).padStart(2, '0')} de {items.length}</p>
-              <h3 className="display mt-3 text-3xl text-olivo sm:text-4xl">{m.title}</h3>
-              <p className="mt-4 max-w-xl text-lg leading-relaxed text-tinta/70">{m.text}</p>
+              <p className={`eyebrow ${c.accent}`}>{tx.step} {String(i + 1).padStart(2, '0')} {tx.of} {items.length}</p>
+              <h3 className={`display mt-3 text-3xl sm:text-4xl ${c.title}`}>{m.title}</h3>
+              <p className={`mt-4 max-w-xl text-lg leading-relaxed ${c.text}`}>{m.text}</p>
             </motion.div>
           </AnimatePresence>
           <div className="mt-8 flex gap-2">
@@ -51,8 +64,8 @@ export default function Timeline({ items }: { items: Milestone[] }) {
               type="button"
               onClick={() => setI((n) => Math.max(0, n - 1))}
               disabled={i === 0}
-              className="grid size-12 place-items-center rounded-full border border-olivo/20 text-olivo transition-colors hover:bg-olivo hover:text-crema disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-olivo"
-              aria-label="Hito anterior"
+              className={`grid size-12 place-items-center rounded-full border transition-colors disabled:opacity-30 disabled:hover:bg-transparent ${c.ghost}`}
+              aria-label={tx.prev}
             >
               <svg viewBox="0 0 16 16" className="size-4 rotate-180" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                 <path d="M3 8h10m-4-4 4 4-4 4" />
@@ -62,8 +75,8 @@ export default function Timeline({ items }: { items: Milestone[] }) {
               type="button"
               onClick={() => setI((n) => Math.min(items.length - 1, n + 1))}
               disabled={i === items.length - 1}
-              className="grid size-12 place-items-center rounded-full bg-olivo text-crema transition-colors hover:bg-hoja disabled:opacity-30"
-              aria-label="Hito siguiente"
+              className={`grid size-12 place-items-center rounded-full transition-colors disabled:opacity-30 ${c.solid}`}
+              aria-label={tx.next}
             >
               <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                 <path d="M3 8h10m-4-4 4 4-4 4" />
@@ -74,11 +87,11 @@ export default function Timeline({ items }: { items: Milestone[] }) {
       </div>
 
       {/* Riel de años */}
-      <div ref={rail} className="relative mt-14 overflow-x-auto pb-4 [scrollbar-width:none] lg:overflow-visible" role="tablist" aria-label="Años">
+      <div ref={rail} className="relative mt-14 overflow-x-auto pb-4 [scrollbar-width:none] lg:overflow-visible" role="tablist" aria-label={tx.years}>
         <div className="relative flex min-w-max gap-2 lg:block lg:h-20 lg:min-w-0">
-          <div className="absolute inset-x-0 top-[1.2rem] hidden h-px bg-olivo/15 lg:block" aria-hidden="true" />
+          <div className={`absolute inset-x-0 top-[1.2rem] hidden h-px lg:block ${c.line}`} aria-hidden="true" />
           <motion.div
-            className="absolute top-[1.2rem] left-0 hidden h-px bg-hoja lg:block"
+            className={`absolute top-[1.2rem] left-0 hidden h-px lg:block ${c.fill}`}
             animate={{ width: `${(i / (items.length - 1)) * 100}%` }}
             transition={{ duration: 0.8, ease }}
             aria-hidden="true"
@@ -96,11 +109,11 @@ export default function Timeline({ items }: { items: Milestone[] }) {
             >
               <span
                 className={`hidden size-3 rounded-full border-2 transition-all duration-300 lg:block ${
-                  k === i ? 'scale-125 border-hoja bg-hoja' : k < i ? 'border-hoja bg-crema' : 'border-olivo/25 bg-crema group-hover:border-hoja'
+                  k === i ? `scale-125 ${c.dotOn}` : k < i ? c.dotPast : c.dotOff
                 }`}
                 style={{ marginTop: '0.82rem' }}
               />
-              <span className={`text-sm font-semibold tabular-nums transition-colors ${k === i ? 'text-hoja' : 'text-olivo/45 group-hover:text-olivo'}`}>{it.year}</span>
+              <span className={`text-sm font-semibold tabular-nums transition-colors ${k === i ? c.yearOn : c.yearOff}`}>{it.year}</span>
             </button>
           ))}
         </div>

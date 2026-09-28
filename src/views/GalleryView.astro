@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Gallery from '../components/react/Gallery.tsx';
+import { gallery } from '../data/company';
+import { divisionById, divisions } from '../data/divisions';
+import { img, pic } from '../lib/images';
+import { breadcrumbs } from '../lib/seo';
+import { routes, t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
+const path = routes.gallery[lang];
+const crumbs = [
+  { name: tx.home, path: routes.home[lang] },
+  { name: L('Nosotros', 'About us'), path: routes.about[lang] },
+  { name: L('Galería', 'Gallery'), path },
+];
+
+const toItem = async (key: string, caption: string, note: string) => ({
+  thumb: await pic(key, [480, 800, 1200]),
+  full: await pic(key, [1200, 1800, 2400]),
+  caption,
+  note,
+});
+const companies = await Promise.all(gallery.map((g) => toItem(`galeria/${g.image}`, g.caption, divisionById(g.division)!.short[lang])));
+const installations = await Promise.all(
+  divisions.flatMap((d) => d.gallery.map((g) => toItem(`divisiones/${d.id}/${g.image}`, g.caption[lang], d.short[lang]))),
+);
+---
+
+<Layout
+  lang={lang}
+  alternate={routes.gallery[lang === 'es' ? 'en' : 'es']}
+  title={L('Galería: nuestras empresas e instalaciones', 'Gallery: our companies and facilities')}
+  description={L(
+    'Fotos de las empresas, plantas, granjas, invernaderos y sucursales de Grupo Kasto en Jalisco, Michoacán, Guanajuato y Sonora.',
+    'Photos of Grupo Kasto’s companies, plants, farms, greenhouses and stores in Jalisco, Michoacán, Guanajuato and Sonora.',
+  )}
+  pageType="CollectionPage"
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs)]}
+>
+  <PageHero eyebrow={L('Galería', 'Gallery')} title={L('Del campo a la planta, así trabajamos', 'From the field to the plant, this is how we work')} image={img('galeria/agrobasa')} crumbs={crumbs} />
+
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow={L('Nuestras empresas', 'Our companies')} title={L('Empresas del grupo', 'Group companies')} />
+      <div class="mt-12" data-reveal>
+        <Gallery client:visible lang={lang} items={companies} />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gris/60">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow={L('Nuestras instalaciones', 'Our facilities')} title={L('Plantas, granjas, invernaderos y sucursales', 'Plants, farms, greenhouses and stores')} />
+      <div class="mt-12" data-reveal>
+        <Gallery client:visible lang={lang} items={installations} layout="grid" />
+      </div>
+    </div>
+  </section>
+
+  <div class="pt-3 sm:pt-4"><CtaBand lang={lang} /></div>
+</Layout>

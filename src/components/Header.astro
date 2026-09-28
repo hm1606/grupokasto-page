@@ -1,20 +1,24 @@
 ---
 import Logo from './Logo.astro';
-import { nav, site } from '../data/site';
-import { divisions } from '../data/divisions';
-import { services } from '../data/services';
+import { nav as navFor, site } from '../data/site';
+import { divisions, divisionUrl } from '../data/divisions';
+import { services, serviceUrl } from '../data/services';
+import { routes, t, type Lang } from '../i18n/ui';
 
-type Props = { overHero?: boolean };
-const { overHero = true } = Astro.props;
+type Props = { lang: Lang; alternate: string; overHero?: boolean };
+const { lang, alternate, overHero = true } = Astro.props;
+const tx = t(lang);
+const nav = navFor(lang);
+const contact = routes.contact[lang];
 const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const isActive = (href: string, children?: { href: string }[]) =>
-  here === href || (href !== '/' && here.startsWith(href)) || !!children?.some((c) => here === c.href);
+  here === href || (href !== '/' && href !== '/en/' && here.startsWith(href)) || !!children?.some((c) => here === c.href);
 
 // Submenús: Nosotros (del menú), Divisiones y Servicios (de sus datos)
 const menus: Record<string, { label: string; href: string; note?: string }[]> = {
-  '/nosotros/': nav.find((n) => n.href === '/nosotros/')?.children ?? [],
-  '/divisiones/': divisions.map((d) => ({ label: d.short, href: `/divisiones/${d.slug}/`, note: d.region })),
-  '/servicios/': services.map((s) => ({ label: s.name, href: `/servicios/${s.slug}/`, note: s.summary })),
+  about: nav.find((n) => n.key === 'about')?.children ?? [],
+  divisions: divisions.map((d) => ({ label: d.short[lang], href: divisionUrl(lang, d), note: d.region[lang] })),
+  services: services.map((s) => ({ label: s.name[lang], href: serviceUrl(lang, s), note: s.summary[lang] })),
 };
 ---
 
@@ -37,23 +41,26 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
         </a>
       </div>
       <div class="flex items-center gap-6">
-        <a href="/contacto/?tema=quejas" class="hover:text-trigo">Quejas y sugerencias</a>
+        <a href={`${contact}?tema=quejas`} class="hover:text-trigo">{tx.complaints}</a>
         <a href={site.social.linkedin} target="_blank" rel="noopener" class="hover:text-trigo">LinkedIn</a>
         <a href={site.social.facebook} target="_blank" rel="noopener" class="hover:text-trigo">Facebook</a>
         <a href={site.social.instagram} target="_blank" rel="noopener" class="hover:text-trigo">Instagram</a>
+        <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} lang={lang === 'es' ? 'en' : 'es'} class="lang-switch inline-flex items-center gap-1.5 rounded border border-current/25 px-2 py-0.5 font-serif font-semibold tracking-[0.12em] hover:border-trigo hover:text-trigo" aria-label={tx.switchLangLabel}>
+          {tx.switchLangShort}
+        </a>
       </div>
     </div>
   </div>
   <div class="mx-auto flex h-[var(--header-h)] max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
-    <a href="/" class="relative z-10 flex items-center" aria-label={`${site.name}, inicio`}>
+    <a href={routes.home[lang]} class="relative z-10 flex items-center" aria-label={`${site.name}, ${tx.home.toLowerCase()}`}>
       <Logo class="text-[1.2rem] lg:text-[1.6rem]" />
     </a>
 
-    <nav aria-label="Principal" class="hidden h-full lg:block">
+    <nav aria-label={lang === 'es' ? 'Principal' : 'Main'} class="hidden h-full lg:block">
       <ul class="flex h-full items-center gap-1">
         {
           nav.map((item) => {
-            const sub = menus[item.href];
+            const sub = menus[item.key];
             const active = isActive(item.href, item.children);
             return (
               <li class="has-menu relative flex h-full items-center">
@@ -87,12 +94,12 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
                           </span>
                         </a>
                       ))}
-                      {item.href !== '/nosotros/' && (
+                      {item.key !== 'about' && (
                         <a
                           href={item.href}
                           class:list={['mt-1 flex items-center justify-between rounded-2xl bg-olivo px-5 py-3.5 text-[0.8rem] font-semibold text-crema transition-colors hover:bg-hoja', sub.length > 5 && 'col-span-2']}
                         >
-                          Ver todas las {item.label.toLowerCase()}
+                          {tx.seeAll} {item.label.toLowerCase()}
                           <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                             <path d="M3 8h10m-4-4 4 4-4 4" />
                           </svg>
@@ -109,14 +116,17 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
     </nav>
 
     <div class="relative z-10 flex items-center gap-2">
-      <a href="/contacto/" class="btn btn-trigo hidden min-h-11 px-5 text-[0.9rem] md:inline-flex">Contáctanos</a>
+      <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} class="lang-switch grid size-11 place-items-center rounded-full font-serif text-[0.95rem] font-semibold tracking-[0.1em] lg:hidden" aria-label={tx.switchLangLabel}>{tx.switchLangShort}</a>
+      <a href={contact} class="btn btn-trigo hidden min-h-11 px-5 text-[0.9rem] md:inline-flex">{tx.contactUs}</a>
       <button
         type="button"
         id="menu-toggle"
         class="grid size-11 place-items-center rounded-full lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
-        aria-label="Abrir menú"
+        aria-label={tx.openMenu}
+        data-open-label={tx.openMenu}
+        data-close-label={tx.closeMenu}
       >
         <span class="relative block h-3 w-6">
           <span class="menu-bar absolute inset-x-0 top-0 h-[1.5px] rounded bg-current transition-transform duration-500"></span>
@@ -133,14 +143,14 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
   class="surcos-claro invisible fixed inset-0 z-[45] flex flex-col overflow-y-auto bg-olivo px-6 pt-[calc(var(--header-h)+1.5rem)] pb-10 text-crema opacity-0 transition-[opacity,visibility] duration-500 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
   data-lenis-prevent
 >
-  <nav aria-label="Menú" class="flex-1">
+  <nav aria-label={tx.menu} class="flex-1">
     <ul class="flex flex-col">
       <li class="menu-item border-b border-white/10" style="--i:0">
-        <a href="/" class="display block py-4 text-4xl">Inicio</a>
+        <a href={routes.home[lang]} class="display block py-4 text-4xl">{tx.home}</a>
       </li>
       {
         nav.map((item, i) => {
-          const sub = menus[item.href];
+          const sub = menus[item.key];
           return (
             <li class="menu-item border-b border-white/10" style={`--i:${i + 1}`}>
               {sub ? (
@@ -154,10 +164,10 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
                     </span>
                   </summary>
                   <ul class="grid gap-1 pb-5">
-                    {item.href !== '/nosotros/' && (
+                    {item.key !== 'about' && (
                       <li>
                         <a href={item.href} class="block py-1.5 text-base font-semibold text-trigo">
-                          Ver todas
+                          {tx.seeAllShort}
                         </a>
                       </li>
                     )}
@@ -182,9 +192,10 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
     </ul>
   </nav>
   <div class="mt-8 flex flex-col gap-3">
-    <a href="/contacto/" class="btn btn-trigo">Escríbenos</a>
-    <a href={site.phoneHref} class="btn btn-outline-light">Llamar al {site.phone}</a>
-    <p class="eyebrow mt-3 text-center text-[0.6rem] text-brote">Grupo Kasto · Desde {site.foundingYear}</p>
+    <a href={contact} class="btn btn-trigo">{tx.writeUs}</a>
+    <a href={site.phoneHref} class="btn btn-outline-light">{tx.callUs} {site.phone}</a>
+    <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} class="btn btn-outline-light">{tx.switchLang}</a>
+    <p class="eyebrow mt-3 text-center text-[0.6rem] text-brote">Grupo Kasto · {tx.since} {site.foundingYear}</p>
   </div>
 </div>
 
@@ -256,7 +267,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
   const setMenu = (open: boolean) => {
     menu.dataset.open = String(open);
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    toggle.setAttribute('aria-label', (open ? toggle.dataset.closeLabel : toggle.dataset.openLabel) ?? '');
     const lenis = (window as any).__lenis;
     open ? lenis?.stop() : lenis?.start();
     document.documentElement.style.overflow = open ? 'hidden' : '';

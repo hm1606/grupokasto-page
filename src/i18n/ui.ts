@@ -1,0 +1,157 @@
+// Idiomas del sitio: español en "/" e inglés en "/en/".
+// Aquí viven las rutas de cada sección en ambos idiomas y los textos de la interfaz (botones, menús, etiquetas).
+// Los contenidos (divisiones, filosofía, noticias…) están en src/data/ y src/content/.
+
+export type Lang = 'es' | 'en';
+export const langs: Lang[] = ['es', 'en'];
+/** Texto en ambos idiomas */
+export type T = Record<Lang, string>;
+export type L<V> = Record<Lang, V>;
+
+export const tr = (text: T, lang: Lang) => text[lang];
+
+export const htmlLang: L<string> = { es: 'es-MX', en: 'en-US' };
+export const ogLocale: L<string> = { es: 'es_MX', en: 'en_US' };
+export const dateLocale: L<string> = { es: 'es-MX', en: 'en-US' };
+
+/** Rutas de cada sección en cada idioma */
+export const routes = {
+  home: { es: '/', en: '/en/' },
+  about: { es: '/nosotros/', en: '/en/about/' },
+  philosophy: { es: '/filosofia/', en: '/en/philosophy/' },
+  certifications: { es: '/certificaciones/', en: '/en/certifications/' },
+  gallery: { es: '/galeria/', en: '/en/gallery/' },
+  divisions: { es: '/divisiones/', en: '/en/divisions/' },
+  services: { es: '/servicios/', en: '/en/services/' },
+  sustainability: { es: '/sostenibilidad/', en: '/en/sustainability/' },
+  news: { es: '/noticias/', en: '/en/news/' },
+  contact: { es: '/contacto/', en: '/en/contact/' },
+  privacy: { es: '/avisos-de-privacidad/', en: '/en/privacy-notices/' },
+} satisfies Record<string, L<string>>;
+export type RouteKey = keyof typeof routes;
+
+export const langFromUrl = (url: URL): Lang => (url.pathname === '/en' || url.pathname.startsWith('/en/') ? 'en' : 'es');
+
+export const ui = {
+  es: {
+    skip: 'Saltar al contenido',
+    home: 'Inicio',
+    menu: 'Menú',
+    openMenu: 'Abrir menú',
+    closeMenu: 'Cerrar menú',
+    contactUs: 'Contáctanos',
+    writeUs: 'Escríbenos',
+    callUs: 'Llamar al',
+    complaints: 'Quejas y sugerencias',
+    switchLang: 'English',
+    switchLangShort: 'EN',
+    switchLangLabel: 'Ver este sitio en inglés',
+    seeAll: 'Ver todas las',
+    seeAllShort: 'Ver todas',
+    since: 'Desde',
+    backToTop: 'Volver arriba',
+    breadcrumbs: 'Migas de pan',
+    footerAbout: 'Contribuimos al desarrollo integral de nuestras comunidades, llevando felicidad a la mesa de todos los hogares.',
+    footerDivisions: 'Divisiones',
+    footerCompany: 'Grupo Kasto',
+    footerServices: 'Servicios',
+    footerOffices: 'Oficinas corporativas',
+    rights: 'Todos los derechos reservados.',
+    privacyNotices: 'Avisos de privacidad',
+    sitemap: 'Mapa del sitio',
+    mapCredit: 'Mapa: SVG Maps (CC BY 4.0)',
+    ctaEyebrow: 'Contacto',
+    ctaTitle: '¿Hacemos negocio <span class="text-trigo">juntos</span>?',
+    ctaText: 'Cuéntanos qué necesitas —granos, harinas, alimento balanceado, logística o una alianza— y te ponemos en contacto con la división indicada.',
+    viewDivision: 'Ver división',
+    prevDivision: '← División anterior',
+    nextDivision: 'Siguiente división →',
+    relatedService: 'Servicio relacionado',
+    backedBy: 'Lo respalda',
+    needHelp: '¿Necesitas ayuda?',
+    needHelpText: 'Llama a la oficina corporativa y te comunicamos con un miembro del equipo.',
+    readNews: 'Leer noticia',
+    latest: 'Lo más reciente',
+    allNews: 'Todas las noticias',
+    minRead: 'min de lectura',
+    share: 'Compartir',
+    copyLink: 'Copiar enlace',
+    copied: '¡Enlace copiado!',
+    gallery: 'Galería',
+    photo: 'foto',
+    olderNews: '← Anterior',
+    newerNews: 'Siguiente →',
+    moreNews: 'También te puede interesar',
+    source: 'Fuente',
+    newsOriginal: '',
+    all: 'Todas',
+    searchNews: 'Buscar noticias',
+    noNews: 'No encontramos noticias con esos filtros.',
+    years: 'años',
+    notFoundTitle: 'Esta página se quedó en el campo.',
+    notFoundText: 'Es posible que el enlace haya cambiado con nuestro nuevo sitio. Te dejamos algunos caminos:',
+    goHome: 'Ir al inicio',
+  },
+  en: {
+    skip: 'Skip to content',
+    home: 'Home',
+    menu: 'Menu',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    contactUs: 'Contact us',
+    writeUs: 'Write to us',
+    callUs: 'Call',
+    complaints: 'Complaints and suggestions',
+    switchLang: 'Español',
+    switchLangShort: 'ES',
+    switchLangLabel: 'Ver este sitio en español',
+    seeAll: 'See all',
+    seeAllShort: 'See all',
+    since: 'Since',
+    backToTop: 'Back to top',
+    breadcrumbs: 'Breadcrumbs',
+    footerAbout: 'We contribute to the integral development of our communities, bringing happiness to the table of every home.',
+    footerDivisions: 'Divisions',
+    footerCompany: 'Grupo Kasto',
+    footerServices: 'Services',
+    footerOffices: 'Corporate offices',
+    rights: 'All rights reserved.',
+    privacyNotices: 'Privacy notices',
+    sitemap: 'Sitemap',
+    mapCredit: 'Map: SVG Maps (CC BY 4.0)',
+    ctaEyebrow: 'Contact',
+    ctaTitle: 'Shall we do business <span class="text-trigo">together</span>?',
+    ctaText: 'Tell us what you need —grain, flour, animal feed, logistics or a partnership— and we will connect you with the right division.',
+    viewDivision: 'View division',
+    prevDivision: '← Previous division',
+    nextDivision: 'Next division →',
+    relatedService: 'Related service',
+    backedBy: 'Backed by',
+    needHelp: 'Need help?',
+    needHelpText: 'Call our corporate office and we will put you in touch with a member of our team.',
+    readNews: 'Read story',
+    latest: 'Latest',
+    allNews: 'All news',
+    minRead: 'min read',
+    share: 'Share',
+    copyLink: 'Copy link',
+    copied: 'Link copied!',
+    gallery: 'Gallery',
+    photo: 'photo',
+    olderNews: '← Previous',
+    newerNews: 'Next →',
+    moreNews: 'You may also like',
+    source: 'Source',
+    newsOriginal: 'Translated from the original Spanish article.',
+    all: 'All',
+    searchNews: 'Search news',
+    noNews: 'No stories match those filters.',
+    years: 'years',
+    notFoundTitle: 'This page stayed out in the field.',
+    notFoundText: 'The link may have changed with our new website. Here are some ways forward:',
+    goHome: 'Go to home',
+  },
+} as const;
+
+export type UI = (typeof ui)['es'];
+export const t = (lang: Lang): UI => ui[lang] as UI;

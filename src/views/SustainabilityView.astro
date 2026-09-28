@@ -1,0 +1,251 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Pillars from '../components/react/Pillars.tsx';
+import { background, context, contextQuote, materiality, milestones, pdf, pdfInfo, pillars, sdgs, stakeholders } from '../data/sustainability';
+import { img, pic } from '../lib/images';
+import { breadcrumbs } from '../lib/seo';
+import { routes, t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
+const path = routes.sustainability[lang];
+const crumbs = [
+  { name: tx.home, path: routes.home[lang] },
+  { name: L('Sostenibilidad', 'Sustainability'), path },
+];
+const pillarImages = {
+  ambiental: await pic('sostenibilidad/ambiental-foto', [480, 800, 1200]),
+  social: await pic('sostenibilidad/social-foto', [480, 800, 1200]),
+  gobernanza: await pic('sostenibilidad/gobernanza-foto', [480, 800, 1200]),
+};
+const viewLabel = L('Ver modelo completo', 'View the full model');
+const downloadLabel = L('Descargar PDF', 'Download PDF');
+---
+
+<Layout
+  lang={lang}
+  alternate={routes.sustainability[lang === 'es' ? 'en' : 'es']}
+  title={L('Sostenibilidad: nuestro modelo ASG', 'Sustainability: our ESG model')}
+  description={L(
+    'Modelo de Sostenibilidad de Grupo Kasto: criterios ASG (Ambiental, Social y Gobernanza), ámbitos de acción, objetivos estratégicos y alineación con los ODS de la ONU. Consulta el documento completo.',
+    'Grupo Kasto’s Sustainability Model: ESG (Environmental, Social and Governance) criteria, areas of action, strategic objectives and alignment with the UN SDGs. Read the full document.',
+  )}
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs)]}
+>
+  <PageHero
+    eyebrow={L('Sostenibilidad', 'Sustainability')}
+    title={L('Grupo Kasto, rumbo a la sostenibilidad', 'Grupo Kasto, on the road to sustainability')}
+    intro={L(
+      'Un plan estratégico que integra los criterios Ambiental, Social y de Gobernanza a nuestra operación cotidiana.',
+      'A strategic plan that brings Environmental, Social and Governance criteria into our daily operations.',
+    )}
+    image={img('portada/contacto')}
+    crumbs={crumbs}
+  >
+    <div class="animate-fade-up mt-10 flex flex-wrap gap-3" style="animation-delay:360ms" data-intro-wait>
+      <a href="#modelo-completo" class="btn btn-trigo">{viewLabel}</a>
+      <a href={pdf} class="btn btn-outline-light" download>{downloadLabel}</a>
+    </div>
+  </PageHero>
+
+  <!-- Antecedentes -->
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow={L('Antecedentes', 'Background')} title={L("Un camino que empezó <span class='text-hoja'>donando</span>", "A journey that began with <span class='text-hoja'>giving</span>")} />
+      <ol class="relative mt-14 grid gap-5 lg:grid-cols-3">
+        <span class="absolute top-[3.1rem] right-[16%] left-[16%] hidden h-px bg-hoja/30 lg:block" aria-hidden="true"></span>
+        {
+          milestones.map((m, i) => (
+            <li class="relative rounded-[1.75rem] bg-white p-8 ring-1 ring-olivo/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 120}ms`}>
+              <p class="display text-6xl text-hoja">{m.year}</p>
+              <h3 class="display mt-4 text-2xl text-olivo">{m.title[lang]}</h3>
+              <p class="mt-3 leading-relaxed text-tinta/70">{background[i][lang]}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Contexto -->
+  <section class="bg-gris/60">
+    <div class="mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+      <div class="lg:col-span-5">
+        <div class="overflow-hidden rounded-[2rem]" data-reveal="mask">
+          <Image src={img('sostenibilidad/contexto')} alt={L('Colaborador en granja porcina', 'Employee at a hog farm')} widths={[480, 800]} sizes="(min-width:1024px) 38vw, 100vw" class="aspect-[4/5] w-full object-cover" />
+        </div>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7">
+        <SectionHead eyebrow={L('Contexto', 'Context')} title={L('La sostenibilidad es la permanencia del negocio', 'Sustainability is what makes a business last')} />
+        <div class="prose-gk mt-8" data-reveal style="--reveal-delay:160ms">
+          {context.map((p) => <p>{p[lang]}</p>)}
+        </div>
+        <blockquote class="display mt-10 border-l-4 border-trigo pl-6 text-3xl leading-tight text-olivo" data-reveal style="--reveal-delay:220ms">{contextQuote[lang]}</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Materialidad -->
+  <section class="grano">
+    <div class="mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-20 lg:px-12 lg:py-32">
+      <SectionHead eyebrow={L('Grupo Kasto 2024', 'Grupo Kasto 2024')} title={L('Matriz de materialidad', 'Materiality matrix')} text={materiality[lang]} />
+      <div class="rounded-[2rem] bg-white p-6 ring-1 ring-olivo/8 sm:p-10" data-reveal>
+        <Image src={img('sostenibilidad/matriz-esg-ods')} alt={L('Matriz de materialidad de Grupo Kasto alineada con los criterios ASG y los ODS', 'Grupo Kasto materiality matrix aligned with ESG criteria and the SDGs')} widths={[735]} sizes="(min-width:1024px) 45vw, 100vw" class="w-full" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Dimensiones ASG -->
+  <section class="relative overflow-hidden bg-olivo text-crema">
+    <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <div class="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+        <SectionHead
+          light
+          eyebrow={L('Nuestro modelo', 'Our model')}
+          title={L("Tres dimensiones, un mismo <span class='text-trigo'>compromiso</span>", "Three dimensions, one <span class='text-trigo'>commitment</span>")}
+          text={L(
+            'Los criterios ASG no son excluyentes: se refuerzan entre sí, a la vez que contemplan la generación de valor económico para nuestra organización.',
+            'ESG criteria are not mutually exclusive: they reinforce each other while also accounting for the economic value our organization creates.',
+          )}
+        />
+        <div class="hidden justify-end lg:flex" data-reveal>
+          <Image src={img('sostenibilidad/modelo')} alt={L('Diagrama del modelo: Ambiental, Social y Gobernanza', 'Model diagram: Environmental, Social and Governance')} widths={[473]} sizes="16rem" class="w-64 rounded-full" />
+        </div>
+      </div>
+      <div class="mt-16" data-reveal>
+        <Pillars client:visible lang={lang} pillars={pillars} images={pillarImages} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ODS -->
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead
+        eyebrow={L('Alineación con la ONU', 'Aligned with the UN')}
+        title={L('Objetivos de Desarrollo Sostenible', 'Sustainable Development Goals')}
+        text={L(
+          'Nuestro Modelo está diseñado para visualizar nuestros esfuerzos y su alineación con los Objetivos de Desarrollo Sostenible de la ONU.',
+          'Our Model is designed to show our efforts and how they align with the UN Sustainable Development Goals.',
+        )}
+      />
+      <ul class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {
+          sdgs.map((s, i) => (
+            <li class="group flex flex-col rounded-[1.5rem] bg-white p-5 ring-1 ring-olivo/8 transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-olivo/8" data-reveal style={`--reveal-delay:${(i % 5) * 70}ms`}>
+              <Image src={img(`sostenibilidad/ods/${s.image}`)} alt={`${L('ODS', 'SDG')} ${s.n}: ${s.name[lang]}`} widths={[127]} sizes="4rem" class="size-16 rounded-lg" />
+              <p class="display mt-4 text-xl leading-tight text-olivo">
+                {L('ODS', 'SDG')} {s.n} · {s.name[lang]}
+              </p>
+              <p class="mt-2 text-[0.9rem] leading-relaxed text-tinta/65">{s.goal[lang]}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Grupos de interés -->
+  <section class="bg-gris/60">
+    <div class="mx-auto grid max-w-[90rem] gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+      <div class="lg:col-span-4">
+        <SectionHead
+          eyebrow={L('Con quién construimos', 'Who we build with')}
+          title={L('Grupos de interés', 'Stakeholders')}
+          text={L(
+            'Todas las personas y organizaciones con las que interactuamos día a día. Identificamos sus expectativas y definimos canales de comunicación para beneficio de todas las partes.',
+            'All the people and organizations we interact with every day. We identify their expectations and define communication channels for the benefit of all.',
+          )}
+        />
+        <div class="mt-10 hidden overflow-hidden rounded-full lg:block lg:w-64" data-reveal>
+          <Image src={img('sostenibilidad/grupos-de-interes')} alt={L('Colaboradores de Grupo Kasto', 'Grupo Kasto employees')} widths={[292]} sizes="16rem" class="w-full" />
+        </div>
+      </div>
+      <ul class="grid gap-px overflow-hidden rounded-[2rem] bg-olivo/10 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
+        {
+          stakeholders.map((s, i) => (
+            <li class="bg-crema p-7 sm:p-8" data-reveal style={`--reveal-delay:${(i % 2) * 80}ms`}>
+              <p class="display text-2xl text-olivo">{s.name[lang]}</p>
+              <p class="mt-2 leading-relaxed text-tinta/70">{s.text[lang]}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Documento completo -->
+  <section id="modelo-completo" class="relative overflow-hidden bg-olivo text-crema">
+    <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+      <div class="lg:col-span-5">
+        <SectionHead
+          light
+          eyebrow={L('Documento completo', 'Full document')}
+          title={L("Modelo de Sostenibilidad <span class='text-trigo'>Grupo Kasto</span>", "Grupo Kasto <span class='text-trigo'>Sustainability Model</span>")}
+          text={L(
+            'Aquí resumimos lo esencial. El documento completo reúne el diagnóstico, la matriz de materialidad, cada ámbito de acción con sus objetivos y la alineación con los ODS, con todo el detalle que preparó nuestro equipo.',
+            'This page covers the essentials. The full document brings together the assessment, the materiality matrix, every area of action with its objectives and the SDG alignment, in all the detail our team prepared.',
+          )}
+        />
+        <dl class="mt-8 flex gap-10 border-t border-white/15 pt-6" data-reveal style="--reveal-delay:200ms">
+          <div>
+            <dt class="text-sm text-crema/60">{L('Páginas', 'Pages')}</dt>
+            <dd class="display text-4xl text-trigo">{pdfInfo.pages}</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-crema/60">{L('Formato', 'Format')}</dt>
+            <dd class="display text-4xl text-trigo">PDF</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-crema/60">{L('Tamaño', 'Size')}</dt>
+            <dd class="display text-4xl text-trigo">{pdfInfo.sizeMb} MB</dd>
+          </div>
+        </dl>
+        {lang === 'en' && <p class="mt-6 text-sm text-crema/60">The document is available in Spanish.</p>}
+        <div class="mt-10 flex flex-wrap gap-3" data-reveal style="--reveal-delay:260ms">
+          <a href={pdf} target="_blank" rel="noopener" class="btn btn-trigo group">
+            {viewLabel}
+            <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"></path></svg>
+          </a>
+          <a href={pdf} download class="btn btn-outline-light">
+            {downloadLabel}
+            <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v9m-4-4 4 4 4-4M3 14h10"></path></svg>
+          </a>
+        </div>
+      </div>
+      <a href={pdf} target="_blank" rel="noopener" class="group relative lg:col-span-6 lg:col-start-7" aria-label={viewLabel} data-reveal>
+        <!-- Hojas del documento apiladas -->
+        <span class="absolute inset-0 translate-x-5 translate-y-5 rotate-2 rounded-2xl bg-crema/15 transition-transform duration-700 group-hover:translate-x-7 group-hover:translate-y-7 group-hover:rotate-3" aria-hidden="true"></span>
+        <span class="absolute inset-0 translate-x-2.5 translate-y-2.5 rotate-1 rounded-2xl bg-crema/30 transition-transform duration-700 group-hover:translate-x-4 group-hover:translate-y-4" aria-hidden="true"></span>
+        <span class="relative block overflow-hidden rounded-2xl shadow-2xl shadow-black/30 transition-transform duration-700 group-hover:-translate-y-1">
+          <Image src={img('sostenibilidad/pdf-portada')} alt={L('Portada del Modelo de Sostenibilidad de Grupo Kasto', 'Cover of the Grupo Kasto Sustainability Model')} widths={[640, 1000, 1200]} sizes="(min-width:1024px) 45vw, 100vw" class="w-full" />
+          <span class="absolute right-4 bottom-4 inline-flex items-center gap-2 rounded-lg bg-olivo/90 px-4 py-2 font-serif text-sm font-semibold tracking-[0.1em] text-crema uppercase opacity-0 backdrop-blur transition-opacity duration-500 group-hover:opacity-100">
+            {viewLabel} ↗
+          </span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <div class="pt-3 sm:pt-4">
+    <CtaBand
+      lang={lang}
+      title={L("¿Quieres sumarte a una <span class='text-trigo'>iniciativa</span>?", "Want to join an <span class='text-trigo'>initiative</span>?")}
+      text={L(
+        'Escríbenos si quieres colaborar con nosotros en alguna iniciativa de sostenibilidad o conocer más sobre nuestro modelo.',
+        'Write to us if you would like to partner with us on a sustainability initiative or learn more about our model.',
+      )}
+      image="portada/trigo-verde"
+      secondary={{ label: downloadLabel, href: pdf, download: true }}
+    />
+  </div>
+</Layout>

@@ -6,8 +6,12 @@ import { site } from '../data/site';
 import { abs, keywords, organization, webPage, website } from '../lib/seo';
 import { noindex as reviewSite } from '../lib/env';
 import { MARK_SVG, MARK_VIEWBOX } from '../lib/brand';
+import { htmlLang, ogLocale, routes, t, type Lang } from '../i18n/ui';
 
 type Props = {
+  lang: Lang;
+  /** La misma página en el otro idioma (para el botón ES/EN y hreflang). Si no hay, lleva a la portada. */
+  alternate?: string;
   title?: string;
   description?: string;
   /** Imagen para compartir (1200×630) en public/, p. ej. "/og/home.jpg" */
@@ -25,10 +29,12 @@ type Props = {
 };
 
 const {
+  lang,
+  alternate,
   title,
-  description = site.description,
-  image = '/og/home.jpg',
-  imageAlt = 'Grupo Kasto — grupo agroindustrial mexicano desde 1945',
+  description = site.description[lang],
+  image = lang === 'es' ? '/og/home.jpg' : '/og/en/home.jpg',
+  imageAlt = lang === 'es' ? 'Grupo Kasto — grupo agroindustrial mexicano desde 1945' : 'Grupo Kasto — Mexican agribusiness group since 1945',
   noindex = false,
   ogType = 'website',
   pageType = 'WebPage',
@@ -37,24 +43,33 @@ const {
   headerOverHero = true,
 } = Astro.props;
 
-const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Grupo agroindustrial mexicano desde 1945`;
+const tx = t(lang);
+const fullTitle = title
+  ? `${title} | ${site.name}`
+  : lang === 'es'
+    ? `${site.name} | Grupo agroindustrial mexicano desde 1945`
+    : `${site.name} | Mexican agribusiness group since 1945`;
 const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = abs(path);
+const other: Lang = lang === 'es' ? 'en' : 'es';
+const otherPath = alternate ?? routes.home[other];
+const esUrl = lang === 'es' ? canonical : alternate ? abs(alternate) : undefined;
+const enUrl = lang === 'en' ? canonical : alternate ? abs(alternate) : undefined;
 const ogImage = abs(image);
 const hideFromSearch = noindex || reviewSite;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    organization(),
-    website(),
-    webPage({ path, title: fullTitle, description, image, type: pageType, breadcrumb: hasBreadcrumb }),
+    organization(lang),
+    website(lang),
+    webPage({ lang, path, title: fullTitle, description, image, type: pageType, breadcrumb: hasBreadcrumb }),
     ...schema,
   ],
 };
 ---
 
 <!doctype html>
-<html lang="es-MX">
+<html lang={htmlLang[lang]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -69,12 +84,14 @@ const jsonLd = {
       content={hideFromSearch ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
     />
     <meta name="author" content={site.name} />
-    <meta name="keywords" content={keywords.join(', ')} />
+    <meta name="keywords" content={keywords[lang].join(', ')} />
     <meta name="application-name" content={site.name} />
     <meta name="apple-mobile-web-app-title" content={site.name} />
     <meta name="format-detection" content="telephone=no" />
-    <link rel="alternate" hreflang="es-MX" href={canonical} />
-    <link rel="alternate" hreflang="x-default" href={canonical} />
+    {esUrl && <link rel="alternate" hreflang="es-MX" href={esUrl} />}
+    {esUrl && <link rel="alternate" hreflang="es" href={esUrl} />}
+    {enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
+    {esUrl && <link rel="alternate" hreflang="x-default" href={esUrl} />}
     <meta name="geo.region" content="MX-GUA" />
     <meta name="geo.placename" content="Santa Ana Pacueco, Guanajuato" />
 
@@ -88,7 +105,8 @@ const jsonLd = {
     <link rel="preload" href="/fonts/marcellus-sc-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <meta property="og:type" content={ogType} />
-    <meta property="og:locale" content="es_MX" />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta property="og:locale:alternate" content={ogLocale[other]} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -126,8 +144,10 @@ const jsonLd = {
     }
   </head>
   <body class="flex min-h-dvh flex-col">
+    <!-- La balanza como símbolo reutilizable: <svg><use href="#gk-mark" /></svg> -->
+    <svg width="0" height="0" class="absolute" aria-hidden="true"><symbol id="gk-mark" viewBox={MARK_VIEWBOX} set:html={MARK_SVG} /></svg>
     <!-- Telón de bienvenida: solo la primera vez por visita -->
-    <script is:inline define:vars={{ introHtml: `<svg viewBox="${MARK_VIEWBOX}">${MARK_SVG}</svg><p>Grupo Kasto</p><span>Desde 1945</span>` }}>
+    <script is:inline define:vars={{ introHtml: `<svg viewBox="${MARK_VIEWBOX}">${MARK_SVG}</svg><p>Grupo Kasto</p><span>${tx.since} 1945</span>` }}>
       (function () {
         try {
           if (sessionStorage.getItem('gk-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -154,19 +174,19 @@ const jsonLd = {
     <a
       href="#contenido"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-full focus:bg-crema focus:px-4 focus:py-2"
-      >Saltar al contenido</a
+      >{tx.skip}</a
     >
-    <Header overHero={headerOverHero} />
+    <Header lang={lang} alternate={otherPath} overHero={headerOverHero} />
     <main id="contenido" class="flex-1">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <!-- Volver arriba, con anillo de progreso de lectura -->
     <a
       href="#contenido"
       id="to-top"
-      aria-label="Volver arriba"
+      aria-label={tx.backToTop}
       class="fixed right-5 bottom-5 z-30 grid size-13 translate-y-4 place-items-center rounded-full bg-olivo text-trigo opacity-0 shadow-lg shadow-olivo/20 transition duration-500 hover:bg-hoja hover:text-white data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:right-8 sm:bottom-8"
     >
       <svg viewBox="0 0 56 56" class="absolute inset-0 size-full -rotate-90" aria-hidden="true">

@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Timeline from '../components/react/Timeline.tsx';
+import { aboutIntro, clientVoices, history, leadership, teamVoices } from '../data/company';
+import { site } from '../data/site';
+import { img } from '../lib/images';
+import { breadcrumbs } from '../lib/seo';
+import { routes, t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
+const path = routes.about[lang];
+const crumbs = [
+  { name: tx.home, path: routes.home[lang] },
+  { name: L('Nosotros', 'About us'), path },
+];
+const years = new Date().getFullYear() - site.foundingYear;
+---
+
+<Layout
+  lang={lang}
+  alternate={routes.about[lang === 'es' ? 'en' : 'es']}
+  title={L('Nosotros: nuestra historia desde 1945', 'About us: our story since 1945')}
+  description={L(
+    `Grupo Kasto nace en 1945 en La Piedad, Michoacán. Más de ${years} años en granos, porcicultura, harinas, productos de consumo, invernaderos y panadería.`,
+    `Grupo Kasto was born in 1945 in La Piedad, Michoacán. More than ${years} years in grain, hog farming, flour, consumer goods, greenhouses and bakery.`,
+  )}
+  pageType="AboutPage"
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs)]}
+>
+  <PageHero eyebrow={L('Acerca de nosotros', 'About us')} title={L('Somos su mejor opción', 'Your best choice')} intro={aboutIntro[lang]} image={img('portada/pacas')} crumbs={crumbs} />
+
+  <!-- Años de experiencia -->
+  <section class="grano">
+    <div class="mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+      <div class="grid grid-cols-2 gap-4 lg:col-span-6">
+        <div class="overflow-hidden rounded-[1.75rem]" data-reveal="mask">
+          <Image src={img('portada/granos')} alt={L('Granos de trigo', 'Wheat grains')} widths={[400, 800]} sizes="(min-width:1024px) 22vw, 45vw" class="aspect-[4/5] w-full object-cover" />
+        </div>
+        <div class="mt-16 overflow-hidden rounded-[1.75rem]" data-reveal="mask" style="--reveal-delay:200ms">
+          <Image src={img('portada/costal')} alt={L('Costal con el logotipo de Grupo Kasto', 'Sack with the Grupo Kasto logo')} widths={[400, 800]} sizes="(min-width:1024px) 22vw, 45vw" class="aspect-[4/5] w-full object-cover" />
+        </div>
+      </div>
+      <div class="lg:col-span-5 lg:col-start-8">
+        <p class="eyebrow text-hoja" data-reveal>{L('Tenemos', 'We have')}</p>
+        <p class="display mt-2 text-[7.5rem] leading-none text-olivo sm:text-[10rem]" data-reveal>+{years}</p>
+        <p class="eyebrow mt-3 text-hoja" data-reveal style="--reveal-delay:80ms">{L('años de experiencia', 'years of experience')}</p>
+        <p class="mt-8 text-xl leading-relaxed text-tinta/75" data-reveal style="--reveal-delay:160ms">{leadership[lang]}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historia -->
+  <section class="relative overflow-hidden bg-olivo text-crema">
+    <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead light eyebrow={L('Conócenos', 'Get to know us')} title={L('Nuestra Historia', 'Our History')} />
+      <div class="mt-14" data-reveal style="--reveal-delay:200ms">
+        <Timeline client:visible lang={lang} tone="dark" items={history.map((h) => ({ year: h.year, title: h.title[lang], text: h.text[lang] }))} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Colaboradores -->
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead align="center" eyebrow={L('El mayor activo de la compañía', 'Our greatest asset')} title={L('Nuestros Colaboradores', 'Our People')} />
+      <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          teamVoices.map((v, i) => (
+            <figure class="group flex flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-olivo/8" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <div class="zoom aspect-square overflow-hidden bg-gris">
+                <Image src={img(`personas/${v.image}`)} alt={v.name} widths={[320, 640]} sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw" class="size-full object-cover" />
+              </div>
+              <div class="flex flex-1 flex-col p-7">
+                <blockquote class="display flex-1 text-[1.6rem] leading-tight text-olivo">“{v.quote[lang]}”</blockquote>
+                <figcaption class="mt-6 flex items-baseline justify-between border-t border-olivo/10 pt-4">
+                  <span class="font-semibold text-olivo">{v.name}</span>
+                  <span class="text-sm text-niebla">
+                    {L('desde', 'since')} {v.since}
+                  </span>
+                </figcaption>
+              </div>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Clientes -->
+  <section class="bg-gris/60">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow={L('La razón de ser del grupo', 'Why we exist')} title={L('Nuestros clientes', 'Our customers')} />
+      <div class="mt-16 grid gap-5 lg:grid-cols-3">
+        {
+          clientVoices.map((c, i) => (
+            <figure class="flex flex-col justify-between rounded-[1.75rem] bg-white p-8 ring-1 ring-olivo/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
+              <svg viewBox="0 0 32 24" class="h-6 w-8 text-trigo" fill="currentColor" aria-hidden="true">
+                <path d="M0 24V14C0 6 4 1 12 0l1 4c-4 1-6 4-6 8h5v12H0Zm19 0V14c0-8 4-13 12-14l1 4c-4 1-6 4-6 8h5v12H19Z" />
+              </svg>
+              <blockquote class="mt-6 text-lg leading-relaxed text-olivo">“{c.quote[lang]}”</blockquote>
+              <figcaption class="mt-8 flex items-center gap-4 border-t border-olivo/10 pt-6">
+                <Image src={img(`personas/${c.image}`)} alt="" widths={[96, 192]} sizes="48px" class="size-12 rounded-full object-cover" />
+                <span>
+                  <span class="block font-semibold text-olivo">{c.name}</span>
+                  <span class="text-sm text-niebla">{c.role[lang]}</span>
+                </span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+      <div class="mt-14 flex flex-wrap gap-3" data-reveal>
+        <a href={routes.philosophy[lang]} class="btn btn-primary">{L('Nuestra filosofía', 'Our philosophy')}</a>
+        <a href={routes.divisions[lang]} class="btn btn-ghost">{L('Conoce las divisiones', 'Explore our divisions')}</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="pt-3 sm:pt-4"><CtaBand lang={lang} /></div>
+</Layout>

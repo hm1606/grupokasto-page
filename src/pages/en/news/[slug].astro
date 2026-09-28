@@ -1,0 +1,15 @@
+---
+import NewsArticleView from '../../../views/NewsArticleView.astro';
+import { getNews, newsUrl } from '../../../lib/news';
+
+export async function getStaticPaths() {
+  const all = await getNews('en');
+  const others = await getNews('es');
+  return all.map((n) => {
+    const twin = others.find((o) => o.key === n.key);
+    return { params: { slug: n.slug }, props: { n, all, alternate: twin ? newsUrl('es', twin.slug) : undefined } };
+  });
+}
+---
+
+<NewsArticleView lang="en" n={Astro.props.n} all={Astro.props.all} alternate={Astro.props.alternate} />

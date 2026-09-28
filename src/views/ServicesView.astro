@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services, serviceUrl } from '../data/services';
+import { img } from '../lib/images';
+import { abs, breadcrumbs, service } from '../lib/seo';
+import { routes, t, type Lang } from '../i18n/ui';
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const tx = t(lang);
+const L = (es: string, en: string) => (lang === 'es' ? es : en);
+const path = routes.services[lang];
+const crumbs = [
+  { name: tx.home, path: routes.home[lang] },
+  { name: L('Servicios', 'Services'), path },
+];
+const list = {
+  '@type': 'ItemList',
+  '@id': `${abs(path)}#servicios`,
+  itemListElement: services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, item: service(s, lang) })),
+};
+---
+
+<Layout
+  lang={lang}
+  alternate={routes.services[lang === 'es' ? 'en' : 'es']}
+  title={L('Servicios: logística, comercialización, consultoría y proyectos', 'Services: logistics, trading, consulting and projects')}
+  description={L(
+    'Logística y originación de granos, comercialización de granos y harinas de trigo, asesoría y consultoría corporativa y desarrollo de proyectos inmobiliarios.',
+    'Grain logistics and sourcing, grain and wheat flour trading, corporate advisory and consulting, and real-estate project development.',
+  )}
+  pageType="CollectionPage"
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs), list]}
+>
+  <PageHero
+    eyebrow={L('Servicios', 'Services')}
+    title={L('La experiencia del grupo, al servicio de tu negocio', 'Our experience, at the service of your business')}
+    intro={L(
+      'Lo que aprendimos en 80 años operando nuestras propias empresas, hoy lo ofrecemos a productores, industria y socios comerciales.',
+      'What we have learned in 80 years of running our own companies, we now offer to growers, industry and business partners.',
+    )}
+    image={img('servicios/logistica-y-originacion/hero')}
+    crumbs={crumbs}
+  />
+
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow={L('Qué ofrecemos', 'What we offer')} title={L('Cuatro servicios, un mismo respaldo', 'Four services, one backing')} />
+      <ul class="mt-14 flex flex-col">
+        {
+          services.map((s, i) => (
+            <li class="border-b border-olivo/12 first:border-t" data-reveal style={`--reveal-delay:${i * 80}ms`}>
+              <a href={serviceUrl(lang, s)} class="group grid items-center gap-6 py-8 md:grid-cols-[4rem_1fr_16rem_3.5rem] md:gap-10 lg:py-10">
+                <span class="font-serif text-lg text-hoja tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  <span class="display block text-4xl text-olivo transition-colors group-hover:text-hoja sm:text-5xl">{s.name[lang]}</span>
+                  <span class="mt-3 block max-w-xl text-tinta/65">{s.summary[lang]}</span>
+                </span>
+                <span class="zoom hidden aspect-[4/3] overflow-hidden rounded-2xl md:block">
+                  <Image src={img(`servicios/${s.id}/hero`)} alt="" widths={[320, 640]} sizes="16rem" class="size-full object-cover" />
+                </span>
+                <span class="hidden size-14 place-items-center rounded-full border border-olivo/15 text-olivo transition-colors duration-500 group-hover:border-hoja group-hover:bg-hoja group-hover:text-white md:grid">
+                  <svg viewBox="0 0 16 16" class="arrow size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path d="M3 8h10m-4-4 4 4-4 4" />
+                  </svg>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand lang={lang} />
+</Layout>
