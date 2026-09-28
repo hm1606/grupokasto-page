@@ -63,16 +63,16 @@ const more = related.length ? related : all.filter((x) => x.id !== n.id).slice(0
         <span aria-hidden="true">·</span>
         <span>{n.data.source}</span>
       </p>
-      <h1 class="display animate-fade-up mt-6 text-4xl text-balance text-bosque sm:text-5xl lg:text-6xl" style="animation-delay:100ms">{n.data.title}</h1>
+      <h1 class="display animate-fade-up mt-6 text-4xl text-balance text-olivo sm:text-5xl lg:text-6xl" style="animation-delay:100ms">{n.data.title}</h1>
     </header>
 
     <div class="mx-auto mt-12 max-w-6xl px-3 sm:px-8">
-      <div class="animate-fade-up overflow-hidden rounded-[2rem] bg-arena" style="animation-delay:200ms">
+      <div class="animate-fade-up overflow-hidden rounded-[2rem] bg-gris" style="animation-delay:200ms">
         <Image src={n.data.cover} alt={n.data.title} widths={[640, 1000, 1400, 2000]} sizes="(min-width:1152px) 1100px, 100vw" class="max-h-[42rem] w-full object-cover" loading="eager" fetchpriority="high" />
       </div>
     </div>
 
-    <div class="prose-gk mx-auto mt-14 max-w-3xl px-5 pb-10 text-[1.125rem] sm:px-8 [&>p:first-child]:font-serif [&>p:first-child]:text-2xl [&>p:first-child]:leading-snug [&>p:first-child]:text-bosque">
+    <div class="prose-gk mx-auto mt-14 max-w-3xl px-5 pb-10 text-[1.125rem] sm:px-8 [&>p:first-child]:font-serif [&>p:first-child]:text-2xl [&>p:first-child]:leading-snug [&>p:first-child]:text-olivo">
       <Content />
     </div>
 
@@ -89,9 +89,9 @@ const more = related.length ? related : all.filter((x) => x.id !== n.id).slice(0
     <nav aria-label="Más noticias" class="mx-auto grid max-w-6xl gap-4 px-5 pb-24 sm:grid-cols-2 sm:px-8">
       {
         older ? (
-          <a href={`/noticias/${older.id}/`} class="group rounded-[1.5rem] bg-arena/60 p-7 transition-colors hover:bg-arena">
+          <a href={`/noticias/${older.id}/`} class="group rounded-[1.5rem] bg-gris/60 p-7 transition-colors hover:bg-gris">
             <span class="eyebrow text-niebla">← Anterior</span>
-            <span class="mt-3 block font-serif text-xl leading-snug text-bosque group-hover:text-hoja">{older.data.title}</span>
+            <span class="mt-3 block font-serif text-xl leading-snug text-olivo group-hover:text-hoja">{older.data.title}</span>
           </a>
         ) : (
           <span />
@@ -99,30 +99,30 @@ const more = related.length ? related : all.filter((x) => x.id !== n.id).slice(0
       }
       {
         newer && (
-          <a href={`/noticias/${newer.id}/`} class="group rounded-[1.5rem] bg-arena/60 p-7 text-right transition-colors hover:bg-arena">
+          <a href={`/noticias/${newer.id}/`} class="group rounded-[1.5rem] bg-gris/60 p-7 text-right transition-colors hover:bg-gris">
             <span class="eyebrow text-niebla">Siguiente →</span>
-            <span class="mt-3 block font-serif text-xl leading-snug text-bosque group-hover:text-hoja">{newer.data.title}</span>
+            <span class="mt-3 block font-serif text-xl leading-snug text-olivo group-hover:text-hoja">{newer.data.title}</span>
           </a>
         )
       }
     </nav>
   </article>
 
-  <section class="bg-arena/60">
+  <section class="bg-gris/60">
     <div class="mx-auto max-w-[90rem] px-5 py-20 sm:px-8 lg:px-12 lg:py-24">
       <div class="flex items-end justify-between gap-6">
-        <h2 class="display text-4xl text-bosque">También te puede interesar</h2>
+        <h2 class="display text-4xl text-olivo">También te puede interesar</h2>
         <a href="/noticias/" class="link-line hidden text-sm font-semibold text-hoja sm:block">Todas las noticias →</a>
       </div>
       <div class="mt-10 grid gap-x-6 gap-y-10 md:grid-cols-3">
         {
           more.map((m) => (
             <a href={`/noticias/${m.id}/`} class="group block">
-              <div class="zoom aspect-[4/3] overflow-hidden rounded-2xl bg-arena">
+              <div class="zoom aspect-[4/3] overflow-hidden rounded-2xl bg-gris">
                 <Image src={m.data.cover} alt="" widths={[480, 800]} sizes="(min-width:768px) 30vw, 100vw" class="size-full object-cover" />
               </div>
               <p class="mt-4 text-[0.78rem] font-semibold text-niebla">{fmt(m.data.date)}</p>
-              <h3 class="mt-2 font-serif text-xl leading-snug text-bosque group-hover:text-hoja">{m.data.title}</h3>
+              <h3 class="mt-2 font-serif text-xl leading-snug text-olivo group-hover:text-hoja">{m.data.title}</h3>
             </a>
           ))
         }

@@ -47,16 +47,16 @@ const list = {
     <div class="mx-auto max-w-[90rem] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
       <!-- Noticia más reciente -->
       <a href={`/noticias/${featured.id}/`} class="group grid items-center gap-8 lg:grid-cols-2 lg:gap-16" data-reveal>
-        <div class="zoom aspect-[16/11] overflow-hidden rounded-[2rem] bg-arena">
+        <div class="zoom aspect-[16/11] overflow-hidden rounded-[2rem] bg-gris">
           <Image src={featured.data.cover} alt="" widths={[640, 1000, 1400]} sizes="(min-width:1024px) 45vw, 100vw" class="size-full object-cover" loading="eager" />
         </div>
         <div>
           <p class="flex items-center gap-3 text-[0.78rem] font-semibold text-niebla">
-            <span class="rounded-full bg-trigo px-3 py-1 text-bosque">Lo más reciente</span>
+            <span class="rounded-full bg-trigo px-3 py-1 text-olivo">Lo más reciente</span>
             <span class="rounded-full bg-hoja/12 px-3 py-1 text-hoja">{featured.data.category}</span>
             <time datetime={featured.data.date.toISOString().slice(0, 10)}>{fmt(featured.data.date)}</time>
           </p>
-          <h2 class="display mt-6 text-4xl text-balance text-bosque transition-colors group-hover:text-hoja sm:text-5xl">{featured.data.title}</h2>
+          <h2 class="display mt-6 text-4xl text-balance text-olivo transition-colors group-hover:text-hoja sm:text-5xl">{featured.data.title}</h2>
           <p class="mt-5 text-lg leading-relaxed text-tinta/70">{featured.data.excerpt}</p>
           <span class="btn btn-ghost mt-8">
             Leer noticia

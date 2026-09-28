@@ -21,11 +21,32 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
 <header
   id="site-header"
   data-over={String(overHero)}
-  class="group/h fixed inset-x-0 top-0 z-50 h-[var(--header-h)] text-bosque transition-[transform,background-color,box-shadow,color] duration-500 ease-[cubic-bezier(.2,.7,.2,1)] data-[hidden=true]:-translate-y-full data-[over=true]:text-white data-[solid=true]:bg-harina/90 data-[solid=true]:text-bosque data-[solid=true]:shadow-[0_1px_0_rgba(21,41,29,.08)] data-[solid=true]:backdrop-blur-xl"
+  class="group/h fixed inset-x-0 top-0 z-50 text-olivo transition-[transform,background-color,box-shadow,color] duration-500 ease-[cubic-bezier(.2,.7,.2,1)] data-[hidden=true]:-translate-y-full data-[over=true]:text-white data-[solid=true]:bg-crema/92 data-[solid=true]:text-olivo data-[solid=true]:shadow-[0_1px_0_rgba(64,74,61,.1)] data-[solid=true]:backdrop-blur-xl"
 >
-  <div class="mx-auto flex h-full max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
-    <a href="/" class="relative z-10 flex h-9 items-center lg:h-10" aria-label={`${site.name}, inicio`}>
-      <Logo class="h-full text-[1.05rem] lg:text-[1.15rem]" />
+  <!-- Barra superior (como el sitio anterior): contacto y redes; se pliega al bajar -->
+  <div class="topbar hidden overflow-hidden border-b border-current/12 transition-[height,opacity] duration-500 lg:block">
+    <div class="mx-auto flex h-10 max-w-[90rem] items-center justify-between px-12 text-[0.8rem] font-medium opacity-85">
+      <div class="flex items-center gap-7">
+        <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 hover:text-trigo">
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+          {site.email}
+        </a>
+        <a href={site.phoneHref} class="inline-flex items-center gap-2 hover:text-trigo">
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
+          {site.phone}
+        </a>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/contacto/?tema=quejas" class="hover:text-trigo">Quejas y sugerencias</a>
+        <a href={site.social.linkedin} target="_blank" rel="noopener" class="hover:text-trigo">LinkedIn</a>
+        <a href={site.social.facebook} target="_blank" rel="noopener" class="hover:text-trigo">Facebook</a>
+        <a href={site.social.instagram} target="_blank" rel="noopener" class="hover:text-trigo">Instagram</a>
+      </div>
+    </div>
+  </div>
+  <div class="mx-auto flex h-[var(--header-h)] max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
+    <a href="/" class="relative z-10 flex items-center" aria-label={`${site.name}, inicio`}>
+      <Logo class="text-[1.2rem] lg:text-[1.6rem]" />
     </a>
 
     <nav aria-label="Principal" class="hidden h-full lg:block">
@@ -39,7 +60,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
                 <a
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
-                  class="flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.84rem] font-semibold tracking-[0.01em] transition-colors hover:bg-current/8 aria-[current=page]:text-hoja group-data-[over=true]/h:aria-[current=page]:text-trigo group-data-[solid=true]/h:aria-[current=page]:text-hoja"
+                  class="flex items-center gap-1.5 rounded-md px-3.5 py-2 font-serif text-[1.02rem] font-semibold tracking-[0.08em] uppercase transition-colors hover:bg-current/8 aria-[current=page]:text-hoja group-data-[over=true]/h:aria-[current=page]:text-trigo group-data-[solid=true]/h:aria-[current=page]:text-hoja"
                   aria-haspopup={sub ? 'true' : undefined}
                 >
                   {item.label}
@@ -51,10 +72,10 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
                 </a>
                 {sub && (
                   <div class="menu-panel invisible absolute top-[calc(100%-0.75rem)] left-1/2 w-max -translate-x-1/2 pt-3 opacity-0 transition-[opacity,visibility,translate] duration-300">
-                    <div class:list={['rounded-3xl bg-harina p-3 text-bosque shadow-2xl ring-1 shadow-bosque/15 ring-bosque/8', sub.length > 5 ? 'grid w-[44rem] grid-cols-2 gap-1' : 'grid w-[22rem] gap-1']}>
+                    <div class:list={['rounded-2xl bg-crema p-3 text-olivo shadow-2xl ring-1 shadow-olivo/15 ring-olivo/8', sub.length > 5 ? 'grid w-[44rem] grid-cols-2 gap-1' : 'grid w-[22rem] gap-1']}>
                       {sub.map((s, i) => (
-                        <a href={s.href} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-arena/70">
-                          <span class="mt-0.5 font-serif text-sm text-oro tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                        <a href={s.href} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-gris/70">
+                          <span class="mt-0.5 font-serif text-sm text-hoja tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                           <span class="flex flex-col gap-0.5">
                             <span class="flex items-center gap-2 text-[0.92rem] font-semibold">
                               {s.label}
@@ -69,7 +90,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
                       {item.href !== '/nosotros/' && (
                         <a
                           href={item.href}
-                          class:list={['mt-1 flex items-center justify-between rounded-2xl bg-bosque px-5 py-3.5 text-[0.8rem] font-semibold text-harina transition-colors hover:bg-hoja', sub.length > 5 && 'col-span-2']}
+                          class:list={['mt-1 flex items-center justify-between rounded-2xl bg-olivo px-5 py-3.5 text-[0.8rem] font-semibold text-crema transition-colors hover:bg-hoja', sub.length > 5 && 'col-span-2']}
                         >
                           Ver todas las {item.label.toLowerCase()}
                           <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -88,13 +109,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
     </nav>
 
     <div class="relative z-10 flex items-center gap-2">
-      <a href={site.phoneHref} class="hidden items-center gap-2 px-3 py-2 text-[0.82rem] font-semibold xl:inline-flex">
-        <svg viewBox="0 0 24 24" class="size-4 opacity-70" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
-        </svg>
-        {site.phone}
-      </a>
-      <a href="/contacto/" class="btn btn-primary hidden min-h-11 px-5 text-[0.72rem] md:inline-flex">Contáctanos</a>
+      <a href="/contacto/" class="btn btn-trigo hidden min-h-11 px-5 text-[0.9rem] md:inline-flex">Contáctanos</a>
       <button
         type="button"
         id="menu-toggle"
@@ -115,7 +130,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
 <!-- Menú en celular -->
 <div
   id="mobile-menu"
-  class="surcos-claro invisible fixed inset-0 z-[45] flex flex-col overflow-y-auto bg-bosque px-6 pt-[calc(var(--header-h)+1.5rem)] pb-10 text-harina opacity-0 transition-[opacity,visibility] duration-500 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
+  class="surcos-claro invisible fixed inset-0 z-[45] flex flex-col overflow-y-auto bg-olivo px-6 pt-[calc(var(--header-h)+1.5rem)] pb-10 text-crema opacity-0 transition-[opacity,visibility] duration-500 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
   data-lenis-prevent
 >
   <nav aria-label="Menú" class="flex-1">
@@ -148,7 +163,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
                     )}
                     {sub.map((s) => (
                       <li>
-                        <a href={s.href} class="block py-1.5 text-base text-harina/80">
+                        <a href={s.href} class="block py-1.5 text-base text-crema/80">
                           {s.label}
                         </a>
                       </li>
@@ -183,6 +198,14 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
   .menu-panel {
     translate: 0 8px;
   }
+  .topbar {
+    height: 2.5rem;
+  }
+  #site-header[data-solid='true'] .topbar {
+    height: 0;
+    opacity: 0;
+    border-color: transparent;
+  }
   .has-menu:hover .chev,
   .has-menu:focus-within .chev {
     transform: rotate(180deg);
@@ -194,7 +217,7 @@ const menus: Record<string, { label: string; href: string; note?: string }[]> = 
     transform: translateY(-5.25px) rotate(-45deg);
   }
   html:has(#mobile-menu[data-open='true']) #site-header {
-    color: var(--color-harina) !important;
+    color: var(--color-crema) !important;
     background: transparent !important;
     box-shadow: none !important;
     backdrop-filter: none !important;

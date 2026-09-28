@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 import { abs, keywords, organization, webPage, website } from '../lib/seo';
 import { noindex as reviewSite } from '../lib/env';
+import { MARK_SVG, MARK_VIEWBOX } from '../lib/brand';
 
 type Props = {
   title?: string;
@@ -81,10 +82,10 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#15291d" />
-    <link rel="preload" href="/fonts/fraunces-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/manrope-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/manrope-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#404a3d" />
+    <link rel="preload" href="/fonts/barlow-condensed-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/barlow-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/marcellus-sc-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="es_MX" />
@@ -126,7 +127,7 @@ const jsonLd = {
   </head>
   <body class="flex min-h-dvh flex-col">
     <!-- Telón de bienvenida: solo la primera vez por visita -->
-    <script is:inline>
+    <script is:inline define:vars={{ introHtml: `<svg viewBox="${MARK_VIEWBOX}">${MARK_SVG}</svg><p>Grupo Kasto</p><span>Desde 1945</span>` }}>
       (function () {
         try {
           if (sessionStorage.getItem('gk-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -139,8 +140,7 @@ const jsonLd = {
         var el = document.createElement('div');
         el.id = 'intro';
         el.setAttribute('aria-hidden', 'true');
-        el.innerHTML =
-          '<svg viewBox="0 0 118 64" fill="currentColor"><path class="i1" fill-rule="evenodd" d="M30 4 2 46h56L30 4Zm0 7.6L9.85 41.8h40.3L30 11.6Z"/><path class="i2" fill-rule="evenodd" d="M88 4 60 46h56L88 4Zm0 7.6L67.85 41.8h40.3L88 11.6Z"/><path class="i3" fill-rule="evenodd" d="M40 3h38L59 31 40 3Zm7.55 4L59 23.9 70.45 7h-22.9Z"/><path class="i4" d="M4 49.5h52c0 7-11.6 12-26 12S4 56.5 4 49.5Zm58 0h52c0 7-11.6 12-26 12s-26-5-26-12Z"/></svg><p>Grupo Kasto</p><span>Desde 1945</span>';
+        el.innerHTML = introHtml;
         document.body.appendChild(el);
         setTimeout(function () {
           el.classList.add('out');
@@ -153,7 +153,7 @@ const jsonLd = {
     </script>
     <a
       href="#contenido"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-full focus:bg-harina focus:px-4 focus:py-2"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-full focus:bg-crema focus:px-4 focus:py-2"
       >Saltar al contenido</a
     >
     <Header overHero={headerOverHero} />
@@ -167,11 +167,11 @@ const jsonLd = {
       href="#contenido"
       id="to-top"
       aria-label="Volver arriba"
-      class="fixed right-5 bottom-5 z-30 grid size-13 translate-y-4 place-items-center rounded-full bg-bosque text-trigo opacity-0 shadow-lg shadow-bosque/20 transition duration-500 hover:bg-hoja hover:text-white data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:right-8 sm:bottom-8"
+      class="fixed right-5 bottom-5 z-30 grid size-13 translate-y-4 place-items-center rounded-full bg-olivo text-trigo opacity-0 shadow-lg shadow-olivo/20 transition duration-500 hover:bg-hoja hover:text-white data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:right-8 sm:bottom-8"
     >
       <svg viewBox="0 0 56 56" class="absolute inset-0 size-full -rotate-90" aria-hidden="true">
-        <circle cx="28" cy="28" r="27" fill="none" stroke="rgb(232 212 95 / .18)" stroke-width="1.5"></circle>
-        <circle id="to-top-ring" cx="28" cy="28" r="27" fill="none" stroke="#e8d45f" stroke-width="1.5" stroke-dasharray="169.6" stroke-dashoffset="169.6"></circle>
+        <circle cx="28" cy="28" r="27" fill="none" stroke="rgb(237 221 94 / .2)" stroke-width="1.5"></circle>
+        <circle id="to-top-ring" cx="28" cy="28" r="27" fill="none" stroke="#eddd5e" stroke-width="1.5" stroke-dasharray="169.6" stroke-dashoffset="169.6"></circle>
       </svg>
       <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"></path></svg>
     </a>
@@ -185,8 +185,8 @@ const jsonLd = {
         place-items: center;
         align-content: center;
         gap: 1.1rem;
-        background: #15291d;
-        color: #f7f4ec;
+        background: #404a3d;
+        color: #f5f0e9;
         transition: clip-path 1.2s cubic-bezier(0.7, 0, 0.2, 1);
         clip-path: inset(0 0 0 0);
       }
@@ -194,28 +194,22 @@ const jsonLd = {
         clip-path: inset(0 0 100% 0);
       }
       #intro svg {
-        width: 7.5rem;
-        color: #e8d45f;
+        width: 6.5rem;
+        color: #eddd5e;
       }
-      #intro svg path {
+      #intro svg > g {
         animation: intro-piece 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
       }
-      #intro .i1 {
-        animation-delay: 0.05s;
+      #intro svg > g:nth-child(2) {
+        animation-delay: 0.2s;
       }
-      #intro .i2 {
-        animation-delay: 0.15s;
-      }
-      #intro .i3 {
-        animation-delay: 0.3s;
-      }
-      #intro .i4 {
-        animation-delay: 0.45s;
+      #intro svg > g:nth-child(3) {
+        animation-delay: 0.4s;
       }
       #intro p {
-        font-family: var(--font-serif);
-        font-size: 1.6rem;
-        letter-spacing: 0.02em;
+        font-family: var(--font-marca);
+        font-size: 1.9rem;
+        letter-spacing: 0.06em;
         animation: fade-up 1s 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
       }
       #intro span {
@@ -225,7 +219,7 @@ const jsonLd = {
         letter-spacing: 0.34em;
         padding-left: 0.34em;
         text-transform: uppercase;
-        color: #9dc08a;
+        color: #a9c89f;
         animation: fade-up 1s 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
       }
       @keyframes intro-piece {

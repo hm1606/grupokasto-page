@@ -41,8 +41,8 @@ export default function Timeline({ items }: { items: Milestone[] }) {
         <div className="min-h-[10rem] lg:pb-6">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={m.year} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.45, ease }}>
-              <p className="eyebrow text-oro">Hito {String(i + 1).padStart(2, '0')} de {items.length}</p>
-              <h3 className="display mt-3 text-3xl text-bosque sm:text-4xl">{m.title}</h3>
+              <p className="eyebrow text-hoja">Hito {String(i + 1).padStart(2, '0')} de {items.length}</p>
+              <h3 className="display mt-3 text-3xl text-olivo sm:text-4xl">{m.title}</h3>
               <p className="mt-4 max-w-xl text-lg leading-relaxed text-tinta/70">{m.text}</p>
             </motion.div>
           </AnimatePresence>
@@ -51,7 +51,7 @@ export default function Timeline({ items }: { items: Milestone[] }) {
               type="button"
               onClick={() => setI((n) => Math.max(0, n - 1))}
               disabled={i === 0}
-              className="grid size-12 place-items-center rounded-full border border-bosque/20 text-bosque transition-colors hover:bg-bosque hover:text-harina disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-bosque"
+              className="grid size-12 place-items-center rounded-full border border-olivo/20 text-olivo transition-colors hover:bg-olivo hover:text-crema disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-olivo"
               aria-label="Hito anterior"
             >
               <svg viewBox="0 0 16 16" className="size-4 rotate-180" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
@@ -62,7 +62,7 @@ export default function Timeline({ items }: { items: Milestone[] }) {
               type="button"
               onClick={() => setI((n) => Math.min(items.length - 1, n + 1))}
               disabled={i === items.length - 1}
-              className="grid size-12 place-items-center rounded-full bg-bosque text-harina transition-colors hover:bg-hoja disabled:opacity-30"
+              className="grid size-12 place-items-center rounded-full bg-olivo text-crema transition-colors hover:bg-hoja disabled:opacity-30"
               aria-label="Hito siguiente"
             >
               <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
@@ -76,7 +76,7 @@ export default function Timeline({ items }: { items: Milestone[] }) {
       {/* Riel de años */}
       <div ref={rail} className="relative mt-14 overflow-x-auto pb-4 [scrollbar-width:none] lg:overflow-visible" role="tablist" aria-label="Años">
         <div className="relative flex min-w-max gap-2 lg:block lg:h-20 lg:min-w-0">
-          <div className="absolute inset-x-0 top-[1.2rem] hidden h-px bg-bosque/15 lg:block" aria-hidden="true" />
+          <div className="absolute inset-x-0 top-[1.2rem] hidden h-px bg-olivo/15 lg:block" aria-hidden="true" />
           <motion.div
             className="absolute top-[1.2rem] left-0 hidden h-px bg-hoja lg:block"
             animate={{ width: `${(i / (items.length - 1)) * 100}%` }}
@@ -96,11 +96,11 @@ export default function Timeline({ items }: { items: Milestone[] }) {
             >
               <span
                 className={`hidden size-3 rounded-full border-2 transition-all duration-300 lg:block ${
-                  k === i ? 'scale-125 border-hoja bg-hoja' : k < i ? 'border-hoja bg-harina' : 'border-bosque/25 bg-harina group-hover:border-hoja'
+                  k === i ? 'scale-125 border-hoja bg-hoja' : k < i ? 'border-hoja bg-crema' : 'border-olivo/25 bg-crema group-hover:border-hoja'
                 }`}
                 style={{ marginTop: '0.82rem' }}
               />
-              <span className={`text-sm font-semibold tabular-nums transition-colors ${k === i ? 'text-hoja' : 'text-bosque/45 group-hover:text-bosque'}`}>{it.year}</span>
+              <span className={`text-sm font-semibold tabular-nums transition-colors ${k === i ? 'text-hoja' : 'text-olivo/45 group-hover:text-olivo'}`}>{it.year}</span>
             </button>
           ))}
         </div>

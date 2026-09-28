@@ -11,11 +11,11 @@ const { crumbs, light = false } = Astro.props;
         <li class="flex items-center gap-2">
           {i > 0 && <span aria-hidden="true" class="opacity-50">/</span>}
           {i < crumbs.length - 1 ? (
-            <a href={c.path} class:list={['link-line', light ? 'hover:text-white' : 'hover:text-bosque']}>
+            <a href={c.path} class:list={['link-line', light ? 'hover:text-white' : 'hover:text-olivo']}>
               {c.name}
             </a>
           ) : (
-            <span aria-current="page" class={light ? 'text-white' : 'text-bosque'}>
+            <span aria-current="page" class={light ? 'text-white' : 'text-olivo'}>
               {c.name}
             </span>
           )}

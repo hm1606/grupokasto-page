@@ -43,12 +43,15 @@ Requiere Node 22.12 o superior (y Python 3 con Pillow solo para `legacy/build.py
 | Logotipo (balanza en vectores) | `src/components/Logo.astro` |
 | A quién llegan los mensajes del formulario | `.env` del servidor (`CONTACT_TO_EMAIL`, ver `.env.example`) |
 
-### Identidad
+### Identidad (la misma del sitio anterior)
 
-- **Colores:** verde hoja `#5b8c51` y amarillo trigo `#e8d45f` (las hojas del ícono de Grupo Kasto), verde bosque `#15291d`
-  para fondos oscuros y harina `#f7f4ec` de fondo claro.
-- **Tipografías** (en `public/fonts/`, sin depender de Google): Fraunces para títulos y Manrope para texto.
-- **Logotipo:** la balanza se redibujó en SVG a partir del PNG original (143 px) para que se vea nítida en cualquier tamaño.
+- **Paleta oficial** (variables `--thm-*` del sitio anterior): amarillo `#eddd5e`, verde `#5b8c51`, olivo `#404a3d`,
+  gris `#eceeef` y crema `#f5f0e9`. En `global.css` se llaman `trigo`, `hoja`, `olivo`, `gris` y `crema`.
+- **Tipografías** (en `public/fonts/`, sin depender de Google): Barlow Condensed para títulos y Barlow para texto, como el
+  sitio anterior; Marcellus SC solo para el nombre del logotipo.
+- **Logotipo:** la balanza redibujada en SVG sobre el logotipo oficial (`src/lib/brand.ts`, `src/components/Logo.astro`).
+- **Elementos gráficos del sitio anterior:** la rama de hojas amarilla bajo cada título (`src/components/Espiga.astro`), el trigo
+  en silueta al pie de las fotos y la granja dibujada a línea del pie de página (`src/assets/marca/`).
 
 ### Agregar una noticia
 

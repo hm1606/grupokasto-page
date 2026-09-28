@@ -16,18 +16,18 @@ const pub = (...p) => path.join(root, 'public', ...p);
 const font = (pkg, file) => fs.readFile(path.join(root, 'node_modules/@fontsource', pkg, 'files', file));
 
 const fonts = [
-  { name: 'Fraunces', data: await font('fraunces', 'fraunces-latin-400-normal.woff'), weight: 400, style: 'normal' },
-  { name: 'Fraunces', data: await font('fraunces', 'fraunces-latin-400-italic.woff'), weight: 400, style: 'italic' },
-  { name: 'Manrope', data: await font('manrope', 'manrope-latin-600-normal.woff'), weight: 600, style: 'normal' },
+  { name: 'Barlow Condensed', data: await font('barlow-condensed', 'barlow-condensed-latin-600-normal.woff'), weight: 600, style: 'normal' },
+  { name: 'Barlow', data: await font('barlow', 'barlow-latin-500-normal.woff'), weight: 500, style: 'normal' },
+  { name: 'Marcellus SC', data: await font('marcellus-sc', 'marcellus-sc-latin-400-normal.woff'), weight: 400, style: 'normal' },
 ];
 
-const C = { bosque: '#15291d', hoja: '#5b8c51', trigo: '#e8d45f', harina: '#f7f4ec' };
+// Paleta oficial de Grupo Kasto
+const C = { olivo: '#404a3d', hoja: '#5b8c51', trigo: '#eddd5e', crema: '#f5f0e9' };
 const W = 1200;
 const H = 630;
-// La balanza de Grupo Kasto (misma geometría que src/components/Logo.astro)
-const MARK =
-  '<path fill-rule="evenodd" d="M30 4 2 46h56L30 4Zm0 7.6L9.85 41.8h40.3L30 11.6Z"/><path fill-rule="evenodd" d="M88 4 60 46h56L88 4Zm0 7.6L67.85 41.8h40.3L88 11.6Z"/><path fill-rule="evenodd" d="M40 3h38L59 31 40 3Zm7.55 4L59 23.9 70.45 7h-22.9Z"/><path d="M4 49.5h52c0 7-11.6 12-26 12S4 56.5 4 49.5Zm58 0h52c0 7-11.6 12-26 12s-26-5-26-12Z"/>';
-const markUri = (color) => `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 118 64" fill="${color}">${MARK}</svg>`).toString('base64')}`;
+// La balanza de Grupo Kasto (misma geometría que src/lib/brand.ts), viewBox 0 0 60 48
+const MARK = '<g fill="none" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter" stroke-miterlimit="10"><path d="M14.4 1.4 2.7 33.4h23.4Z"/><path d="M45.6 1.4 33.9 33.4h23.4Z"/><path d="M22.4 1.7h15.2L30 22.4Z"/></g><g fill="currentColor"><rect x="2" y="32.7" width="24.8" height="1.6"/><rect x="33.2" y="32.7" width="24.8" height="1.6"/><path d="M1.9 36h25a12.5 10.6 0 0 1-25 0Z"/><path d="M33.1 36h25a12.5 10.6 0 0 1-25 0Z"/></g><g fill="none" stroke="currentColor" stroke-width=".35"><circle cx="57.6" cy="2.4" r="1.6"/><path d="M57 3.4V1.4h.7a.5.5 0 0 1 0 1H57m.6 0 .6 1"/></g>';
+const markUri = (color) => `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 48" color="${color}">${MARK}</svg>`).toString('base64')}`;
 
 const h = (style, children = []) => ({ type: 'div', props: { style: { display: 'flex', ...style }, children } });
 
@@ -37,20 +37,20 @@ async function photoUri(file) {
 }
 
 async function card({ photo, eyebrow, title, out }) {
-  const size = title.length > 70 ? 50 : title.length > 45 ? 58 : 68;
-  const tree = h({ width: W, height: H, position: 'relative', background: C.bosque, fontFamily: 'Manrope' }, [
+  const size = title.length > 70 ? 56 : title.length > 45 ? 66 : 80;
+  const tree = h({ width: W, height: H, position: 'relative', background: C.olivo, fontFamily: 'Barlow' }, [
     { type: 'img', props: { src: await photoUri(photo), style: { position: 'absolute', left: 0, top: 0, width: W, height: H } } },
-    h({ position: 'absolute', left: 0, top: 0, width: W, height: H, backgroundImage: 'linear-gradient(90deg, rgba(21,41,29,.94) 0%, rgba(21,41,29,.78) 48%, rgba(21,41,29,.25) 100%)' }),
+    h({ position: 'absolute', left: 0, top: 0, width: W, height: H, backgroundImage: 'linear-gradient(90deg, rgba(64,74,61,.95) 0%, rgba(64,74,61,.8) 50%, rgba(64,74,61,.2) 100%)' }),
     h({ position: 'absolute', left: 72, top: 64, right: 72, bottom: 64, flexDirection: 'column', justifyContent: 'space-between' }, [
-      h({ alignItems: 'center', gap: 18 }, [
-        { type: 'img', props: { src: markUri(C.trigo), width: 96, height: 52 } },
-        h({ color: C.harina, fontSize: 30, fontWeight: 600 }, 'Grupo Kasto'),
+      h({ flexDirection: 'column', alignItems: 'center', width: 150 }, [
+        { type: 'img', props: { src: markUri(C.crema), width: 80, height: 64 } },
+        h({ marginTop: 8, color: C.crema, fontFamily: 'Marcellus SC', fontSize: 23 }, 'Grupo Kasto'),
       ]),
       h({ flexDirection: 'column', maxWidth: 820 }, [
-        h({ color: C.trigo, fontSize: 20, fontWeight: 600, letterSpacing: 4, textTransform: 'uppercase' }, eyebrow),
-        h({ marginTop: 18, color: C.harina, fontFamily: 'Fraunces', fontSize: size, lineHeight: 1.08 }, title),
+        h({ color: C.trigo, fontFamily: 'Barlow Condensed', fontSize: 24, fontWeight: 600, letterSpacing: 4, textTransform: 'uppercase' }, eyebrow),
+        h({ marginTop: 14, color: C.crema, fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: size, lineHeight: 1.02, textTransform: 'uppercase' }, title.replace(/\.$/, '')),
       ]),
-      h({ color: 'rgba(247,244,236,.7)', fontSize: 20 }, 'grupokasto.com · Desde 1945'),
+      h({ color: 'rgba(245,240,233,.75)', fontSize: 21 }, 'grupokasto.com · Desde 1945'),
     ]),
   ]);
   const svg = await satori(tree, { width: W, height: H, fonts });
@@ -93,9 +93,9 @@ for (const file of await fs.readdir(newsDir)) {
   await card({ photo: cover, eyebrow: `Noticias · ${category}`, title, out: pub('og', 'noticias', file.replace(/\.md$/, '.jpg')) });
 }
 
-// Íconos: balanza amarilla sobre verde bosque
+// Íconos: balanza amarilla sobre el olivo de la marca
 const iconSvg = (size, radius) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" rx="${radius}" fill="${C.bosque}"/><svg x="${size * 0.14}" y="${size * 0.31}" width="${size * 0.72}" height="${size * 0.39}" viewBox="0 0 118 64" fill="${C.trigo}">${MARK}</svg></svg>`;
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" rx="${radius}" fill="${C.olivo}"/><svg x="${size * 0.17}" y="${size * 0.2}" width="${size * 0.66}" height="${size * 0.6}" viewBox="-1 -1 62 50" color="${C.trigo}">${MARK}</svg></svg>`;
 await fs.writeFile(pub('favicon.svg'), iconSvg(64, 14));
 const png = (size, radius) => sharp(Buffer.from(iconSvg(size, radius))).png().toBuffer();
 await fs.writeFile(pub('apple-touch-icon.png'), await png(180, 0));
@@ -123,8 +123,8 @@ await fs.writeFile(
       description: 'Grupo agroindustrial mexicano desde 1945',
       start_url: '/',
       display: 'standalone',
-      background_color: C.harina,
-      theme_color: C.bosque,
+      background_color: C.crema,
+      theme_color: C.olivo,
       lang: 'es-MX',
       icons: [
         { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },

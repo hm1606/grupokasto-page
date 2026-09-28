@@ -46,14 +46,14 @@ const years = new Date().getFullYear() - site.foundingYear;
       </div>
       <div class="lg:col-span-5 lg:col-start-8">
         <p class="display text-[7rem] leading-none text-hoja sm:text-[9rem]" data-reveal>+{years}</p>
-        <p class="eyebrow mt-2 text-oro" data-reveal style="--reveal-delay:80ms">años de experiencia</p>
-        <p class="mt-8 font-serif text-2xl leading-snug text-bosque sm:text-3xl" data-reveal style="--reveal-delay:160ms">{leadership}</p>
+        <p class="eyebrow mt-2 text-hoja" data-reveal style="--reveal-delay:80ms">años de experiencia</p>
+        <p class="mt-8 font-serif text-2xl leading-snug text-olivo sm:text-3xl" data-reveal style="--reveal-delay:160ms">{leadership}</p>
       </div>
     </div>
   </section>
 
   <!-- Historia -->
-  <section class="bg-arena/60">
+  <section class="bg-gris/60">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <SectionHead eyebrow="Conócenos" title="Nuestra historia" text="Grupo Kasto nace en 1945 en La Piedad, Michoacán, en el segmento de la comercialización de semillas. Recorre los hitos que nos trajeron hasta aquí." />
       <div class="mt-14" data-reveal style="--reveal-delay:200ms">
@@ -63,20 +63,20 @@ const years = new Date().getFullYear() - site.foundingYear;
   </section>
 
   <!-- Colaboradores -->
-  <section class="bg-harina">
+  <section class="bg-crema">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <SectionHead align="center" eyebrow="El mayor activo de la compañía" title="Nuestros colaboradores" />
       <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {
           teamVoices.map((t, i) => (
-            <figure class="group flex flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-bosque/8" data-reveal style={`--reveal-delay:${i * 90}ms`}>
-              <div class="zoom aspect-square overflow-hidden bg-arena">
+            <figure class="group flex flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-olivo/8" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <div class="zoom aspect-square overflow-hidden bg-gris">
                 <Image src={img(`personas/${t.image}`)} alt={t.name} widths={[320, 640]} sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw" class="size-full object-cover" />
               </div>
               <div class="flex flex-1 flex-col p-7">
-                <blockquote class="flex-1 font-serif text-xl leading-snug text-bosque">“{t.quote}”</blockquote>
-                <figcaption class="mt-6 flex items-baseline justify-between border-t border-bosque/10 pt-4">
-                  <span class="font-semibold text-bosque">{t.name}</span>
+                <blockquote class="flex-1 font-serif text-xl leading-snug text-olivo">“{t.quote}”</blockquote>
+                <figcaption class="mt-6 flex items-baseline justify-between border-t border-olivo/10 pt-4">
+                  <span class="font-semibold text-olivo">{t.name}</span>
                   <span class="text-sm text-niebla">Desde {t.since}</span>
                 </figcaption>
               </div>
@@ -88,7 +88,7 @@ const years = new Date().getFullYear() - site.foundingYear;
   </section>
 
   <!-- Clientes -->
-  <section class="relative overflow-hidden bg-bosque text-harina">
+  <section class="relative overflow-hidden bg-olivo text-crema">
     <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <SectionHead light eyebrow="La razón de ser del grupo" title="Nuestros clientes" />
@@ -104,7 +104,7 @@ const years = new Date().getFullYear() - site.foundingYear;
                 <Image src={img(`personas/${c.image}`)} alt="" widths={[96, 192]} sizes="48px" class="size-12 rounded-full object-cover" />
                 <span>
                   <span class="block font-semibold">{c.name}</span>
-                  <span class="text-sm text-harina/60">{c.role}</span>
+                  <span class="text-sm text-crema/60">{c.role}</span>
                 </span>
               </figcaption>
             </figure>

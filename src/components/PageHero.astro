@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Breadcrumbs from './Breadcrumbs.astro';
+import Espiga from './Espiga.astro';
+import { img } from '../lib/images';
 import type { Crumb } from '../lib/seo';
 
 type Props = {
@@ -17,7 +19,7 @@ type Props = {
 const { eyebrow, title, intro, image, imageAlt = '', crumbs, focus = 'center' } = Astro.props;
 ---
 
-<section class="relative isolate flex min-h-[72svh] items-end overflow-hidden bg-bosque text-white lg:min-h-[78svh]">
+<section class="relative isolate flex min-h-[72svh] items-end overflow-hidden bg-olivo text-white lg:min-h-[78svh]">
   <div class="absolute inset-0 -z-10" data-parallax="0.12">
     <Image
       src={image}
@@ -31,18 +33,20 @@ const { eyebrow, title, intro, image, imageAlt = '', crumbs, focus = 'center' } 
       data-intro-wait
     />
   </div>
-  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-bosque via-bosque/55 to-bosque/25"></div>
-  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-bosque/70 via-transparent to-transparent"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-olivo via-olivo/45 to-olivo/35"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-olivo/75 via-olivo/10 to-transparent"></div>
+  <Image src={img('marca/trigo-silueta')} alt="" widths={[1920]} sizes="100vw" class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 w-full object-cover object-top opacity-[0.12] select-none" aria-hidden="true" />
 
   <div class="mx-auto w-full max-w-[90rem] px-5 pt-40 pb-14 sm:px-8 lg:px-12 lg:pb-20">
     <Breadcrumbs crumbs={crumbs} light />
     <p class="eyebrow animate-fade-up mt-8 text-trigo" data-intro-wait>{eyebrow}</p>
-    <h1 class="display animate-fade-up mt-4 max-w-4xl text-[2.9rem] text-balance sm:text-6xl lg:text-[5.2rem]" style="animation-delay:120ms" data-intro-wait>
-      {title}
+    <h1 class="display animate-fade-up mt-3 max-w-5xl text-[3.1rem] text-balance uppercase sm:text-7xl lg:text-[6.2rem]" style="animation-delay:120ms" data-intro-wait>
+      {title.replace(/\.$/, '')}
     </h1>
+    <div class="animate-fade-up mt-5" style="animation-delay:200ms" data-intro-wait><Espiga /></div>
     {
       intro && (
-        <p class="animate-fade-up mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl" style="animation-delay:240ms" data-intro-wait>
+        <p class="animate-fade-up mt-5 max-w-2xl text-lg leading-relaxed text-white/85 sm:text-xl" style="animation-delay:240ms" data-intro-wait>
           {intro}
         </p>
       )

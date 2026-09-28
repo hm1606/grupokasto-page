@@ -46,7 +46,7 @@ export default function Gallery({ items, layout = 'mosaic' }: { items: GalleryIt
             <button
               type="button"
               onClick={() => setOpen(k)}
-              className={`group zoom relative block w-full overflow-hidden rounded-2xl bg-arena text-left ${layout === 'mosaic' ? 'h-full' : 'aspect-[4/3]'}`}
+              className={`group zoom relative block w-full overflow-hidden rounded-2xl bg-gris text-left ${layout === 'mosaic' ? 'h-full' : 'aspect-[4/3]'}`}
               aria-label={`Ampliar foto: ${it.caption}`}
             >
               <img
@@ -59,7 +59,7 @@ export default function Gallery({ items, layout = 'mosaic' }: { items: GalleryIt
                 height={it.thumb.height}
                 className="size-full object-cover"
               />
-              <span className="absolute inset-0 bg-gradient-to-t from-bosque/75 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+              <span className="absolute inset-0 bg-gradient-to-t from-olivo/75 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
               <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white">
                 <span>
                   {it.note && <span className="eyebrow block text-[0.6rem] text-trigo">{it.note}</span>}

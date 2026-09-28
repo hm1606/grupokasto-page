@@ -1,9 +1,11 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import SectionHead from '../components/SectionHead.astro';
 import CtaBand from '../components/CtaBand.astro';
+import ValueChain from '../components/ValueChain.astro';
+import ScrollText from '../components/react/ScrollText.tsx';
 import HomeHero from '../components/react/HomeHero.tsx';
 import CountUp from '../components/react/CountUp.tsx';
 import DivisionsExplorer from '../components/react/DivisionsExplorer.tsx';
@@ -14,8 +16,8 @@ import { img, pic } from '../lib/images';
 
 const heroSlides = await Promise.all(
   [
-    { key: 'portada/bodega', label: 'Granos', href: '/divisiones/granos/', alt: 'Tráiler cargando grano en una bodega de Grupo Kasto' },
-    { key: 'portada/molino-noche', label: 'Molinos de trigo', href: '/divisiones/molinos-de-trigo/', alt: 'Molino de trigo iluminado al anochecer' },
+    { key: 'portada/elote', label: 'Granos', href: '/divisiones/granos/', alt: 'Mazorca en el campo' },
+    { key: 'divisiones/molinos-de-trigo/hero', label: 'Molinos de trigo', href: '/divisiones/molinos-de-trigo/', alt: 'Silos de un molino de trigo' },
     { key: 'divisiones/pecuaria/hero', label: 'Pecuaria', href: '/divisiones/pecuaria/', alt: 'Cerdos en granja' },
     { key: 'divisiones/invernaderos/hero', label: 'Invernaderos', href: '/divisiones/invernaderos/', alt: 'Invernaderos reflejados en el agua' },
     { key: 'divisiones/panaderia-y-bistro/hero', label: 'Panadería', href: '/divisiones/panaderia-y-bistro/', alt: 'Pan artesanal en Ohlala! Boulangerie Bistrot' },
@@ -41,18 +43,27 @@ const maxYears = Math.max(...experience.map((e) => e.years));
 ---
 
 <Layout pageType="WebPage" description={site.description}>
-  <HomeHero client:load slides={heroSlides} since={site.foundingYear} />
+  <HomeHero client:load slides={heroSlides} since={site.foundingYear} wheat={(await getImage({ src: img('marca/trigo-silueta'), width: 1920, format: 'webp' })).src} />
+
+  <!-- Declaración: se ilumina palabra por palabra al hacer scroll -->
+  <section class="grano">
+    <div class="mx-auto max-w-6xl px-5 pt-24 pb-6 text-center sm:px-8 lg:pt-36">
+      <p class="eyebrow text-hoja" data-reveal>Acerca de nosotros</p>
+      <ScrollText
+        client:visible
+        text="Somos un sólido y reconocido grupo de empresas agroindustriales con un gran compromiso social: producción, comercialización, servicios y distribución, del campo hasta tu hogar."
+        highlight={['agroindustriales', 'compromiso', 'social:', 'hogar.']}
+        className="display mt-6 text-[2.3rem] leading-[1.08] text-olivo sm:text-5xl lg:text-[4.1rem]"
+      />
+    </div>
+  </section>
 
   <!-- Acerca de -->
   <section class="grano relative overflow-hidden">
     <div class="mx-auto grid max-w-[90rem] gap-16 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12 lg:py-36">
       <div class="lg:col-span-6 lg:pr-10">
-        <SectionHead eyebrow="Acerca de nosotros" title='Líderes en el mercado <em class="italic text-hoja">agrícola</em>, con sentido humano.' />
+        <SectionHead eyebrow="Acerca de nosotros" title='Líderes en el mercado <em class="text-hoja">agrícola</em>, con sentido humano.' />
         <div class="mt-8 space-y-5 text-lg leading-relaxed text-tinta/75" data-reveal style="--reveal-delay:200ms">
-          <p>
-            Somos un sólido y reconocido grupo de empresas agroindustriales con un gran compromiso social: producción, comercialización, servicios
-            y distribución de productos de consumo.
-          </p>
           <p>
             Nuestra gama de giros nos da una estructura sólida para cumplir las demandas de suministro y calidad de nuestros clientes, con prácticas
             cada vez más eficientes, innovadoras, inocuas y ecológicas.
@@ -63,13 +74,13 @@ const maxYears = Math.max(...experience.map((e) => e.years));
             <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-hoja/12 text-hoja">
               <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21V9m0 0c0-3 2-5 6-5 0 4-2 6-6 5Zm0 4c0-3-2-5-6-5 0 4 2 6 6 5Z"></path></svg>
             </span>
-            <p><strong class="block font-semibold text-bosque">Los mejores productos</strong><span class="text-[0.95rem] text-tinta/65">y servicios en nuestra zona de influencia.</span></p>
+            <p><strong class="block font-semibold text-olivo">Los mejores productos</strong><span class="text-[0.95rem] text-tinta/65">y servicios en nuestra zona de influencia.</span></p>
           </div>
           <div class="flex gap-4">
-            <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-trigo/30 text-oro">
+            <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-trigo/30 text-hoja">
               <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 20h18M5 20V10l7-5 7 5v10M10 20v-5h4v5"></path></svg>
             </span>
-            <p><strong class="block font-semibold text-bosque">Desde el campo hasta tu hogar</strong><span class="text-[0.95rem] text-tinta/65">en el Bajío, Occidente y Noroeste.</span></p>
+            <p><strong class="block font-semibold text-olivo">Desde el campo hasta tu hogar</strong><span class="text-[0.95rem] text-tinta/65">en el Bajío, Occidente y Noroeste.</span></p>
           </div>
         </div>
         <a href="/nosotros/" class="btn btn-ghost group mt-12" data-reveal style="--reveal-delay:320ms">
@@ -81,26 +92,26 @@ const maxYears = Math.max(...experience.map((e) => e.years));
         <div class="relative ml-auto w-[82%] overflow-hidden rounded-[2rem]" data-reveal="mask">
           <Image src={img('portada/silos')} alt="Silos de almacenamiento de granos" widths={[480, 800, 1200]} sizes="(min-width:1024px) 40vw, 80vw" class="aspect-[4/5] w-full object-cover" />
         </div>
-        <div class="absolute -bottom-10 left-0 w-[46%] overflow-hidden rounded-[1.5rem] border-8 border-harina shadow-xl shadow-bosque/10" data-reveal="mask" style="--reveal-delay:250ms" data-parallax="0.06">
+        <div class="absolute -bottom-10 left-0 w-[46%] overflow-hidden rounded-[1.5rem] border-8 border-crema shadow-xl shadow-olivo/10" data-reveal="mask" style="--reveal-delay:250ms" data-parallax="0.06">
           <Image src={img('portada/costal')} alt="Costal de harina con el logotipo de Grupo Kasto" widths={[320, 640]} sizes="(min-width:1024px) 20vw, 45vw" class="aspect-[4/5] w-full object-cover" />
         </div>
-        <div class="absolute top-8 -left-2 rounded-2xl bg-bosque px-6 py-5 text-harina shadow-xl sm:left-6 lg:-left-6" data-reveal style="--reveal-delay:400ms">
+        <div class="absolute top-8 -left-2 rounded-2xl bg-olivo px-6 py-5 text-crema shadow-xl sm:left-6 lg:-left-6" data-reveal style="--reveal-delay:400ms">
           <p class="display text-5xl text-trigo">1945</p>
-          <p class="mt-1 text-sm text-harina/70">La Piedad, Michoacán</p>
+          <p class="mt-1 text-sm text-crema/70">La Piedad, Michoacán</p>
         </div>
       </div>
     </div>
 
     <!-- Cifras -->
     <div class="mx-auto max-w-[90rem] px-5 pb-24 sm:px-8 lg:px-12 lg:pb-32">
-      <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-bosque/10 lg:grid-cols-4">
+      <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-olivo/10 lg:grid-cols-4">
         {
           stats.map((s, i) => (
-            <div class="bg-harina p-7 sm:p-10" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+            <div class="bg-crema p-7 sm:p-10" data-reveal style={`--reveal-delay:${i * 90}ms`}>
               <dt class="sr-only">{s.label}</dt>
               <dd>
-                <CountUp client:visible to={s.value} suffix={s.suffix} className="display block text-5xl text-bosque sm:text-6xl lg:text-7xl" />
-                <p class="mt-3 font-semibold text-bosque">{s.label}</p>
+                <CountUp client:visible to={s.value} suffix={s.suffix} className="display block text-5xl text-olivo sm:text-6xl lg:text-7xl" />
+                <p class="mt-3 font-semibold text-olivo">{s.label}</p>
                 <p class="mt-1 text-sm text-niebla">{s.note}</p>
               </dd>
             </div>
@@ -111,10 +122,10 @@ const maxYears = Math.max(...experience.map((e) => e.years));
   </section>
 
   <!-- Divisiones -->
-  <section class="bg-arena/60">
+  <section class="bg-gris/60">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-36">
       <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHead eyebrow="Nuestras divisiones" title="Ocho negocios, <em class='italic text-hoja'>una sola</em> cadena de valor." />
+        <SectionHead eyebrow="Nuestras divisiones" title="Ocho negocios, <em class='text-hoja'>una sola</em> cadena de valor." />
         <p class="max-w-md text-lg leading-relaxed text-tinta/70" data-reveal style="--reveal-delay:200ms">
           Operamos en el Bajío, Occidente y Noroeste de México, promovemos nuestros productos en más de 25 estados y exportamos a Estados Unidos y Canadá.
         </p>
@@ -125,44 +136,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     </div>
   </section>
 
-  <!-- Experiencia -->
-  <section class="relative overflow-hidden bg-bosque text-harina">
-    <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto grid max-w-[90rem] gap-16 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-24 lg:px-12 lg:py-36">
-      <div>
-        <SectionHead
-          light
-          eyebrow="Con casi un siglo en el negocio"
-          title="Nuestra experiencia"
-          text="Los orígenes de Grupo Kasto se remontan a 1945, cuando el fundador se integra a la venta de granos en un establecimiento conocido como “La Maicería”, en La Piedad, Michoacán."
-        />
-        <div class="relative mt-12 overflow-hidden rounded-[2rem]" data-reveal="mask">
-          <Image src={img('portada/costales-antiguos')} alt="Costales antiguos de grano" widths={[480, 800]} sizes="(min-width:1024px) 40vw, 100vw" class="aspect-[16/10] w-full object-cover" />
-        </div>
-      </div>
-      <div class="lg:pt-6">
-        <p class="eyebrow text-brote" data-reveal>Años en cada giro</p>
-        <ul class="mt-8 space-y-7">
-          {
-            experience.map((e, i) => (
-              <li data-reveal style={`--reveal-delay:${i * 70}ms`} class="exp">
-                <div class="flex items-baseline justify-between gap-4">
-                  <span class="text-lg font-semibold">{e.label}</span>
-                  <span class="display text-3xl text-trigo tabular-nums">
-                    {e.years}
-                    <span class="ml-1 font-sans text-sm text-harina/60">años</span>
-                  </span>
-                </div>
-                <div class="mt-3 h-[3px] overflow-hidden rounded-full bg-white/10">
-                  <span class="exp-bar block h-full rounded-full bg-gradient-to-r from-hoja to-trigo" style={`--w:${(e.years / maxYears) * 100}%`} />
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
-  </section>
+  <ValueChain />
 
   <!-- Oferta de valor -->
   <section class="grano">
@@ -176,15 +150,15 @@ const maxYears = Math.max(...experience.map((e) => e.years));
       <div class="mt-16 grid gap-5 lg:grid-cols-3">
         {
           leaders.map((l, i) => (
-            <figure class="flex flex-col justify-between rounded-[2rem] bg-white/70 p-8 ring-1 ring-bosque/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
+            <figure class="flex flex-col justify-between rounded-[2rem] bg-white/70 p-8 ring-1 ring-olivo/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
               <svg viewBox="0 0 32 24" class="h-6 w-8 text-trigo" fill="currentColor" aria-hidden="true">
                 <path d="M0 24V14C0 6 4 1 12 0l1 4c-4 1-6 4-6 8h5v12H0Zm19 0V14c0-8 4-13 12-14l1 4c-4 1-6 4-6 8h5v12H19Z" />
               </svg>
-              <blockquote class="mt-6 font-serif text-xl leading-relaxed text-bosque">{l.quote}</blockquote>
-              <figcaption class="mt-8 flex items-center gap-4 border-t border-bosque/10 pt-6">
+              <blockquote class="mt-6 font-serif text-xl leading-relaxed text-olivo">{l.quote}</blockquote>
+              <figcaption class="mt-8 flex items-center gap-4 border-t border-olivo/10 pt-6">
                 <Image src={img(`personas/${l.image}`)} alt="" widths={[96, 192]} sizes="48px" class="size-12 rounded-full object-cover" />
                 <span>
-                  <span class="block font-semibold text-bosque">{l.name}</span>
+                  <span class="block font-semibold text-olivo">{l.name}</span>
                   <span class="text-sm text-niebla">{l.role}</span>
                 </span>
               </figcaption>
@@ -195,37 +169,74 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     </div>
   </section>
 
+  <!-- Experiencia -->
+  <section class="relative overflow-hidden bg-gris/70">
+    <div class="relative mx-auto grid max-w-[90rem] gap-16 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-24 lg:px-12 lg:py-36">
+      <div>
+        <SectionHead
+          eyebrow="Con casi un siglo en el negocio"
+          title="Nuestra experiencia"
+          text="Los orígenes de Grupo Kasto se remontan a 1945, cuando el fundador se integra a la venta de granos en un establecimiento conocido como “La Maicería”, en La Piedad, Michoacán."
+        />
+        <div class="relative mt-12 overflow-hidden rounded-[2rem]" data-reveal="mask">
+          <Image src={img('portada/costales-antiguos')} alt="Costales antiguos de grano" widths={[480, 800]} sizes="(min-width:1024px) 40vw, 100vw" class="aspect-[16/10] w-full object-cover" />
+        </div>
+      </div>
+      <div class="lg:pt-6">
+        <p class="eyebrow text-hoja" data-reveal>Años en cada giro</p>
+        <ul class="mt-8 space-y-7">
+          {
+            experience.map((e, i) => (
+              <li data-reveal style={`--reveal-delay:${i * 70}ms`} class="exp">
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="text-lg font-semibold text-olivo">{e.label}</span>
+                  <span class="display text-4xl text-hoja tabular-nums">
+                    {e.years}
+                    <span class="ml-1 font-sans text-sm text-niebla">años</span>
+                  </span>
+                </div>
+                <div class="mt-3 h-1 overflow-hidden rounded-full bg-olivo/10">
+                  <span class="exp-bar block h-full rounded-full bg-gradient-to-r from-hoja to-trigo" style={`--w:${(e.years / maxYears) * 100}%`} />
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- Frase con parallax -->
-  <section class="relative isolate flex min-h-[80svh] items-center overflow-hidden bg-bosque text-white">
+  <section class="relative isolate flex min-h-[80svh] items-center overflow-hidden bg-olivo text-white">
     <div class="absolute inset-0 -z-10" data-parallax="0.15">
       <Image src={img('portada/trigo')} alt="" widths={[800, 1400, 2000]} sizes="100vw" class="h-[125%] w-full object-cover" />
     </div>
-    <div class="absolute inset-0 -z-10 bg-bosque/55"></div>
+    <div class="absolute inset-0 -z-10 bg-olivo/55"></div>
     <div class="mx-auto max-w-[90rem] px-5 text-center sm:px-8 lg:px-12">
       <p class="eyebrow text-trigo" data-reveal>Grupo Kasto</p>
       <p class="display mx-auto mt-6 max-w-5xl text-5xl text-balance sm:text-7xl lg:text-8xl" data-reveal style="--reveal-delay:100ms">
-        La agricultura es importante para el <em class="text-trigo italic">desarrollo futuro.</em>
+        La agricultura es importante para el <em class="text-trigo">desarrollo futuro.</em>
       </p>
     </div>
   </section>
 
   <!-- Sostenibilidad -->
-  <section class="bg-harina">
+  <section class="bg-crema">
     <div class="mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-24 lg:px-12 lg:py-36">
       <div class="relative order-2 lg:order-1">
         <div class="overflow-hidden rounded-[2rem]" data-reveal="mask">
           <Image src={img('portada/contacto')} alt="Campo de cultivo en flor con sistema de riego" widths={[640, 1000, 1400]} sizes="(min-width:1024px) 45vw, 100vw" class="aspect-[5/4] w-full object-cover" />
         </div>
-        <div class="absolute -right-3 -bottom-8 grid grid-cols-3 gap-2 rounded-3xl bg-white p-3 shadow-xl shadow-bosque/10 sm:right-8" data-reveal style="--reveal-delay:250ms">
+        <div class="absolute -right-3 -bottom-8 grid grid-cols-3 gap-2 rounded-3xl bg-white p-3 shadow-xl shadow-olivo/10 sm:right-8" data-reveal style="--reveal-delay:250ms">
           <span class="rounded-2xl bg-hoja px-4 py-3 text-center text-xs font-semibold text-white">Ambiental</span>
-          <span class="rounded-2xl bg-trigo px-4 py-3 text-center text-xs font-semibold text-bosque">Social</span>
-          <span class="rounded-2xl bg-bosque px-4 py-3 text-center text-xs font-semibold text-harina">Gobernanza</span>
+          <span class="rounded-2xl bg-trigo px-4 py-3 text-center text-xs font-semibold text-olivo">Social</span>
+          <span class="rounded-2xl bg-olivo px-4 py-3 text-center text-xs font-semibold text-crema">Gobernanza</span>
         </div>
       </div>
       <div class="order-1 lg:order-2">
         <SectionHead
           eyebrow="Rumbo a la sostenibilidad"
-          title="Un modelo para crecer <em class='italic text-hoja'>cuidando</em> el entorno."
+          title="Un modelo para crecer <em class='text-hoja'>cuidando</em> el entorno."
           text="Desde 2024 integramos los criterios ASG —Ambiental, Social y Gobernanza— a la operación diaria, alineados con los Objetivos de Desarrollo Sostenible de la ONU."
         />
         <div class="mt-10 flex flex-wrap gap-3" data-reveal style="--reveal-delay:220ms">
@@ -240,7 +251,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
   </section>
 
   <!-- Noticias -->
-  <section class="bg-arena/60">
+  <section class="bg-gris/60">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <div class="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <SectionHead eyebrow="Desde Grupo Kasto" title="Noticias recientes" />
@@ -253,14 +264,14 @@ const maxYears = Math.max(...experience.map((e) => e.years));
         {
           news.map((n, i) => (
             <a href={`/noticias/${n.id}/`} class="group block" data-reveal style={`--reveal-delay:${i * 100}ms`}>
-              <div class="zoom aspect-[4/3] overflow-hidden rounded-2xl bg-arena">
+              <div class="zoom aspect-[4/3] overflow-hidden rounded-2xl bg-gris">
                 <Image src={n.data.cover} alt="" widths={[480, 800]} sizes="(min-width:768px) 30vw, 100vw" class="size-full object-cover" />
               </div>
               <p class="mt-5 flex items-center gap-3 text-[0.75rem] font-semibold text-niebla">
                 <span class="rounded-full bg-hoja/12 px-2.5 py-1 text-hoja">{n.data.category}</span>
                 <time datetime={n.data.date.toISOString().slice(0, 10)}>{fmtDate(n.data.date)}</time>
               </p>
-              <h3 class="mt-3 font-serif text-2xl leading-snug text-bosque transition-colors group-hover:text-hoja">{n.data.title}</h3>
+              <h3 class="mt-3 font-serif text-2xl leading-snug text-olivo transition-colors group-hover:text-hoja">{n.data.title}</h3>
             </a>
           ))
         }
@@ -269,7 +280,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
   </section>
 
   <!-- Marcas -->
-  <section class="overflow-hidden border-y border-bosque/8 bg-harina py-14" aria-label="Empresas y marcas de Grupo Kasto">
+  <section class="overflow-hidden border-y border-olivo/8 bg-crema py-14" aria-label="Empresas y marcas de Grupo Kasto">
     <p class="eyebrow text-center text-niebla">Empresas y marcas del grupo</p>
     <div class="marquee mt-10 flex w-max animate-marquee items-center gap-16 hover:[animation-play-state:paused]">
       {

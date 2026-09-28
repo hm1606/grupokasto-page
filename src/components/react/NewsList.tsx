@@ -16,7 +16,7 @@ export default function NewsList({ items }: { items: NewsCard[] }) {
 
   return (
     <div>
-      <div className="flex flex-col gap-5 border-b border-bosque/10 pb-8 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-5 border-b border-olivo/10 pb-8 lg:flex-row lg:items-center lg:justify-between">
         <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0" role="tablist" aria-label="Categorías">
           {categories.map((c) => (
             <button
@@ -26,7 +26,7 @@ export default function NewsList({ items }: { items: NewsCard[] }) {
               aria-selected={c === cat}
               onClick={() => setCat(c)}
               className={`shrink-0 rounded-full px-4 py-2 text-[0.82rem] font-semibold transition-colors ${
-                c === cat ? 'bg-bosque text-harina' : 'bg-arena/70 text-bosque/75 hover:bg-arena hover:text-bosque'
+                c === cat ? 'bg-olivo text-crema' : 'bg-gris/70 text-olivo/75 hover:bg-gris hover:text-olivo'
               }`}
             >
               {c}
@@ -44,7 +44,7 @@ export default function NewsList({ items }: { items: NewsCard[] }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Buscar noticias"
-            className="w-full rounded-full border border-bosque/15 bg-white/70 py-2.5 pr-4 pl-11 text-sm outline-none focus:border-hoja focus:bg-white"
+            className="w-full rounded-full border border-olivo/15 bg-white/70 py-2.5 pr-4 pl-11 text-sm outline-none focus:border-hoja focus:bg-white"
           />
         </label>
       </div>
@@ -61,14 +61,14 @@ export default function NewsList({ items }: { items: NewsCard[] }) {
               transition={{ duration: 0.5, ease }}
             >
               <a href={`/noticias/${n.slug}/`} className="group block">
-                <div className="zoom aspect-[4/3] overflow-hidden rounded-2xl bg-arena">
+                <div className="zoom aspect-[4/3] overflow-hidden rounded-2xl bg-gris">
                   <img src={n.image.src} srcSet={n.image.srcset} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" alt="" loading="lazy" className="size-full object-cover" />
                 </div>
                 <p className="mt-5 flex items-center gap-3 text-[0.75rem] font-semibold text-niebla">
                   <span className="rounded-full bg-hoja/12 px-2.5 py-1 text-hoja">{n.category}</span>
                   <time dateTime={n.date}>{n.dateLabel}</time>
                 </p>
-                <h3 className="mt-3 font-serif text-[1.45rem] leading-snug text-bosque transition-colors group-hover:text-hoja">{n.title}</h3>
+                <h3 className="mt-3 font-serif text-[1.45rem] leading-snug text-olivo transition-colors group-hover:text-hoja">{n.title}</h3>
                 <p className="mt-2 line-clamp-2 text-[0.95rem] leading-relaxed text-tinta/65">{n.excerpt}</p>
               </a>
             </motion.li>

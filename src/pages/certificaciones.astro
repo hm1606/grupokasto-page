@@ -36,7 +36,7 @@ const crumbs = [
         <div class="lg:col-span-5">
           <SectionHead
             eyebrow="Nuestros certificados"
-            title="Calidad que se <em class='italic text-hoja'>audita</em>."
+            title="Calidad que se <em class='text-hoja'>audita</em>."
             text="Desde 2012, las empresas de las divisiones Granos y Molinos de trigo están certificadas bajo ISO 9001:2015 y HACCP. Desde 2022, Molino La Concepción cuenta además con FSSC 22000 y Kosher."
           />
           <div class="mt-10 overflow-hidden rounded-[2rem]" data-reveal="mask">
@@ -46,11 +46,11 @@ const crumbs = [
         <ul class="grid gap-5 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
           {
             certifications.map((c, i) => (
-              <li class="flex flex-col rounded-[1.75rem] bg-white p-8 ring-1 ring-bosque/8" data-reveal style={`--reveal-delay:${i * 90}ms`}>
-                <div class="grid h-28 place-items-center rounded-2xl bg-harina">
+              <li class="flex flex-col rounded-[1.75rem] bg-white p-8 ring-1 ring-olivo/8" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+                <div class="grid h-28 place-items-center rounded-2xl bg-crema">
                   <Image src={img(`certificaciones/${c.image}`)} alt={`Logotipo ${c.name}`} widths={[160, 320]} sizes="140px" class="max-h-20 w-auto object-contain" />
                 </div>
-                <h3 class="display mt-7 text-3xl text-bosque">{c.name}</h3>
+                <h3 class="display mt-7 text-3xl text-olivo">{c.name}</h3>
                 <p class="mt-2 leading-relaxed text-tinta/70">{c.text}</p>
               </li>
             ))
@@ -60,7 +60,7 @@ const crumbs = [
     </div>
   </section>
 
-  <section class="relative overflow-hidden bg-bosque text-harina">
+  <section class="relative overflow-hidden bg-olivo text-crema">
     <div class="mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-24 lg:px-12 lg:py-32">
       <div>
         <SectionHead
@@ -73,7 +73,7 @@ const crumbs = [
           {
             greenhouseCertifications.map((c, i) => (
               <li class="flex items-center gap-5 py-4" data-reveal style={`--reveal-delay:${i * 60}ms`}>
-                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-trigo text-bosque">
+                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-trigo text-olivo">
                   <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg>
                 </span>
                 <span class="text-lg">{c}</span>

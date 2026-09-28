@@ -1,0 +1,15 @@
+---
+// Rama de hojas amarilla que el sitio anterior ponía bajo cada título (resources/leaf.png), en vectores.
+type Props = { class?: string };
+const { class: className = '' } = Astro.props;
+---
+
+<svg viewBox="0 0 56 22" class:list={['h-6 w-auto text-trigo', className]} fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+  <path d="M1 10.8h53" />
+  <ellipse cx="8.6" cy="5.4" rx="2.1" ry="4.6" transform="rotate(24 8.6 5.4)" />
+  <ellipse cx="26.4" cy="5.2" rx="2.1" ry="4.6" transform="rotate(24 26.4 5.2)" />
+  <ellipse cx="44.2" cy="5.4" rx="2.1" ry="4.6" transform="rotate(24 44.2 5.4)" />
+  <ellipse cx="14.4" cy="16.2" rx="2.1" ry="4.4" transform="rotate(-24 14.4 16.2)" />
+  <ellipse cx="31.6" cy="16" rx="2.1" ry="4.4" transform="rotate(-24 31.6 16)" />
+  <ellipse cx="49.2" cy="16.2" rx="2.1" ry="4.4" transform="rotate(-24 49.2 16.2)" />
+</svg>

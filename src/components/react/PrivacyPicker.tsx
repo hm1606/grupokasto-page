@@ -37,7 +37,7 @@ export default function PrivacyPicker({ companies }: { companies: PrivacyCompany
             id="pp-company"
             value={id}
             onChange={(e) => pick(e.target.value)}
-            className="w-full appearance-none rounded-2xl border border-bosque/15 bg-white px-5 py-4 pr-12 text-base font-semibold text-bosque outline-none focus:border-hoja"
+            className="w-full appearance-none rounded-2xl border border-olivo/15 bg-white px-5 py-4 pr-12 text-base font-semibold text-olivo outline-none focus:border-hoja"
           >
             {groups.map(([division, list]) => (
               <optgroup key={division} label={division}>
@@ -65,7 +65,7 @@ export default function PrivacyPicker({ companies }: { companies: PrivacyCompany
                       onClick={() => pick(c.id)}
                       aria-pressed={c.id === id}
                       className={`w-full rounded-xl px-4 py-2.5 text-left text-[0.92rem] transition-colors ${
-                        c.id === id ? 'bg-bosque font-semibold text-harina' : 'text-tinta/75 hover:bg-arena'
+                        c.id === id ? 'bg-olivo font-semibold text-crema' : 'text-tinta/75 hover:bg-gris'
                       }`}
                     >
                       {c.name}
@@ -79,25 +79,25 @@ export default function PrivacyPicker({ companies }: { companies: PrivacyCompany
       </div>
 
       <div className="lg:sticky lg:top-28 lg:self-start">
-        <div className="relative overflow-hidden rounded-[2rem] bg-bosque p-8 text-harina sm:p-10">
+        <div className="relative overflow-hidden rounded-[2rem] bg-olivo p-8 text-crema sm:p-10">
           <p className="eyebrow text-trigo">Responsable de tus datos</p>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={current.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.35 }} aria-live="polite">
               <p className="display mt-4 text-3xl">{current.name}</p>
-              <address className="mt-5 leading-relaxed text-harina/75 not-italic">
+              <address className="mt-5 leading-relaxed text-crema/75 not-italic">
                 {current.address.map((l) => (
                   <span key={l} className="block">
                     {l}
                   </span>
                 ))}
               </address>
-              <p className="mt-4 text-harina/75">
+              <p className="mt-4 text-crema/75">
                 {current.phones.length > 1 ? 'Teléfonos' : 'Teléfono'}: {current.phones.join(' · ')}
               </p>
-              {current.web && <p className="mt-1 text-harina/75">{current.web}</p>}
+              {current.web && <p className="mt-1 text-crema/75">{current.web}</p>}
             </motion.div>
           </AnimatePresence>
-          <div className="mt-8 border-t border-white/15 pt-6 text-sm leading-relaxed text-harina/70">
+          <div className="mt-8 border-t border-white/15 pt-6 text-sm leading-relaxed text-crema/70">
             Para ejercer tus derechos ARCO escribe a{' '}
             <a href="mailto:datospersonales@grupokasto.com" className="font-semibold text-trigo underline decoration-trigo/40 underline-offset-4">
               datospersonales@grupokasto.com

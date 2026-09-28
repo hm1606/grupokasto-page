@@ -23,7 +23,7 @@ export default function DivisionsExplorer({ items }: { items: DivisionCard[] }) 
     <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
       <ol className="flex flex-col" onMouseLeave={() => undefined}>
         {items.map((it, k) => (
-          <li key={it.slug} className="border-b border-bosque/12 first:border-t">
+          <li key={it.slug} className="border-b border-olivo/12 first:border-t">
             <a
               href={`/divisiones/${it.slug}/`}
               onMouseEnter={() => setActive(k)}
@@ -31,19 +31,19 @@ export default function DivisionsExplorer({ items }: { items: DivisionCard[] }) 
               className="group flex items-center gap-5 py-5 lg:py-6"
               aria-describedby={k === active ? 'division-activa' : undefined}
             >
-              <span className={`font-serif text-sm tabular-nums transition-colors ${k === active ? 'text-hoja' : 'text-bosque/35'}`}>
+              <span className={`font-serif text-sm tabular-nums transition-colors ${k === active ? 'text-hoja' : 'text-olivo/35'}`}>
                 {String(k + 1).padStart(2, '0')}
               </span>
               <span
                 className={`display flex-1 text-[1.9rem] transition-[color,transform] duration-500 sm:text-4xl lg:text-[2.6rem] ${
-                  k === active ? 'translate-x-2 text-bosque' : 'text-bosque/45 group-hover:text-bosque/80'
+                  k === active ? 'translate-x-2 text-olivo' : 'text-olivo/45 group-hover:text-olivo/80'
                 }`}
               >
                 {it.short}
               </span>
               <span
                 className={`grid size-11 shrink-0 place-items-center rounded-full border transition-all duration-500 ${
-                  k === active ? 'border-hoja bg-hoja text-white' : 'border-bosque/15 text-bosque/40'
+                  k === active ? 'border-hoja bg-hoja text-white' : 'border-olivo/15 text-olivo/40'
                 }`}
                 aria-hidden="true"
               >
@@ -82,7 +82,7 @@ export default function DivisionsExplorer({ items }: { items: DivisionCard[] }) 
 
       <div className="relative hidden lg:block">
         <div className="sticky top-28">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-bosque">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-olivo">
             <AnimatePresence initial={false}>
               <motion.img
                 key={d.slug}
@@ -98,7 +98,7 @@ export default function DivisionsExplorer({ items }: { items: DivisionCard[] }) 
                 transition={{ duration: 0.9, ease }}
               />
             </AnimatePresence>
-            <div className="absolute inset-0 bg-gradient-to-t from-bosque/90 via-bosque/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-olivo/90 via-olivo/10 to-transparent" />
             <div id="division-activa" className="absolute inset-x-0 bottom-0 p-9 text-white">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div

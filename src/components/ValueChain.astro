@@ -1,0 +1,111 @@
+---
+// "Del campo a la mesa": la cadena de valor integrada del grupo, eslabón por eslabón, con la división que lo opera.
+import SectionHead from './SectionHead.astro';
+
+const steps = [
+  {
+    title: 'Siembra y originación',
+    text: 'Acompañamos al productor desde la siembra, con insumos, financiamiento y compra de su cosecha.',
+    href: '/servicios/logistica-y-originacion/',
+    unit: 'Logística y originación',
+    icon: '<path d="M12 21V11"/><path d="M12 11c0-3.5 2.5-6 6.5-6 0 4-2.5 6.5-6.5 6Z"/><path d="M12 14c0-3-2.2-5-5.5-5 0 3.4 2.2 5.4 5.5 5Z"/><path d="M4 21h16"/>',
+  },
+  {
+    title: 'Acopio y almacenamiento',
+    text: 'Recepción en camión y ferrocarril, acondicionamiento y conservación del grano.',
+    href: '/divisiones/granos/',
+    unit: 'División Granos',
+    icon: '<path d="M5 21V9l3-3 3 3v12"/><path d="M13 21V7l3-3 3 3v14"/><path d="M3 21h18"/><path d="M5 13h6M13 12h6"/>',
+  },
+  {
+    title: 'Molienda',
+    text: 'Harinas y subproductos de trigo para la panificación, la tortilla y la industria.',
+    href: '/divisiones/molinos-de-trigo/',
+    unit: 'Molinos de trigo',
+    icon: '<circle cx="12" cy="12" r="3"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6M5.6 5.6l4.3 4.3M14.1 14.1l4.3 4.3M18.4 5.6l-4.3 4.3M9.9 14.1l-4.3 4.3"/>',
+  },
+  {
+    title: 'Producción',
+    text: 'Porcicultura, alimento balanceado y hortalizas de invernadero para exportación.',
+    href: '/divisiones/pecuaria/',
+    unit: 'Pecuaria · Invernaderos',
+    icon: '<path d="M3 20h18"/><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-6h6v6"/>',
+  },
+  {
+    title: 'Panadería',
+    text: 'Pan artesanal francés en 11 sucursales de Guadalajara con Ohlala!',
+    href: '/divisiones/panaderia-y-bistro/',
+    unit: 'Panadería y bistró',
+    icon: '<path d="M4 15c0-5 3.6-9 8-9s8 4 8 9v3H4v-3Z"/><path d="M9 9.5 10.5 14M15 9.5 13.5 14M12 8v6"/>',
+  },
+  {
+    title: 'Hasta tu mesa',
+    text: 'Distribución de productos de consumo con cobertura del 90 % del país.',
+    href: '/divisiones/productos-de-consumo/',
+    unit: 'Productos de consumo',
+    icon: '<path d="M3 7h12v9H3z"/><path d="M15 10h3.5l2.5 3v3h-6"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/>',
+  },
+];
+---
+
+<section class="relative overflow-hidden bg-olivo text-crema">
+  <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <SectionHead light eyebrow="Cadena de valor integrada" title="Del campo <span class='text-trigo'>a la mesa</span>" />
+      <p class="max-w-md text-lg leading-relaxed text-crema/70" data-reveal style="--reveal-delay:200ms">
+        Pocas empresas en México recorren la cadena completa. Nuestras divisiones se complementan para dar certeza en cada eslabón.
+      </p>
+    </div>
+
+    <ol class="chain relative mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-6 lg:gap-0" data-reveal>
+      <!-- Línea que se dibuja uniendo los eslabones (escritorio) -->
+      <span class="chain-line absolute top-[2.25rem] right-[8%] left-[8%] hidden h-px origin-left bg-trigo/60 lg:block" aria-hidden="true"></span>
+      {
+        steps.map((s, i) => (
+          <li class="chain-step relative lg:px-4" style={`--i:${i}`}>
+            <a href={s.href} class="group flex h-full flex-col rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 transition-colors duration-500 hover:bg-white/10 lg:items-center lg:bg-transparent lg:p-0 lg:text-center lg:ring-0 lg:hover:bg-transparent">
+              <span class="relative z-10 grid size-[4.5rem] shrink-0 place-items-center rounded-full border border-trigo/50 bg-olivo text-trigo transition-colors duration-500 group-hover:bg-trigo group-hover:text-olivo">
+                <svg viewBox="0 0 24 24" class="size-7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
+              </span>
+              <span class="mt-5 font-serif text-sm font-semibold tracking-[0.18em] text-brote uppercase">{String(i + 1).padStart(2, '0')}</span>
+              <span class="display mt-1 text-[1.7rem] leading-tight">{s.title}</span>
+              <span class="mt-3 text-[0.95rem] leading-relaxed text-crema/65">{s.text}</span>
+              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-trigo lg:mt-auto lg:pt-5">
+                {s.unit}
+                <svg viewBox="0 0 16 16" class="arrow size-3" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4" /></svg>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style is:global>
+  /* La línea se dibuja y los eslabones aparecen en orden cuando la sección entra en pantalla */
+  html.js .chain[data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  html.js .chain .chain-line {
+    transform: scaleX(0);
+    transition: transform 1.8s var(--ease-in-out-soft) 0.2s;
+  }
+  html.js .chain .chain-step {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.9s var(--ease-out-soft),
+      transform 0.9s var(--ease-out-soft);
+    transition-delay: calc(0.25s + var(--i) * 0.22s);
+  }
+  html.js .chain.is-visible .chain-line {
+    transform: scaleX(1);
+  }
+  html.js .chain.is-visible .chain-step {
+    opacity: 1;
+    transform: none;
+  }
+</style>

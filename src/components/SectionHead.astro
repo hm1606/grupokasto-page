@@ -1,19 +1,20 @@
 ---
+// Encabezado de sección con la firma del sitio anterior: antetítulo, título y la rama de hojas amarilla.
+import Espiga from './Espiga.astro';
+
 type Props = { eyebrow: string; title: string; text?: string; align?: 'left' | 'center'; light?: boolean; class?: string; as?: 'h2' | 'h3' };
 const { eyebrow, title, text, align = 'left', light = false, class: className = '', as: Tag = 'h2' } = Astro.props;
 ---
 
 <div class:list={[align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl', className]}>
-  <p class:list={['eyebrow flex items-center gap-3', align === 'center' && 'justify-center', light ? 'text-trigo' : 'text-hoja']} data-reveal>
-    <span class:list={['h-px w-8', light ? 'bg-trigo/60' : 'bg-hoja/50']} aria-hidden="true"></span>
-    {eyebrow}
-  </p>
-  <Tag class:list={['display mt-5 text-4xl text-balance sm:text-5xl lg:text-[3.6rem]', light ? 'text-harina' : 'text-bosque']} data-reveal style="--reveal-delay:80ms">
+  <p class:list={['eyebrow', light ? 'text-brote' : 'text-hoja']} data-reveal>{eyebrow}</p>
+  <Tag class:list={['display mt-3 text-[2.6rem] text-balance sm:text-6xl lg:text-[4.25rem]', light ? 'text-crema' : 'text-olivo']} data-reveal style="--reveal-delay:80ms">
     <Fragment set:html={title} />
   </Tag>
+  <div class:list={['mt-5 flex', align === 'center' && 'justify-center']} data-reveal style="--reveal-delay:140ms"><Espiga /></div>
   {
     text && (
-      <p class:list={['mt-6 text-lg leading-relaxed text-pretty', light ? 'text-harina/75' : 'text-tinta/70']} data-reveal style="--reveal-delay:160ms">
+      <p class:list={['mt-6 text-lg leading-relaxed text-pretty', light ? 'text-crema/75' : 'text-tinta/70']} data-reveal style="--reveal-delay:180ms">
         {text}
       </p>
     )

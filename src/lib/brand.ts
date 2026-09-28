@@ -1,0 +1,4 @@
+// La balanza de Grupo Kasto en vectores, trazada sobre el logotipo oficial (logo-gk_2.png del sitio anterior).
+// viewBox 0 0 60 48 · usa currentColor. La misma geometría está en scripts/generate-og.mjs.
+export const MARK_VIEWBOX = '0 0 60 48';
+export const MARK_SVG = `<g fill="none" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter" stroke-miterlimit="10"><path d="M14.4 1.4 2.7 33.4h23.4Z"/><path d="M45.6 1.4 33.9 33.4h23.4Z"/><path d="M22.4 1.7h15.2L30 22.4Z"/></g><g fill="currentColor"><rect x="2" y="32.7" width="24.8" height="1.6"/><rect x="33.2" y="32.7" width="24.8" height="1.6"/><path d="M1.9 36h25a12.5 10.6 0 0 1-25 0Z"/><path d="M33.1 36h25a12.5 10.6 0 0 1-25 0Z"/></g><g fill="none" stroke="currentColor" stroke-width=".35"><circle cx="57.6" cy="2.4" r="1.6"/><path d="M57 3.4V1.4h.7a.5.5 0 0 1 0 1H57m.6 0 .6 1"/></g>`;

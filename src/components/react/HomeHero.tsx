@@ -8,7 +8,7 @@ const DURATION = 6500;
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
 /** Portada: fotos reales de las divisiones que se suceden con zoom lento, y el titular que entra palabra por palabra. */
-export default function HomeHero({ slides, since }: { slides: HeroSlide[]; since: number }) {
+export default function HomeHero({ slides, since, wheat }: { slides: HeroSlide[]; since: number; wheat: string }) {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
@@ -26,12 +26,12 @@ export default function HomeHero({ slides, since }: { slides: HeroSlide[]; since
     return () => mo.disconnect();
   }, []);
 
-  const words = ['Del', 'campo', 'a', 'la', 'mesa', 'de', 'México.'];
+  const words = ['Del', 'campo', 'a', 'la', 'mesa', 'de', 'México'];
   const s = slides[i];
 
   return (
     <section
-      className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-bosque text-white"
+      className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-olivo text-white"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carrusel"
@@ -61,20 +61,22 @@ export default function HomeHero({ slides, since }: { slides: HeroSlide[]; since
           />
         </motion.div>
       </AnimatePresence>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-bosque via-bosque/45 to-bosque/30" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-bosque/75 via-bosque/20 to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-olivo via-olivo/40 to-olivo/35" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-olivo/80 via-olivo/25 to-transparent" />
+      {/* Trigo en silueta, firma del sitio anterior */}
+      <img src={wheat} alt="" aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-44 w-full object-cover object-top opacity-[0.13] select-none" />
 
       <div className="mx-auto w-full max-w-[90rem] px-5 pt-36 pb-10 sm:px-8 lg:px-12 lg:pb-14">
         {/* Las animaciones del texto son CSS (se ven sin esperar a React; se pausan durante el telón) */}
         <p className="eyebrow animate-fade-up flex items-center gap-3 text-trigo" data-intro-wait>
           <span className="h-px w-8 bg-trigo/60" aria-hidden="true" />
-          Grupo agroindustrial mexicano · Desde {since}
+          Contribuimos al desarrollo · Desde {since}
         </p>
-        <h1 className="display mt-6 max-w-5xl text-[3.1rem] sm:text-7xl lg:text-[7.2rem]" aria-label="Del campo a la mesa de México.">
+        <h1 className="display mt-4 max-w-6xl text-[3.4rem] uppercase sm:text-8xl lg:text-[8.6rem]" aria-label="Del campo a la mesa de México">
           {words.map((w, k) => (
             <span key={k} className="inline-block overflow-hidden pb-[0.12em] align-bottom" aria-hidden="true">
               <span
-                className={`hero-word inline-block ${w === 'mesa' ? 'text-trigo italic' : ''}`}
+                className={`hero-word inline-block ${w === 'mesa' ? 'text-trigo' : ''}`}
                 style={{ animationDelay: `${150 + k * 70}ms` }}
                 data-intro-wait
               >

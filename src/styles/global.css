@@ -1,95 +1,88 @@
 @import 'tailwindcss';
 
-/* ---------- Tipografías (self-hosted en public/fonts) ----------
-   Fraunces: titulares (serif con carácter, cálida, "de campo")
-   Manrope: texto e interfaz (clara y corporativa) */
+/* ---------- Tipografías de la marca (las mismas del sitio anterior, self-hosted en public/fonts) ----------
+   Barlow Condensed: titulares · Barlow: texto e interfaz · Marcellus SC: nombre "Grupo Kasto" del logotipo */
 @font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-300-normal.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-400-normal.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-500-normal.woff2') format('woff2');
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-500-normal.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-600-normal.woff2') format('woff2');
-  font-weight: 600 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-300-italic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/fraunces-400-italic.woff2') format('woff2');
-  font-weight: 400 600;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/manrope-400-normal.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/manrope-500-normal.woff2') format('woff2');
-  font-weight: 500;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/manrope-600-normal.woff2') format('woff2');
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-600-normal.woff2') format('woff2');
   font-weight: 600;
+  font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Manrope';
-  src: url('/fonts/manrope-700-normal.woff2') format('woff2');
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-600-italic.woff2') format('woff2');
+  font-weight: 600 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/barlow-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/barlow-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/barlow-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/barlow-700-normal.woff2') format('woff2');
   font-weight: 700 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Marcellus SC';
+  src: url('/fonts/marcellus-sc-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
 @theme {
-  /* Marca: verde hoja y amarillo trigo (las hojas del ícono de Grupo Kasto) */
-  --color-hoja: #5b8c51;
-  --color-trigo: #e8d45f;
-  /* Profundos */
-  --color-bosque: #15291d;
-  --color-pino: #1f3d2a;
-  --color-tinta: #0f1a13;
-  /* Claros: harina y arena */
-  --color-harina: #f7f4ec;
-  --color-arena: #ece5d3;
-  --color-paja: #d9c9a0;
-  /* Apoyo */
-  --color-brote: #9dc08a;
-  --color-oro: #a8842a;
-  --color-tierra: #6f5c3c;
-  --color-niebla: #5d6b61;
+  /* Paleta oficial de Grupo Kasto (variables --thm-* del sitio anterior) */
+  --color-trigo: #eddd5e; /* --thm-base: amarillo */
+  --color-hoja: #5b8c51; /* --thm-primary: verde */
+  --color-olivo: #404a3d; /* --thm-black: oscuro de la marca */
+  --color-gris: #eceeef; /* --thm-gray */
+  --color-crema: #f5f0e9; /* fondo claro del sitio anterior */
+  /* Tonos derivados (solo para profundidad, sobre la misma familia) */
+  --color-sombra: #2f372d;
+  --color-tinta: #262b24;
+  --color-hoja-oscuro: #4a7542;
+  --color-brote: #a9c89f;
+  --color-niebla: #6c706a;
 
-  --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
-  --font-sans: 'Manrope', 'Avenir Next', system-ui, sans-serif;
+  --font-serif: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --font-sans: 'Barlow', 'Helvetica Neue', system-ui, sans-serif;
+  --font-marca: 'Marcellus SC', 'Optima', serif;
 
   --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-in-out-soft: cubic-bezier(0.7, 0, 0.2, 1);
@@ -134,11 +127,11 @@
     }
   }
   body {
-    @apply bg-harina font-sans text-tinta antialiased;
+    @apply bg-crema font-sans text-tinta antialiased;
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    @apply bg-hoja text-harina;
+    @apply bg-hoja text-crema;
   }
   :focus-visible {
     @apply outline-2 outline-offset-4 outline-hoja;
@@ -176,17 +169,19 @@
   /* Titular editorial */
   .display {
     font-family: var(--font-serif);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.02;
-    font-variation-settings: 'opsz' 144;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 0.98;
+  }
+  .display em {
+    font-style: normal;
   }
   /* Etiqueta corta: mayúsculas con tracking amplio */
   .eyebrow {
-    font-family: var(--font-sans);
+    font-family: var(--font-serif);
     font-weight: 600;
-    font-size: 0.7rem;
-    letter-spacing: 0.24em;
+    font-size: 0.86rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
   }
   /* Texto largo */
@@ -219,12 +214,12 @@
     justify-content: center;
     gap: 0.75rem;
     min-height: 3.25rem;
-    padding: 0 1.6rem;
-    border-radius: 999px;
-    font-family: var(--font-sans);
+    padding: 0 1.75rem;
+    border-radius: 0.5rem;
+    font-family: var(--font-serif);
     font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     white-space: nowrap;
     transition:
@@ -237,16 +232,16 @@
     transform: scale(0.98);
   }
   .btn-primary {
-    @apply bg-hoja text-white hover:bg-pino;
+    @apply bg-hoja text-white hover:bg-hoja-oscuro;
   }
   .btn-trigo {
-    @apply bg-trigo text-bosque hover:bg-white;
+    @apply bg-trigo text-olivo hover:bg-white;
   }
   .btn-ghost {
-    @apply border border-bosque/25 text-bosque hover:border-bosque hover:bg-bosque hover:text-harina;
+    @apply border border-olivo/25 text-olivo hover:border-olivo hover:bg-olivo hover:text-crema;
   }
   .btn-outline-light {
-    @apply border border-white/35 text-white hover:border-white hover:bg-white hover:text-bosque;
+    @apply border border-white/35 text-white hover:border-white hover:bg-white hover:text-olivo;
   }
   /* Flecha que avanza al pasar el mouse sobre el enlace/tarjeta (.group) */
   .arrow {
@@ -269,10 +264,10 @@
   }
   /* Surcos: líneas de campo arado, muy sutiles */
   .surcos {
-    background-image: repeating-linear-gradient(-12deg, rgb(21 41 29 / 0.05) 0 1px, transparent 1px 22px);
+    background-image: repeating-linear-gradient(-12deg, rgb(64 74 61 / 0.06) 0 1px, transparent 1px 22px);
   }
   .surcos-claro {
-    background-image: repeating-linear-gradient(-12deg, rgb(247 244 236 / 0.06) 0 1px, transparent 1px 22px);
+    background-image: repeating-linear-gradient(-12deg, rgb(245 240 233 / 0.05) 0 1px, transparent 1px 22px);
   }
   /* Grano de papel (muy sutil) */
   .grano {

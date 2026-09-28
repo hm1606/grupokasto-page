@@ -6,7 +6,7 @@ type Status = { kind: 'idle' | 'sending' | 'ok' | 'error'; message?: string };
 const ease = [0.2, 0.7, 0.2, 1] as const;
 
 const field =
-  'peer w-full rounded-2xl border border-bosque/15 bg-white/70 px-5 pt-6 pb-2.5 text-[1rem] text-tinta outline-none transition-[border-color,box-shadow,background-color] duration-300 placeholder:text-transparent focus:border-hoja focus:bg-white focus:ring-4 focus:ring-hoja/12';
+  'peer w-full rounded-2xl border border-olivo/15 bg-white/70 px-5 pt-6 pb-2.5 text-[1rem] text-tinta outline-none transition-[border-color,box-shadow,background-color] duration-300 placeholder:text-transparent focus:border-hoja focus:bg-white focus:ring-4 focus:ring-hoja/12';
 const label =
   'pointer-events-none absolute top-4 left-5 origin-left text-[0.95rem] text-niebla transition-all duration-300 peer-focus:top-2 peer-focus:scale-[0.78] peer-focus:text-hoja peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:scale-[0.78]';
 
@@ -62,20 +62,20 @@ export default function ContactForm({ topics, privacyVersion, email }: Props) {
         {status.kind === 'ok' ? (
           <motion.div
             key="ok"
-            className="flex min-h-[32rem] flex-col items-start justify-center rounded-[2rem] bg-bosque p-10 text-harina sm:p-14"
+            className="flex min-h-[32rem] flex-col items-start justify-center rounded-[2rem] bg-olivo p-10 text-crema sm:p-14"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease }}
             role="status"
           >
-            <span className="grid size-16 place-items-center rounded-full bg-trigo text-bosque">
+            <span className="grid size-16 place-items-center rounded-full bg-trigo text-olivo">
               <svg viewBox="0 0 24 24" className="size-7" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="m5 12 5 5 9-10" />
               </svg>
             </span>
             <h3 className="display mt-8 text-4xl sm:text-5xl">Gracias, recibimos tu mensaje.</h3>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-harina/75">
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-crema/75">
               Lo turnamos al área indicada y te respondemos a la brevedad por correo o teléfono.
             </p>
             <button type="button" onClick={() => setStatus({ kind: 'idle' })} className="btn btn-outline-light mt-10">

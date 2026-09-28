@@ -4,8 +4,8 @@
   "description": "Grupo agroindustrial mexicano desde 1945",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f4ec",
-  "theme_color": "#15291d",
+  "background_color": "#f5f0e9",
+  "theme_color": "#404a3d",
   "lang": "es-MX",
   "icons": [
     {
