@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services, type Service } from '../../data/services';
+import { divisionBySlug } from '../../data/divisions';
+import { telHref } from '../../data/site';
+import { img } from '../../lib/images';
+import { breadcrumbs, service as serviceSchema } from '../../lib/seo';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+
+const { s } = Astro.props as { s: Service };
+const path = `/servicios/${s.slug}/`;
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Servicios', path: '/servicios/' },
+  { name: s.name, path },
+];
+const division = divisionBySlug(s.division);
+---
+
+<Layout
+  title={s.seo.title}
+  description={s.seo.description}
+  image={`/og/servicios/${s.slug}.jpg`}
+  imageAlt={`${s.headline} · Grupo Kasto`}
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs), serviceSchema(s)]}
+>
+  <PageHero eyebrow="Servicios" title={s.headline} intro={s.summary} image={img(`servicios/${s.slug}/hero`)} crumbs={crumbs} />
+
+  <section class="grano">
+    <div class="mx-auto grid max-w-[90rem] gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+      <!-- Menú de servicios -->
+      <aside class="lg:col-span-4">
+        <div class="space-y-5 lg:sticky lg:top-32">
+          <nav aria-label="Servicios" class="rounded-[1.75rem] bg-white p-3 ring-1 ring-bosque/8">
+            <ul>
+              {
+                services.map((x) => (
+                  <li>
+                    <a
+                      href={`/servicios/${x.slug}/`}
+                      aria-current={x.slug === s.slug ? 'page' : undefined}
+                      class="group flex items-center justify-between rounded-2xl px-5 py-4 font-semibold text-bosque/70 transition-colors hover:bg-arena/60 hover:text-bosque aria-[current=page]:bg-bosque aria-[current=page]:text-harina"
+                    >
+                      {x.name}
+                      <svg viewBox="0 0 16 16" class="arrow size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="M3 8h10m-4-4 4 4-4 4" />
+                      </svg>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+          <div class="rounded-[1.75rem] bg-hoja p-8 text-white">
+            <p class="eyebrow text-white/75">¿Necesitas ayuda?</p>
+            <p class="mt-4 leading-relaxed text-white/90">Llama a la oficina corporativa y te comunicamos con un miembro del equipo.</p>
+            <a href={telHref(s.phone)} class="display mt-5 block text-3xl hover:text-trigo">{s.phone}</a>
+            <a href="/contacto/" class="btn btn-trigo mt-6 min-h-11 w-full text-[0.7rem]">Escríbenos</a>
+          </div>
+        </div>
+      </aside>
+
+      <div class="lg:col-span-7 lg:col-start-6">
+        <h2 class="display text-4xl text-balance text-bosque sm:text-5xl" data-reveal>{s.headline}</h2>
+        <div class="prose-gk mt-8" data-reveal style="--reveal-delay:120ms">
+          {s.body.map((p) => <p>{p}</p>)}
+        </div>
+        <ul class="mt-10 grid gap-3 sm:grid-cols-2" data-reveal style="--reveal-delay:180ms">
+          {
+            s.points.map((p) => (
+              <li class="flex items-start gap-3 rounded-2xl bg-arena/60 p-5">
+                <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-hoja text-white">
+                  <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+                    <path d="m5 12 5 5 9-10" />
+                  </svg>
+                </span>
+                <span class="font-medium text-bosque">{p}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-12 grid grid-cols-2 gap-4">
+          <div class="overflow-hidden rounded-[1.75rem]" data-reveal="mask">
+            <Image src={img(`servicios/${s.slug}/a`)} alt="" widths={[400, 800]} sizes="(min-width:1024px) 28vw, 45vw" class="aspect-[4/5] w-full object-cover" />
+          </div>
+          <div class="mt-12 overflow-hidden rounded-[1.75rem]" data-reveal="mask" style="--reveal-delay:180ms">
+            <Image src={img(`servicios/${s.slug}/b`)} alt="" widths={[400, 800]} sizes="(min-width:1024px) 28vw, 45vw" class="aspect-[4/5] w-full object-cover" />
+          </div>
+        </div>
+        {
+          division && (
+            <a href={`/divisiones/${division.slug}/`} class="group mt-12 flex items-center justify-between gap-6 border-t border-bosque/10 pt-8" data-reveal>
+              <span>
+                <span class="eyebrow block text-niebla">Lo respalda</span>
+                <span class="display mt-2 block text-3xl text-bosque transition-colors group-hover:text-hoja">{division.name}</span>
+              </span>
+              <svg viewBox="0 0 16 16" class="arrow size-5 text-hoja" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <path d="M3 8h10m-4-4 4 4-4 4" />
+              </svg>
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>

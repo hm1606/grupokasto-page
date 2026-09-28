@@ -1,0 +1,26 @@
+---
+import type { Crumb } from '../lib/seo';
+type Props = { crumbs: Crumb[]; light?: boolean };
+const { crumbs, light = false } = Astro.props;
+---
+
+<nav aria-label="Migas de pan" class:list={['text-[0.78rem] font-medium', light ? 'text-white/65' : 'text-niebla']}>
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+    {
+      crumbs.map((c, i) => (
+        <li class="flex items-center gap-2">
+          {i > 0 && <span aria-hidden="true" class="opacity-50">/</span>}
+          {i < crumbs.length - 1 ? (
+            <a href={c.path} class:list={['link-line', light ? 'hover:text-white' : 'hover:text-bosque']}>
+              {c.name}
+            </a>
+          ) : (
+            <span aria-current="page" class={light ? 'text-white' : 'text-bosque'}>
+              {c.name}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

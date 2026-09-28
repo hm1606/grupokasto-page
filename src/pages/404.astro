@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { divisions } from '../data/divisions';
+import { legacyMap, legacyRedirectScript } from '../lib/legacy';
+
+const map = await legacyMap();
+---
+
+<Layout title="Página no encontrada" noindex headerOverHero={false}>
+  <!-- Si alguien llega con un enlace viejo de APEX (…/f?p=102:…), lo mandamos a la página nueva -->
+  <script is:inline set:html={legacyRedirectScript(map)} />
+  <section class="grano relative overflow-hidden">
+    <div class="mx-auto flex min-h-[80svh] max-w-[90rem] flex-col justify-center px-5 pt-[calc(var(--header-h)+3rem)] pb-20 sm:px-8 lg:px-12">
+      <p class="eyebrow text-hoja">Error 404</p>
+      <h1 class="display mt-5 max-w-3xl text-5xl text-bosque sm:text-7xl">Esta página se quedó en el campo.</h1>
+      <p class="mt-6 max-w-xl text-lg text-tinta/70">Es posible que el enlace haya cambiado con nuestro nuevo sitio. Te dejamos algunos caminos:</p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/" class="btn btn-primary">Ir al inicio</a>
+        <a href="/contacto/" class="btn btn-ghost">Contacto</a>
+      </div>
+      <ul class="mt-14 flex flex-wrap gap-2">
+        {
+          divisions.map((d) => (
+            <li>
+              <a href={`/divisiones/${d.slug}/`} class="inline-block rounded-full bg-arena/70 px-4 py-2 text-sm font-semibold text-bosque transition-colors hover:bg-hoja hover:text-white">
+                {d.short}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>

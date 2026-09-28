@@ -1,0 +1,28 @@
+---
+// Logotipo de Grupo Kasto: la balanza (redibujada en vectores a partir del logo original) + nombre.
+// variant="mark" solo la balanza; "full" balanza y nombre en horizontal; "stack" nombre debajo.
+type Props = { variant?: 'mark' | 'full' | 'stack'; class?: string; title?: string };
+const { variant = 'full', class: className = '', title = 'Grupo Kasto' } = Astro.props;
+---
+
+{
+  variant === 'mark' ? (
+    <svg viewBox="0 0 118 64" class={className} role="img" aria-label={title} fill="currentColor">
+      <Fragment set:html={`<path fill-rule="evenodd" d="M30 4 2 46h56L30 4Zm0 7.6L9.85 41.8h40.3L30 11.6Z"/><path fill-rule="evenodd" d="M88 4 60 46h56L88 4Zm0 7.6L67.85 41.8h40.3L88 11.6Z"/><path fill-rule="evenodd" d="M40 3h38L59 31 40 3Zm7.55 4L59 23.9 70.45 7h-22.9Z"/><path d="M4 49.5h52c0 7-11.6 12-26 12S4 56.5 4 49.5Zm58 0h52c0 7-11.6 12-26 12s-26-5-26-12Z"/>`} />
+    </svg>
+  ) : variant === 'stack' ? (
+    <span class:list={['inline-flex flex-col items-center gap-2', className]} role="img" aria-label={title}>
+      <svg viewBox="0 0 118 64" class="h-[62%] w-auto" fill="currentColor" aria-hidden="true">
+        <Fragment set:html={`<path fill-rule="evenodd" d="M30 4 2 46h56L30 4Zm0 7.6L9.85 41.8h40.3L30 11.6Z"/><path fill-rule="evenodd" d="M88 4 60 46h56L88 4Zm0 7.6L67.85 41.8h40.3L88 11.6Z"/><path fill-rule="evenodd" d="M40 3h38L59 31 40 3Zm7.55 4L59 23.9 70.45 7h-22.9Z"/><path d="M4 49.5h52c0 7-11.6 12-26 12S4 56.5 4 49.5Zm58 0h52c0 7-11.6 12-26 12s-26-5-26-12Z"/>`} />
+      </svg>
+      <span class="font-sans text-[0.78em] font-semibold tracking-[0.28em] uppercase" style="padding-left:0.28em">Grupo Kasto</span>
+    </span>
+  ) : (
+    <span class:list={['inline-flex items-center gap-3', className]} role="img" aria-label={title}>
+      <svg viewBox="0 0 118 64" class="h-full w-auto shrink-0" fill="currentColor" aria-hidden="true">
+        <Fragment set:html={`<path fill-rule="evenodd" d="M30 4 2 46h56L30 4Zm0 7.6L9.85 41.8h40.3L30 11.6Z"/><path fill-rule="evenodd" d="M88 4 60 46h56L88 4Zm0 7.6L67.85 41.8h40.3L88 11.6Z"/><path fill-rule="evenodd" d="M40 3h38L59 31 40 3Zm7.55 4L59 23.9 70.45 7h-22.9Z"/><path d="M4 49.5h52c0 7-11.6 12-26 12S4 56.5 4 49.5Zm58 0h52c0 7-11.6 12-26 12s-26-5-26-12Z"/>`} />
+      </svg>
+      <span class="font-sans text-[0.9em] font-semibold tracking-[0.02em] whitespace-nowrap">Grupo Kasto</span>
+    </span>
+  )
+}

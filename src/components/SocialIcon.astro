@@ -1,0 +1,38 @@
+---
+import type { Social } from '../data/divisions';
+
+type Props = Social & { class?: string };
+const { network, url, class: className = '' } = Astro.props;
+
+const labels: Record<Social['network'], string> = {
+  web: 'Sitio web',
+  facebook: 'Facebook',
+  instagram: 'Instagram',
+  x: 'X (Twitter)',
+  linkedin: 'LinkedIn',
+  youtube: 'YouTube',
+  pinterest: 'Pinterest',
+};
+const paths: Record<Social['network'], string> = {
+  web: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  facebook: '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v7h4v-7h3l1-4h-4V8Z"/>',
+  instagram: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/>',
+  x: '<path d="m4 4 16 16M20 4 4 20" />',
+  linkedin: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V16M8 7.8v.01M11.5 16v-5.5M11.5 13c0-1.7 1-2.7 2.4-2.7 1.4 0 2.1 1 2.1 2.7V16"/>',
+  youtube: '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9 5 3-5 3V9Z"/>',
+  pinterest: '<circle cx="12" cy="12" r="9"/><path d="M11 8.5c3-1 5 .5 5 2.8 0 2.4-1.6 4.2-3.5 4.2-1.2 0-1.8-.8-1.8-.8L9.5 20"/>',
+};
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener"
+  aria-label={labels[network]}
+  title={labels[network]}
+  class:list={['grid size-10 place-items-center rounded-full border transition-colors duration-300', className]}
+>
+  <svg viewBox="0 0 24 24" class="size-[1.05rem]" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <Fragment set:html={paths[network]} />
+  </svg>
+</a>

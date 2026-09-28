@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services } from '../../data/services';
+import { img } from '../../lib/images';
+import { abs, breadcrumbs, service } from '../../lib/seo';
+
+const path = '/servicios/';
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Servicios', path },
+];
+const list = {
+  '@type': 'ItemList',
+  '@id': `${abs(path)}#servicios`,
+  itemListElement: services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, item: service(s) })),
+};
+---
+
+<Layout
+  title="Servicios: logística, comercialización, consultoría y proyectos"
+  description="Logística y originación de granos, comercialización de granos y harinas de trigo, asesoría y consultoría corporativa y desarrollo de proyectos inmobiliarios."
+  pageType="CollectionPage"
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs), list]}
+>
+  <PageHero
+    eyebrow="Servicios"
+    title="La experiencia del grupo, al servicio de tu negocio."
+    intro="Lo que aprendimos en 80 años operando nuestras propias empresas, hoy lo ofrecemos a productores, industria y socios comerciales."
+    image={img('servicios/logistica-y-originacion/hero')}
+    crumbs={crumbs}
+  />
+
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow="Qué ofrecemos" title="Cuatro servicios, un mismo respaldo." />
+      <ul class="mt-14 flex flex-col">
+        {
+          services.map((s, i) => (
+            <li class="border-b border-bosque/12 first:border-t" data-reveal style={`--reveal-delay:${i * 80}ms`}>
+              <a href={`/servicios/${s.slug}/`} class="group grid items-center gap-6 py-8 md:grid-cols-[4rem_1fr_16rem_3.5rem] md:gap-10 lg:py-10">
+                <span class="font-serif text-lg text-oro tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  <span class="display block text-4xl text-bosque transition-colors group-hover:text-hoja sm:text-5xl">{s.name}</span>
+                  <span class="mt-3 block max-w-xl text-tinta/65">{s.summary}</span>
+                </span>
+                <span class="zoom hidden aspect-[4/3] overflow-hidden rounded-2xl md:block">
+                  <Image src={img(`servicios/${s.slug}/hero`)} alt="" widths={[320, 640]} sizes="16rem" class="size-full object-cover" />
+                </span>
+                <span class="hidden size-14 place-items-center rounded-full border border-bosque/15 text-bosque transition-colors duration-500 group-hover:border-hoja group-hover:bg-hoja group-hover:text-white md:grid">
+                  <svg viewBox="0 0 16 16" class="arrow size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path d="M3 8h10m-4-4 4 4-4 4" />
+                  </svg>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>

@@ -1,0 +1,27 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment variables (secretos de la API)
+.env
+.env.production
+
+# macOS
+.DS_Store
+
+# Respaldo local del sitio viejo (raíz web del servidor anterior, pesado; legacy/build.py lo copia a legacy/site)
+old-page-recursos/
+
+# Configuración local de Claude Code
+.claude/
+
+# Paquetes
+*.zip
+*.tar.gz

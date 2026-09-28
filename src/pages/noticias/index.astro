@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import NewsList from '../../components/react/NewsList.tsx';
+import { img, pic } from '../../lib/images';
+import { abs, breadcrumbs } from '../../lib/seo';
+
+const path = '/noticias/';
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Noticias', path },
+];
+const fmt = (d: Date) => d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const all = (await getCollection('noticias')).sort((a, b) => +b.data.date - +a.data.date);
+const [featured, ...rest] = all;
+const items = await Promise.all(
+  rest.map(async (n) => ({
+    slug: n.id,
+    title: n.data.title,
+    excerpt: n.data.excerpt,
+    category: n.data.category,
+    date: n.data.date.toISOString().slice(0, 10),
+    dateLabel: fmt(n.data.date),
+    image: await pic(n.data.cover, [480, 800]),
+  })),
+);
+const list = {
+  '@type': 'ItemList',
+  '@id': `${abs(path)}#noticias`,
+  itemListElement: all.map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: abs(`/noticias/${n.id}/`), name: n.data.title })),
+};
+---
+
+<Layout
+  title="Noticias"
+  description="Noticias de Grupo Kasto: sostenibilidad, seguridad y bienestar laboral, eventos, nuestra gente y novedades de las divisiones."
+  pageType="CollectionPage"
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs), list]}
+>
+  <PageHero eyebrow="Noticias" title="Lo que pasa en Grupo Kasto." image={img('portada/noticias')} crumbs={crumbs} />
+
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      <!-- Noticia más reciente -->
+      <a href={`/noticias/${featured.id}/`} class="group grid items-center gap-8 lg:grid-cols-2 lg:gap-16" data-reveal>
+        <div class="zoom aspect-[16/11] overflow-hidden rounded-[2rem] bg-arena">
+          <Image src={featured.data.cover} alt="" widths={[640, 1000, 1400]} sizes="(min-width:1024px) 45vw, 100vw" class="size-full object-cover" loading="eager" />
+        </div>
+        <div>
+          <p class="flex items-center gap-3 text-[0.78rem] font-semibold text-niebla">
+            <span class="rounded-full bg-trigo px-3 py-1 text-bosque">Lo más reciente</span>
+            <span class="rounded-full bg-hoja/12 px-3 py-1 text-hoja">{featured.data.category}</span>
+            <time datetime={featured.data.date.toISOString().slice(0, 10)}>{fmt(featured.data.date)}</time>
+          </p>
+          <h2 class="display mt-6 text-4xl text-balance text-bosque transition-colors group-hover:text-hoja sm:text-5xl">{featured.data.title}</h2>
+          <p class="mt-5 text-lg leading-relaxed text-tinta/70">{featured.data.excerpt}</p>
+          <span class="btn btn-ghost mt-8">
+            Leer noticia
+            <svg viewBox="0 0 16 16" class="arrow size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"></path></svg>
+          </span>
+        </div>
+      </a>
+
+      <div class="mt-24">
+        <NewsList client:visible items={items} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>

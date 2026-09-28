@@ -1,0 +1,133 @@
+#top-lang-button-en {
+  display: -webkit-box;
+  display: flex;
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/EN_v5_gris.png") no-repeat center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 10px;
+  width: 45px;
+  height: 45px;
+  background-color: #f5f0e9;
+  color: #878986;
+  font-size: 14px;
+  border-radius: 50%;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+  border: none;
+}
+
+#top-lang-button-en:hover {
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/EN_v5_gris_hover.png") no-repeat center;
+  background-color: var(--thm-primary);
+  cursor: pointer;
+}
+
+#top-lang-button-es {  
+  display: -webkit-box;
+  display: flex;
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/ES_v5_gris.png") no-repeat center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 10px;
+  width: 45px;
+  height: 45px;
+  background-color: #f5f0e9;
+  color: #878986;
+  font-size: 14px;
+  border-radius: 50%;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+  border: none;}
+
+#top-lang-button-es:hover {
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/ES_v5_gris_hover.png") no-repeat center;
+  background-color: var(--thm-primary);
+  cursor: pointer;
+}
+
+
+
+#side-lang-button-es,
+#side-lang-button-en {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 10px;
+  width: 57px;
+  height: 57px;
+  background-color: #fff;
+  font-size: 16px;
+  border-radius: 50%;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+  border: none;
+}
+
+#side-lang-button-es,
+#side-lang-button-en img {
+  color: #9ca3a9;
+}
+
+#bottom-lang-button-en {
+  display: -webkit-box;
+  display: flex;
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/EN_v5_verde.png") no-repeat center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 10px;
+  width: 45px;
+  height: 45px;
+  background-color: #fff;
+  color: var(--thm-black);
+  font-size: 14px;
+  border-radius: 50%;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+  border: none;
+}
+
+#bottom-lang-button-en:hover {
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/EN_v5_gris_hover.png") no-repeat center;
+  background-color: var(--thm-primary);
+  cursor: pointer;
+}
+
+#bottom-lang-button-es {
+  display: -webkit-box;
+  display: flex;
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/ES_v5_verde.png") no-repeat center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 10px;
+  width: 45px;
+  height: 45px;
+  background-color: #fff;
+  color: var(--thm-black);
+  font-size: 14px;
+  border-radius: 50%;
+  -webkit-transition: all 500ms ease;
+  transition: all 500ms ease;
+  border: none;
+}
+
+#bottom-lang-button-es:hover {
+  background: url("https://molinosgrupokasto.com/PortalGK/assets/images/template/icon/BtnsIcons/ES_v5_gris_hover.png") no-repeat center;
+  background-color: var(--thm-primary);
+  cursor: pointer;
+}

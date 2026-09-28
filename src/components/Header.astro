@@ -1,0 +1,244 @@
+---
+import Logo from './Logo.astro';
+import { nav, site } from '../data/site';
+import { divisions } from '../data/divisions';
+import { services } from '../data/services';
+
+type Props = { overHero?: boolean };
+const { overHero = true } = Astro.props;
+const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const isActive = (href: string, children?: { href: string }[]) =>
+  here === href || (href !== '/' && here.startsWith(href)) || !!children?.some((c) => here === c.href);
+
+// Submenús: Nosotros (del menú), Divisiones y Servicios (de sus datos)
+const menus: Record<string, { label: string; href: string; note?: string }[]> = {
+  '/nosotros/': nav.find((n) => n.href === '/nosotros/')?.children ?? [],
+  '/divisiones/': divisions.map((d) => ({ label: d.short, href: `/divisiones/${d.slug}/`, note: d.region })),
+  '/servicios/': services.map((s) => ({ label: s.name, href: `/servicios/${s.slug}/`, note: s.summary })),
+};
+---
+
+<header
+  id="site-header"
+  data-over={String(overHero)}
+  class="group/h fixed inset-x-0 top-0 z-50 h-[var(--header-h)] text-bosque transition-[transform,background-color,box-shadow,color] duration-500 ease-[cubic-bezier(.2,.7,.2,1)] data-[hidden=true]:-translate-y-full data-[over=true]:text-white data-[solid=true]:bg-harina/90 data-[solid=true]:text-bosque data-[solid=true]:shadow-[0_1px_0_rgba(21,41,29,.08)] data-[solid=true]:backdrop-blur-xl"
+>
+  <div class="mx-auto flex h-full max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
+    <a href="/" class="relative z-10 flex h-9 items-center lg:h-10" aria-label={`${site.name}, inicio`}>
+      <Logo class="h-full text-[1.05rem] lg:text-[1.15rem]" />
+    </a>
+
+    <nav aria-label="Principal" class="hidden h-full lg:block">
+      <ul class="flex h-full items-center gap-1">
+        {
+          nav.map((item) => {
+            const sub = menus[item.href];
+            const active = isActive(item.href, item.children);
+            return (
+              <li class="has-menu relative flex h-full items-center">
+                <a
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  class="flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.84rem] font-semibold tracking-[0.01em] transition-colors hover:bg-current/8 aria-[current=page]:text-hoja group-data-[over=true]/h:aria-[current=page]:text-trigo group-data-[solid=true]/h:aria-[current=page]:text-hoja"
+                  aria-haspopup={sub ? 'true' : undefined}
+                >
+                  {item.label}
+                  {sub && (
+                    <svg viewBox="0 0 12 12" class="chev size-2.5 opacity-60 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                      <path d="m3 4.5 3 3 3-3" />
+                    </svg>
+                  )}
+                </a>
+                {sub && (
+                  <div class="menu-panel invisible absolute top-[calc(100%-0.75rem)] left-1/2 w-max -translate-x-1/2 pt-3 opacity-0 transition-[opacity,visibility,translate] duration-300">
+                    <div class:list={['rounded-3xl bg-harina p-3 text-bosque shadow-2xl ring-1 shadow-bosque/15 ring-bosque/8', sub.length > 5 ? 'grid w-[44rem] grid-cols-2 gap-1' : 'grid w-[22rem] gap-1']}>
+                      {sub.map((s, i) => (
+                        <a href={s.href} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-arena/70">
+                          <span class="mt-0.5 font-serif text-sm text-oro tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                          <span class="flex flex-col gap-0.5">
+                            <span class="flex items-center gap-2 text-[0.92rem] font-semibold">
+                              {s.label}
+                              <svg viewBox="0 0 16 16" class="arrow size-3 text-hoja opacity-0 transition-opacity group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                <path d="M3 8h10m-4-4 4 4-4 4" />
+                              </svg>
+                            </span>
+                            {s.note && <span class="line-clamp-1 text-[0.78rem] text-niebla">{s.note}</span>}
+                          </span>
+                        </a>
+                      ))}
+                      {item.href !== '/nosotros/' && (
+                        <a
+                          href={item.href}
+                          class:list={['mt-1 flex items-center justify-between rounded-2xl bg-bosque px-5 py-3.5 text-[0.8rem] font-semibold text-harina transition-colors hover:bg-hoja', sub.length > 5 && 'col-span-2']}
+                        >
+                          Ver todas las {item.label.toLowerCase()}
+                          <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                            <path d="M3 8h10m-4-4 4 4-4 4" />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <div class="relative z-10 flex items-center gap-2">
+      <a href={site.phoneHref} class="hidden items-center gap-2 px-3 py-2 text-[0.82rem] font-semibold xl:inline-flex">
+        <svg viewBox="0 0 24 24" class="size-4 opacity-70" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+        </svg>
+        {site.phone}
+      </a>
+      <a href="/contacto/" class="btn btn-primary hidden min-h-11 px-5 text-[0.72rem] md:inline-flex">Contáctanos</a>
+      <button
+        type="button"
+        id="menu-toggle"
+        class="grid size-11 place-items-center rounded-full lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Abrir menú"
+      >
+        <span class="relative block h-3 w-6">
+          <span class="menu-bar absolute inset-x-0 top-0 h-[1.5px] rounded bg-current transition-transform duration-500"></span>
+          <span class="menu-bar absolute inset-x-0 bottom-0 h-[1.5px] rounded bg-current transition-transform duration-500"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Menú en celular -->
+<div
+  id="mobile-menu"
+  class="surcos-claro invisible fixed inset-0 z-[45] flex flex-col overflow-y-auto bg-bosque px-6 pt-[calc(var(--header-h)+1.5rem)] pb-10 text-harina opacity-0 transition-[opacity,visibility] duration-500 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
+  data-lenis-prevent
+>
+  <nav aria-label="Menú" class="flex-1">
+    <ul class="flex flex-col">
+      <li class="menu-item border-b border-white/10" style="--i:0">
+        <a href="/" class="display block py-4 text-4xl">Inicio</a>
+      </li>
+      {
+        nav.map((item, i) => {
+          const sub = menus[item.href];
+          return (
+            <li class="menu-item border-b border-white/10" style={`--i:${i + 1}`}>
+              {sub ? (
+                <details class="group/d">
+                  <summary class="flex cursor-pointer list-none items-center justify-between py-4">
+                    <span class="display text-4xl">{item.label}</span>
+                    <span class="grid size-9 place-items-center rounded-full border border-white/20 transition-transform duration-300 group-open/d:rotate-45">
+                      <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                        <path d="M8 3v10M3 8h10" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <ul class="grid gap-1 pb-5">
+                    {item.href !== '/nosotros/' && (
+                      <li>
+                        <a href={item.href} class="block py-1.5 text-base font-semibold text-trigo">
+                          Ver todas
+                        </a>
+                      </li>
+                    )}
+                    {sub.map((s) => (
+                      <li>
+                        <a href={s.href} class="block py-1.5 text-base text-harina/80">
+                          {s.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ) : (
+                <a href={item.href} class="display block py-4 text-4xl">
+                  {item.label}
+                </a>
+              )}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+  <div class="mt-8 flex flex-col gap-3">
+    <a href="/contacto/" class="btn btn-trigo">Escríbenos</a>
+    <a href={site.phoneHref} class="btn btn-outline-light">Llamar al {site.phone}</a>
+    <p class="eyebrow mt-3 text-center text-[0.6rem] text-brote">Grupo Kasto · Desde {site.foundingYear}</p>
+  </div>
+</div>
+
+<style>
+  .has-menu:hover .menu-panel,
+  .has-menu:focus-within .menu-panel {
+    visibility: visible;
+    opacity: 1;
+    translate: 0 0;
+  }
+  .menu-panel {
+    translate: 0 8px;
+  }
+  .has-menu:hover .chev,
+  .has-menu:focus-within .chev {
+    transform: rotate(180deg);
+  }
+  #menu-toggle[aria-expanded='true'] .menu-bar:first-child {
+    transform: translateY(5.25px) rotate(45deg);
+  }
+  #menu-toggle[aria-expanded='true'] .menu-bar:last-child {
+    transform: translateY(-5.25px) rotate(-45deg);
+  }
+  html:has(#mobile-menu[data-open='true']) #site-header {
+    color: var(--color-harina) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  .menu-item {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s var(--ease-out-soft),
+      transform 0.6s var(--ease-out-soft);
+  }
+  #mobile-menu[data-open='true'] .menu-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(100ms + var(--i) * 55ms);
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  // Fondo sólido al bajar; se esconde al bajar y reaparece al subir
+  let last = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.dataset.solid = String(y > 24 || header.dataset.over === 'false');
+    if (menu.dataset.open !== 'true') header.dataset.hidden = String(y > 480 && y > last + 2);
+    if (y < last - 2) header.dataset.hidden = 'false';
+    last = y;
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setMenu = (open: boolean) => {
+    menu.dataset.open = String(open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    const lenis = (window as any).__lenis;
+    open ? lenis?.stop() : lenis?.start();
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  };
+  toggle.addEventListener('click', () => setMenu(menu.dataset.open !== 'true'));
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && menu.dataset.open === 'true' && setMenu(false));
+</script>

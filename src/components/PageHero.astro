@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import type { Crumb } from '../lib/seo';
+
+type Props = {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  image: ImageMetadata;
+  imageAlt?: string;
+  crumbs: Crumb[];
+  /** Posición del recorte de la foto (CSS object-position) */
+  focus?: string;
+};
+const { eyebrow, title, intro, image, imageAlt = '', crumbs, focus = 'center' } = Astro.props;
+---
+
+<section class="relative isolate flex min-h-[72svh] items-end overflow-hidden bg-bosque text-white lg:min-h-[78svh]">
+  <div class="absolute inset-0 -z-10" data-parallax="0.12">
+    <Image
+      src={image}
+      alt={imageAlt}
+      widths={[640, 960, 1400, 1920, 2400]}
+      sizes="100vw"
+      class="animate-ken-burns size-full scale-110 object-cover"
+      style={`object-position:${focus}`}
+      loading="eager"
+      fetchpriority="high"
+      data-intro-wait
+    />
+  </div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-bosque via-bosque/55 to-bosque/25"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-bosque/70 via-transparent to-transparent"></div>
+
+  <div class="mx-auto w-full max-w-[90rem] px-5 pt-40 pb-14 sm:px-8 lg:px-12 lg:pb-20">
+    <Breadcrumbs crumbs={crumbs} light />
+    <p class="eyebrow animate-fade-up mt-8 text-trigo" data-intro-wait>{eyebrow}</p>
+    <h1 class="display animate-fade-up mt-4 max-w-4xl text-[2.9rem] text-balance sm:text-6xl lg:text-[5.2rem]" style="animation-delay:120ms" data-intro-wait>
+      {title}
+    </h1>
+    {
+      intro && (
+        <p class="animate-fade-up mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl" style="animation-delay:240ms" data-intro-wait>
+          {intro}
+        </p>
+      )
+    }
+    <slot />
+  </div>
+</section>

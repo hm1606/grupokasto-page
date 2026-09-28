@@ -1,0 +1,348 @@
+@import 'tailwindcss';
+
+/* ---------- Tipografías (self-hosted en public/fonts) ----------
+   Fraunces: titulares (serif con carácter, cálida, "de campo")
+   Manrope: texto e interfaz (clara y corporativa) */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-300-normal.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-600-normal.woff2') format('woff2');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-300-italic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-400-italic.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('/fonts/manrope-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('/fonts/manrope-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('/fonts/manrope-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('/fonts/manrope-700-normal.woff2') format('woff2');
+  font-weight: 700 800;
+  font-display: swap;
+}
+
+@theme {
+  /* Marca: verde hoja y amarillo trigo (las hojas del ícono de Grupo Kasto) */
+  --color-hoja: #5b8c51;
+  --color-trigo: #e8d45f;
+  /* Profundos */
+  --color-bosque: #15291d;
+  --color-pino: #1f3d2a;
+  --color-tinta: #0f1a13;
+  /* Claros: harina y arena */
+  --color-harina: #f7f4ec;
+  --color-arena: #ece5d3;
+  --color-paja: #d9c9a0;
+  /* Apoyo */
+  --color-brote: #9dc08a;
+  --color-oro: #a8842a;
+  --color-tierra: #6f5c3c;
+  --color-niebla: #5d6b61;
+
+  --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Manrope', 'Avenir Next', system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out-soft: cubic-bezier(0.7, 0, 0.2, 1);
+
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-fade-up: fade-up 1.1s var(--ease-out-soft) both;
+  --animate-ken-burns: ken-burns 9s ease-out both;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes ken-burns {
+    from {
+      transform: scale(1.12);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    --header-h: 4.5rem;
+  }
+  @media (min-width: 1024px) {
+    html {
+      --header-h: 5.5rem;
+    }
+  }
+  body {
+    @apply bg-harina font-sans text-tinta antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    @apply bg-hoja text-harina;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-4 outline-hoja;
+  }
+  [id] {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  /* Aparición suave al hacer scroll (solo con JS; sin JS todo se ve normal) */
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 1.1s var(--ease-out-soft),
+      transform 1.1s var(--ease-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  /* Imagen que se descubre (cortina) */
+  html.js [data-reveal='mask'] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.4s var(--ease-in-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html.js [data-reveal='mask'].is-visible {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@layer components {
+  /* Titular editorial */
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    font-variation-settings: 'opsz' 144;
+  }
+  /* Etiqueta corta: mayúsculas con tracking amplio */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  /* Texto largo */
+  .prose-gk {
+    @apply text-[1.0625rem] leading-[1.8] text-tinta/80;
+  }
+  .prose-gk p + p {
+    @apply mt-5;
+  }
+  .prose-gk a {
+    @apply text-hoja underline decoration-hoja/40 underline-offset-4 hover:decoration-hoja;
+  }
+  .prose-gk strong {
+    @apply font-semibold text-tinta;
+  }
+  .prose-gk ul {
+    @apply my-6 space-y-2 pl-0;
+  }
+  .prose-gk ul li {
+    @apply relative pl-6;
+  }
+  .prose-gk ul li::before {
+    content: '';
+    @apply absolute top-[0.8em] left-0 h-px w-3 bg-hoja;
+  }
+  /* Botones */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0 1.6rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      background-color 0.4s var(--ease-out-soft),
+      color 0.4s var(--ease-out-soft),
+      border-color 0.4s var(--ease-out-soft),
+      transform 0.4s var(--ease-out-soft);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn-primary {
+    @apply bg-hoja text-white hover:bg-pino;
+  }
+  .btn-trigo {
+    @apply bg-trigo text-bosque hover:bg-white;
+  }
+  .btn-ghost {
+    @apply border border-bosque/25 text-bosque hover:border-bosque hover:bg-bosque hover:text-harina;
+  }
+  .btn-outline-light {
+    @apply border border-white/35 text-white hover:border-white hover:bg-white hover:text-bosque;
+  }
+  /* Flecha que avanza al pasar el mouse sobre el enlace/tarjeta (.group) */
+  .arrow {
+    transition: transform 0.5s var(--ease-out-soft);
+  }
+  .group:hover .arrow {
+    transform: translateX(4px);
+  }
+  /* Enlace con subrayado que se dibuja */
+  .link-line {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-out-soft);
+  }
+  .link-line:hover,
+  .link-line[aria-current='page'] {
+    background-size: 100% 1px;
+  }
+  /* Surcos: líneas de campo arado, muy sutiles */
+  .surcos {
+    background-image: repeating-linear-gradient(-12deg, rgb(21 41 29 / 0.05) 0 1px, transparent 1px 22px);
+  }
+  .surcos-claro {
+    background-image: repeating-linear-gradient(-12deg, rgb(247 244 236 / 0.06) 0 1px, transparent 1px 22px);
+  }
+  /* Grano de papel (muy sutil) */
+  .grano {
+    position: relative;
+    isolation: isolate;
+  }
+  .grano::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* Tarjeta de imagen con zoom suave */
+  .zoom img {
+    transition: transform 1.2s var(--ease-out-soft);
+  }
+  .zoom:hover img,
+  .group:hover .zoom img {
+    transform: scale(1.05);
+  }
+}
+
+/* Titular de la portada: cada palabra sube desde su renglón */
+.hero-word {
+  animation: hero-word 1.1s var(--ease-out-soft) both;
+}
+@keyframes hero-word {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Barra de progreso del carrusel de la portada */
+@keyframes gk-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Lenis (scroll suave) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

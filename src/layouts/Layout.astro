@@ -1,0 +1,311 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { abs, keywords, organization, webPage, website } from '../lib/seo';
+import { noindex as reviewSite } from '../lib/env';
+
+type Props = {
+  title?: string;
+  description?: string;
+  /** Imagen para compartir (1200×630) en public/, p. ej. "/og/home.jpg" */
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  /** Tipo schema.org de la página (WebPage, AboutPage, ContactPage, CollectionPage…) */
+  pageType?: string;
+  hasBreadcrumb?: boolean;
+  /** Datos estructurados extra (se agregan al @graph) */
+  schema?: object[];
+  /** Encabezado transparente sobre una foto oscura (portada y páginas con hero) */
+  headerOverHero?: boolean;
+};
+
+const {
+  title,
+  description = site.description,
+  image = '/og/home.jpg',
+  imageAlt = 'Grupo Kasto — grupo agroindustrial mexicano desde 1945',
+  noindex = false,
+  ogType = 'website',
+  pageType = 'WebPage',
+  hasBreadcrumb = false,
+  schema = [],
+  headerOverHero = true,
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Grupo agroindustrial mexicano desde 1945`;
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = abs(path);
+const ogImage = abs(image);
+const hideFromSearch = noindex || reviewSite;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    organization(),
+    website(),
+    webPage({ path, title: fullTitle, description, image, type: pageType, breadcrumb: hasBreadcrumb }),
+    ...schema,
+  ],
+};
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta
+      name="robots"
+      content={hideFromSearch ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+    />
+    <meta name="author" content={site.name} />
+    <meta name="keywords" content={keywords.join(', ')} />
+    <meta name="application-name" content={site.name} />
+    <meta name="apple-mobile-web-app-title" content={site.name} />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="alternate" hreflang="es-MX" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <meta name="geo.region" content="MX-GUA" />
+    <meta name="geo.placename" content="Santa Ana Pacueco, Guanajuato" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#15291d" />
+    <link rel="preload" href="/fonts/fraunces-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/manrope-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/manrope-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <slot name="head" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    {
+      !hideFromSearch && site.gaId && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`} />
+          <script is:inline define:vars={{ gaId: site.gaId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', gaId);
+          </script>
+        </>
+      )
+    }
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <!-- Telón de bienvenida: solo la primera vez por visita -->
+    <script is:inline>
+      (function () {
+        try {
+          if (sessionStorage.getItem('gk-intro') || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          sessionStorage.setItem('gk-intro', '1');
+        } catch (e) {
+          return;
+        }
+        var root = document.documentElement;
+        root.classList.add('has-intro');
+        var el = document.createElement('div');
+        el.id = 'intro';
+        el.setAttribute('aria-hidden', 'true');
+        el.innerHTML =
+          '<svg viewBox="0 0 118 64" fill="currentColor"><path class="i1" fill-rule="evenodd" d="M30 4 2 46h56L30 4Zm0 7.6L9.85 41.8h40.3L30 11.6Z"/><path class="i2" fill-rule="evenodd" d="M88 4 60 46h56L88 4Zm0 7.6L67.85 41.8h40.3L88 11.6Z"/><path class="i3" fill-rule="evenodd" d="M40 3h38L59 31 40 3Zm7.55 4L59 23.9 70.45 7h-22.9Z"/><path class="i4" d="M4 49.5h52c0 7-11.6 12-26 12S4 56.5 4 49.5Zm58 0h52c0 7-11.6 12-26 12s-26-5-26-12Z"/></svg><p>Grupo Kasto</p><span>Desde 1945</span>';
+        document.body.appendChild(el);
+        setTimeout(function () {
+          el.classList.add('out');
+          root.classList.remove('has-intro');
+        }, 1700);
+        setTimeout(function () {
+          el.remove();
+        }, 2900);
+      })();
+    </script>
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-full focus:bg-harina focus:px-4 focus:py-2"
+      >Saltar al contenido</a
+    >
+    <Header overHero={headerOverHero} />
+    <main id="contenido" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Volver arriba, con anillo de progreso de lectura -->
+    <a
+      href="#contenido"
+      id="to-top"
+      aria-label="Volver arriba"
+      class="fixed right-5 bottom-5 z-30 grid size-13 translate-y-4 place-items-center rounded-full bg-bosque text-trigo opacity-0 shadow-lg shadow-bosque/20 transition duration-500 hover:bg-hoja hover:text-white data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:right-8 sm:bottom-8"
+    >
+      <svg viewBox="0 0 56 56" class="absolute inset-0 size-full -rotate-90" aria-hidden="true">
+        <circle cx="28" cy="28" r="27" fill="none" stroke="rgb(232 212 95 / .18)" stroke-width="1.5"></circle>
+        <circle id="to-top-ring" cx="28" cy="28" r="27" fill="none" stroke="#e8d45f" stroke-width="1.5" stroke-dasharray="169.6" stroke-dashoffset="169.6"></circle>
+      </svg>
+      <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"></path></svg>
+    </a>
+
+    <style is:global>
+      #intro {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: grid;
+        place-items: center;
+        align-content: center;
+        gap: 1.1rem;
+        background: #15291d;
+        color: #f7f4ec;
+        transition: clip-path 1.2s cubic-bezier(0.7, 0, 0.2, 1);
+        clip-path: inset(0 0 0 0);
+      }
+      #intro.out {
+        clip-path: inset(0 0 100% 0);
+      }
+      #intro svg {
+        width: 7.5rem;
+        color: #e8d45f;
+      }
+      #intro svg path {
+        animation: intro-piece 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      #intro .i1 {
+        animation-delay: 0.05s;
+      }
+      #intro .i2 {
+        animation-delay: 0.15s;
+      }
+      #intro .i3 {
+        animation-delay: 0.3s;
+      }
+      #intro .i4 {
+        animation-delay: 0.45s;
+      }
+      #intro p {
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        letter-spacing: 0.02em;
+        animation: fade-up 1s 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      #intro span {
+        font-family: var(--font-sans);
+        font-weight: 600;
+        font-size: 0.66rem;
+        letter-spacing: 0.34em;
+        padding-left: 0.34em;
+        text-transform: uppercase;
+        color: #9dc08a;
+        animation: fade-up 1s 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      @keyframes intro-piece {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      html.has-intro main .animate-fade-up,
+      html.has-intro main [data-intro-wait] {
+        animation-play-state: paused;
+      }
+    </style>
+
+    <script>
+      import Lenis from 'lenis';
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const lenis = reduce ? null : new Lenis({ lerp: 0.1, anchors: { offset: -90 } });
+      if (lenis) {
+        const raf = (t: number) => {
+          lenis.raf(t);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+        (window as any).__lenis = lenis;
+      }
+
+      // Aparición suave de elementos con data-reveal
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        els.forEach((el) => io.observe(el));
+      } else els.forEach((el) => el.classList.add('is-visible'));
+
+      // Parallax suave: data-parallax="0.08" (se mueve respecto al centro de la pantalla)
+      const parallax = reduce ? [] : [...document.querySelectorAll<HTMLElement>('[data-parallax]')];
+      if (parallax.length) {
+        const tick = () => {
+          const vh = window.innerHeight;
+          for (const el of parallax) {
+            const r = el.getBoundingClientRect();
+            if (r.bottom < -200 || r.top > vh + 200) continue;
+            const y = (r.top + r.height / 2 - vh / 2) * -Number(el.dataset.parallax);
+            el.style.translate = `0 ${y.toFixed(1)}px`;
+          }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+
+      // Volver arriba + progreso de lectura
+      const btn = document.getElementById('to-top');
+      const ring = document.getElementById('to-top-ring');
+      const updateTop = () => {
+        if (!btn || !ring) return;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p = max > 0 ? window.scrollY / max : 0;
+        btn.dataset.show = String(window.scrollY > 800);
+        ring.setAttribute('stroke-dashoffset', String(169.6 * (1 - p)));
+      };
+      updateTop();
+      window.addEventListener('scroll', updateTop, { passive: true });
+      btn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
+  </body>
+</html>

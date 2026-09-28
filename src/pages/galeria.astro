@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Gallery from '../components/react/Gallery.tsx';
+import { gallery } from '../data/company';
+import { divisions } from '../data/divisions';
+import { img, pic } from '../lib/images';
+import { breadcrumbs } from '../lib/seo';
+
+const path = '/galeria/';
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Nosotros', path: '/nosotros/' },
+  { name: 'Galería', path },
+];
+
+const toItem = async (key: string, caption: string, note: string) => ({
+  thumb: await pic(key, [480, 800, 1200]),
+  full: await pic(key, [1200, 1800, 2400]),
+  caption,
+  note,
+});
+
+const companies = await Promise.all(gallery.map((g) => toItem(`galeria/${g.image}`, g.caption, g.division)));
+const installations = await Promise.all(
+  divisions.flatMap((d) => d.gallery.map((g) => toItem(`divisiones/${d.slug}/${g.image}`, g.caption, d.short))),
+);
+---
+
+<Layout
+  title="Galería: nuestras empresas e instalaciones"
+  description="Fotos de las empresas, plantas, granjas, invernaderos y sucursales de Grupo Kasto en Jalisco, Michoacán, Guanajuato y Sonora."
+  pageType="CollectionPage"
+  hasBreadcrumb
+  schema={[breadcrumbs(path, crumbs)]}
+>
+  <PageHero eyebrow="Galería" title="Del campo a la planta, así trabajamos." image={img('galeria/agrobasa')} crumbs={crumbs} />
+
+  <section class="grano">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow="Nuestras empresas" title="Empresas del grupo" />
+      <div class="mt-12" data-reveal>
+        <Gallery client:visible items={companies} />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-arena/60">
+    <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+      <SectionHead eyebrow="Nuestras instalaciones" title="Plantas, granjas, invernaderos y sucursales" />
+      <div class="mt-12" data-reveal>
+        <Gallery client:visible items={installations} layout="grid" />
+      </div>
+    </div>
+  </section>
+
+  <div class="pt-3 sm:pt-4"><CtaBand /></div>
+</Layout>
