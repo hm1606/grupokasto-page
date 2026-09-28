@@ -5,7 +5,8 @@ import SectionHead from '../components/SectionHead.astro';
 import SocialIcon from '../components/SocialIcon.astro';
 import PresenceMap from '../components/PresenceMap.astro';
 import ContactForm from '../components/react/ContactForm.tsx';
-import { contactTopics, offices, site, telHref } from '../data/site';
+import DirectoryFinder from '../components/react/DirectoryFinder.tsx';
+import { contactTopics, offices, site } from '../data/site';
 import { img } from '../lib/images';
 import { breadcrumbs } from '../lib/seo';
 import { routes, t, type Lang } from '../i18n/ui';
@@ -96,32 +97,19 @@ const crumbs = [
   <section class="bg-gris/60">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
       <SectionHead eyebrow={L('Oficinas', 'Offices')} title={L('Dónde estamos', 'Where we are')} />
-      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          offices.map((o, i) => (
-            <article class="flex flex-col rounded-[1.75rem] bg-crema p-8 ring-1 ring-olivo/8" data-reveal style={`--reveal-delay:${i * 80}ms`}>
-              <p class="eyebrow text-hoja">{o.name[lang]}</p>
-              <h3 class="display mt-3 text-2xl leading-tight text-olivo">{o.company}</h3>
-              <address class="mt-4 flex-1 leading-relaxed text-tinta/70 not-italic">
-                {o.lines.map((l) => (
-                  <span class="block">{l}</span>
-                ))}
-              </address>
-              <div class="mt-6 space-y-1.5 border-t border-olivo/10 pt-5 text-[0.95rem]">
-                <a href={telHref(o.phone)} class="block font-semibold text-olivo hover:text-hoja">{o.phone}</a>
-                <a href={`mailto:${o.email}`} class="block text-tinta/70 hover:text-hoja">{o.email}</a>
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${o.company} ${o.lines.join(' ')}`)}`}
-                  target="_blank"
-                  rel="noopener"
-                  class="link-line inline-block pt-2 text-sm font-semibold text-hoja"
-                >
-                  {L('Cómo llegar', 'Get directions')} ↗
-                </a>
-              </div>
-            </article>
-          ))
-        }
+      <div class="mt-12" data-reveal>
+        <DirectoryFinder
+          client:visible
+          places={offices.map((o) => ({
+            title: o.company,
+            subtitle: o.name[lang],
+            lines: o.lines,
+            phones: [o.phone],
+            email: o.email,
+            query: `${o.company.replace(/, S\.A\. de C\.V\.$/, '')}, ${o.lines.join(', ')}, México`,
+          }))}
+          labels={{ directions: L('Cómo llegar', 'Get directions'), website: L('Sitio web', 'Website'), mapOf: L('Mapa de', 'Map of'), call: L('Llamar al', 'Call') }}
+        />
       </div>
       <p class="mt-10 text-tinta/70" data-reveal>
         {L('¿Buscas otra empresa del grupo? Consulta el directorio completo en cada', 'Looking for another company in the group? See the full directory in each')}

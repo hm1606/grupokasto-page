@@ -36,7 +36,7 @@ el idioma; `src/pages/` (español) y `src/pages/en/` (inglés) solo las llaman.
 | --- | --- |
 | Teléfono, correo, domicilio, redes, menú, cifras de la portada, oficinas y temas del formulario | `src/data/site.ts` |
 | Rutas en cada idioma y textos de la interfaz (botones, etiquetas) | `src/i18n/ui.ts` |
-| Divisiones: textos, unidades, directorio, fotos de instalaciones, slug en inglés | `src/data/divisions.ts` |
+| Divisiones: textos, unidades, directorio (sale con su mapa de Google), fotos de instalaciones, slug en inglés | `src/data/divisions.ts` |
 | Servicios | `src/data/services.ts` |
 | Historia, **filosofía**, testimonios, certificaciones, marcas, galería y mapa de presencia | `src/data/company.ts` |
 | Modelo de sostenibilidad (y datos del PDF: páginas y tamaño) | `src/data/sustainability.ts`, `public/docs/` |
