@@ -10,10 +10,10 @@ const TX = {
   en: { step: 'Milestone', of: 'of', prev: 'Previous milestone', next: 'Next milestone', years: 'Years' },
 };
 
-// Colores según el fondo: claro (crema) u oscuro (olivo)
+// Colores según el fondo: claro (nube) u oscuro (marino)
 const TONE = {
-  light: { accent: 'text-hoja', title: 'text-olivo', text: 'text-tinta/70', ghost: 'border-olivo/20 text-olivo hover:bg-olivo hover:text-crema disabled:hover:text-olivo', solid: 'bg-olivo text-crema hover:bg-hoja', line: 'bg-olivo/15', fill: 'bg-hoja', dotOn: 'border-hoja bg-hoja', dotPast: 'border-hoja bg-crema', dotOff: 'border-olivo/25 bg-crema group-hover:border-hoja', yearOn: 'text-hoja', yearOff: 'text-olivo/45 group-hover:text-olivo' },
-  dark: { accent: 'text-trigo', title: 'text-crema', text: 'text-crema/70', ghost: 'border-crema/25 text-crema hover:bg-crema hover:text-olivo disabled:hover:text-crema', solid: 'bg-trigo text-olivo hover:bg-white', line: 'bg-crema/15', fill: 'bg-trigo', dotOn: 'border-trigo bg-trigo', dotPast: 'border-trigo bg-olivo', dotOff: 'border-crema/30 bg-olivo group-hover:border-trigo', yearOn: 'text-trigo', yearOff: 'text-crema/45 group-hover:text-crema' },
+  light: { accent: 'text-azul', title: 'text-marino', text: 'text-tinta/70', ghost: 'border-marino/20 text-marino hover:bg-marino hover:text-nube disabled:hover:text-marino', solid: 'bg-marino text-nube hover:bg-azul', line: 'bg-marino/15', fill: 'bg-azul', dotOn: 'border-azul bg-azul', dotPast: 'border-azul bg-nube', dotOff: 'border-marino/25 bg-nube group-hover:border-azul', yearOn: 'text-azul', yearOff: 'text-marino/45 group-hover:text-marino' },
+  dark: { accent: 'text-celeste', title: 'text-nube', text: 'text-nube/70', ghost: 'border-nube/25 text-nube hover:bg-nube hover:text-marino disabled:hover:text-nube', solid: 'bg-celeste text-marino hover:bg-white', line: 'bg-nube/15', fill: 'bg-celeste', dotOn: 'border-celeste bg-celeste', dotPast: 'border-celeste bg-marino', dotOff: 'border-nube/30 bg-marino group-hover:border-celeste', yearOn: 'text-celeste', yearOff: 'text-nube/45 group-hover:text-nube' },
 };
 
 export default function Timeline({ items, lang = 'es', tone = 'light' }: { items: Milestone[]; lang?: 'es' | 'en'; tone?: 'light' | 'dark' }) {

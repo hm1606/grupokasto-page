@@ -4,7 +4,7 @@ import type { Pillar } from '../../data/sustainability';
 import type { Pic } from '../../lib/images';
 
 const ease = [0.2, 0.7, 0.2, 1] as const;
-const DOT: Record<Pillar['id'], string> = { ambiental: '#9dc08a', social: '#e8d45f', gobernanza: '#f7f4ec' };
+const DOT: Record<Pillar['id'], string> = { ambiental: '#83a7cb', social: '#7c878e', gobernanza: '#ffffff' };
 
 /** Sostenibilidad: pestañas Ambiental / Social / Gobernanza con ámbitos de acción y objetivos estratégicos */
 const TX = {
@@ -33,10 +33,10 @@ export default function Pillars({ pillars, images, lang = 'es' }: { pillars: Pil
               setScope(0);
             }}
             className={`flex items-center gap-3 rounded-full px-6 py-3 text-sm font-semibold transition-colors ${
-              x.id === id ? 'bg-crema text-olivo' : 'bg-white/8 text-crema/75 hover:bg-white/15 hover:text-crema'
+              x.id === id ? 'bg-nube text-marino' : 'bg-white/8 text-nube/75 hover:bg-white/15 hover:text-nube'
             }`}
           >
-            <span className="size-2.5 rounded-full" style={{ background: DOT[x.id] }} />
+            <span className="size-2.5 rounded-full ring-1 ring-sombra/15" style={{ background: DOT[x.id] }} />
             {x.name[lang]}
           </button>
         ))}
@@ -52,7 +52,7 @@ export default function Pillars({ pillars, images, lang = 'es' }: { pillars: Pil
           transition={{ duration: 0.5, ease }}
         >
           <div>
-            <p className="eyebrow text-trigo">{tx.scopes} · {p.name[lang]}</p>
+            <p className="eyebrow text-celeste">{tx.scopes} · {p.name[lang]}</p>
             <ul className="mt-6 divide-y divide-white/10 border-y border-white/10">
               {p.scopes.map((x, k) => (
                 <li key={x.name.es}>
@@ -62,8 +62,8 @@ export default function Pillars({ pillars, images, lang = 'es' }: { pillars: Pil
                     aria-expanded={k === scope}
                     className="flex w-full items-center justify-between gap-6 py-5 text-left"
                   >
-                    <span className={`display text-2xl transition-colors sm:text-3xl ${k === scope ? 'text-crema' : 'text-crema/45 hover:text-crema/80'}`}>{x.name[lang]}</span>
-                    <span className={`grid size-9 shrink-0 place-items-center rounded-full border transition-all duration-300 ${k === scope ? 'rotate-45 border-trigo text-trigo' : 'border-white/20 text-crema/50'}`}>
+                    <span className={`display text-2xl transition-colors sm:text-3xl ${k === scope ? 'text-nube' : 'text-nube/45 hover:text-nube/80'}`}>{x.name[lang]}</span>
+                    <span className={`grid size-9 shrink-0 place-items-center rounded-full border transition-all duration-300 ${k === scope ? 'rotate-45 border-celeste text-celeste' : 'border-white/20 text-nube/50'}`}>
                       <svg viewBox="0 0 16 16" className="size-3" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                         <path d="M8 3v10M3 8h10" />
                       </svg>
@@ -72,12 +72,12 @@ export default function Pillars({ pillars, images, lang = 'es' }: { pillars: Pil
                   <AnimatePresence initial={false}>
                     {k === scope && (
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.45, ease }} className="overflow-hidden">
-                        <p className="pb-4 text-crema/70">{x.text[lang]}</p>
-                        <p className="text-[0.7rem] font-semibold tracking-[0.16em] text-brote uppercase">{tx.objectives}</p>
+                        <p className="pb-4 text-nube/70">{x.text[lang]}</p>
+                        <p className="text-[0.7rem] font-semibold tracking-[0.16em] text-celeste-claro uppercase">{tx.objectives}</p>
                         <ul className="mt-3 space-y-2 pb-6">
                           {x.objectives.map((o) => (
-                            <li key={o.es} className="flex gap-3 text-[0.95rem] text-crema/85">
-                              <span className="mt-2.5 h-px w-4 shrink-0 bg-trigo" aria-hidden="true" />
+                            <li key={o.es} className="flex gap-3 text-[0.95rem] text-nube/85">
+                              <span className="mt-2.5 h-px w-4 shrink-0 bg-celeste" aria-hidden="true" />
                               {o[lang]}
                             </li>
                           ))}
@@ -98,8 +98,8 @@ export default function Pillars({ pillars, images, lang = 'es' }: { pillars: Pil
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {p.topics.map((t) => (
                 <div key={t.name.es} className="rounded-2xl bg-white/6 p-5">
-                  <p className="text-[0.95rem] font-semibold text-crema">{t.name[lang]}</p>
-                  <p className="mt-1.5 text-[0.85rem] leading-relaxed text-crema/60">{t.text[lang]}</p>
+                  <p className="text-[0.95rem] font-semibold text-nube">{t.name[lang]}</p>
+                  <p className="mt-1.5 text-[0.85rem] leading-relaxed text-nube/60">{t.text[lang]}</p>
                 </div>
               ))}
             </div>

@@ -5,7 +5,7 @@ import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Timeline from '../components/react/Timeline.tsx';
-import { aboutIntro, clientVoices, history, leadership, teamVoices } from '../data/company';
+import { aboutIntro, clientVoices, history, leadership, philosophy as ph, teamVoices } from '../data/company';
 import { site } from '../data/site';
 import { img } from '../lib/images';
 import { breadcrumbs } from '../lib/seo';
@@ -49,16 +49,16 @@ const years = new Date().getFullYear() - site.foundingYear;
         </div>
       </div>
       <div class="lg:col-span-5 lg:col-start-8">
-        <p class="eyebrow text-hoja" data-reveal>{L('Tenemos', 'We have')}</p>
-        <p class="display mt-2 text-[7.5rem] leading-none text-olivo sm:text-[10rem]" data-reveal>+{years}</p>
-        <p class="eyebrow mt-3 text-hoja" data-reveal style="--reveal-delay:80ms">{L('años de experiencia', 'years of experience')}</p>
+        <p class="eyebrow text-azul" data-reveal>{L('Tenemos', 'We have')}</p>
+        <p class="display mt-2 text-[7.5rem] leading-none text-marino sm:text-[10rem]" data-reveal>+{years}</p>
+        <p class="eyebrow mt-3 text-azul" data-reveal style="--reveal-delay:80ms">{L('años de experiencia', 'years of experience')}</p>
         <p class="mt-8 text-xl leading-relaxed text-tinta/75" data-reveal style="--reveal-delay:160ms">{leadership[lang]}</p>
       </div>
     </div>
   </section>
 
   <!-- Historia -->
-  <section class="relative overflow-hidden bg-olivo text-crema">
+  <section class="relative overflow-hidden bg-marino text-nube">
     <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <SectionHead light eyebrow={L('Conócenos', 'Get to know us')} title={L('Nuestra Historia', 'Our History')} />
@@ -75,9 +75,9 @@ const years = new Date().getFullYear() - site.foundingYear;
       <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {
           teamVoices.map((v, i) => (
-            <figure class="group relative flex flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-olivo/8 transition-shadow duration-700 hover:shadow-2xl hover:shadow-olivo/10" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+            <figure class="group relative flex flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-marino/8 transition-shadow duration-700 hover:shadow-2xl hover:shadow-marino/10" data-reveal style={`--reveal-delay:${i * 90}ms`}>
               <!-- Retrato vertical, anclado arriba: nunca corta la cabeza -->
-              <div class="zoom relative aspect-[3/4] overflow-hidden bg-gris">
+              <div class="zoom relative aspect-[3/4] overflow-hidden bg-perla">
                 <Image
                   src={img(`personas/${v.image}`)}
                   alt={v.name}
@@ -88,15 +88,15 @@ const years = new Date().getFullYear() - site.foundingYear;
                 <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-sombra/90 via-sombra/35 to-transparent" aria-hidden="true"></div>
               </div>
               <div class="flex flex-1 flex-col p-7">
-                <svg viewBox="0 0 32 24" class="h-5 w-7 text-trigo" fill="currentColor" aria-hidden="true">
+                <svg viewBox="0 0 32 24" class="h-5 w-7 text-celeste" fill="currentColor" aria-hidden="true">
                   <path d="M0 24V14C0 6 4 1 12 0l1 4c-4 1-6 4-6 8h5v12H0Zm19 0V14c0-8 4-13 12-14l1 4c-4 1-6 4-6 8h5v12H19Z" />
                 </svg>
-                <blockquote class="display mt-4 flex-1 text-[1.45rem] leading-snug text-olivo">{v.quote[lang]}</blockquote>
+                <blockquote class="display mt-4 flex-1 text-[1.45rem] leading-snug text-marino">{v.quote[lang]}</blockquote>
               </div>
               <!-- Nombre sobre la foto -->
               <figcaption class="pointer-events-none absolute inset-x-0 top-0 flex aspect-[3/4] items-end justify-between gap-3 p-6 text-white">
                 <span class="display text-[2rem] leading-none">{v.name}</span>
-                <span class="shrink-0 rounded-full bg-trigo px-3 py-1 font-serif text-[0.78rem] font-semibold tracking-[0.1em] text-olivo uppercase">
+                <span class="shrink-0 rounded-full bg-celeste px-3 py-1 font-serif text-[0.78rem] font-semibold tracking-[0.1em] text-marino uppercase">
                   {L('desde', 'since')} {v.since}
                 </span>
               </figcaption>
@@ -108,21 +108,21 @@ const years = new Date().getFullYear() - site.foundingYear;
   </section>
 
   <!-- Clientes -->
-  <section class="bg-gris/60">
+  <section class="bg-perla/60">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <SectionHead eyebrow={L('La razón de ser del grupo', 'Why we exist')} title={L('Nuestros clientes', 'Our customers')} />
       <div class="mt-16 grid gap-5 lg:grid-cols-3">
         {
           clientVoices.map((c, i) => (
-            <figure class="flex flex-col justify-between rounded-[1.75rem] bg-white p-8 ring-1 ring-olivo/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
-              <svg viewBox="0 0 32 24" class="h-6 w-8 text-trigo" fill="currentColor" aria-hidden="true">
+            <figure class="flex flex-col justify-between rounded-[1.75rem] bg-white p-8 ring-1 ring-marino/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
+              <svg viewBox="0 0 32 24" class="h-6 w-8 text-celeste" fill="currentColor" aria-hidden="true">
                 <path d="M0 24V14C0 6 4 1 12 0l1 4c-4 1-6 4-6 8h5v12H0Zm19 0V14c0-8 4-13 12-14l1 4c-4 1-6 4-6 8h5v12H19Z" />
               </svg>
-              <blockquote class="mt-6 text-lg leading-relaxed text-olivo">“{c.quote[lang]}”</blockquote>
-              <figcaption class="mt-8 flex items-center gap-4 border-t border-olivo/10 pt-6">
+              <blockquote class="mt-6 text-lg leading-relaxed text-marino">“{c.quote[lang]}”</blockquote>
+              <figcaption class="mt-8 flex items-center gap-4 border-t border-marino/10 pt-6">
                 <Image src={img(`personas/${c.image}`)} alt="" widths={[96, 192]} sizes="48px" class="size-12 rounded-full object-cover" />
                 <span>
-                  <span class="block font-semibold text-olivo">{c.name}</span>
+                  <span class="block font-semibold text-marino">{c.name}</span>
                   <span class="text-sm text-niebla">{c.role[lang]}</span>
                 </span>
               </figcaption>
@@ -133,6 +133,37 @@ const years = new Date().getFullYear() - site.foundingYear;
       <div class="mt-14 flex flex-wrap gap-3" data-reveal>
         <a href={routes.philosophy[lang]} class="btn btn-primary">{L('Nuestra filosofía', 'Our philosophy')}</a>
         <a href={routes.divisions[lang]} class="btn btn-ghost">{L('Conoce las divisiones', 'Explore our divisions')}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filosofía: propósito, misión y visión con sus íconos oficiales (texto exacto de src/data/company.ts) -->
+  <section class="relative overflow-hidden bg-azul text-white">
+    <svg viewBox="0 0 60 48" class="pointer-events-none absolute -right-24 -bottom-28 w-[34rem] text-white/[0.05]" aria-hidden="true"><use href="#gk-mark"></use></svg>
+    <div class="relative mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHead light eyebrow={L('Filosofía', 'Philosophy')} title={ph.purposeEyebrow[lang]} />
+        <a href={routes.philosophy[lang]} class="btn btn-outline-light group" data-reveal>
+          {L('Valores y formas de trabajo', 'Values and ways of working')}
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="mt-14 grid gap-5 lg:grid-cols-3">
+        {
+          [
+            { icon: ph.icons.purpose, label: ph.purposeTitle[lang], text: ph.purpose[lang] },
+            { icon: ph.icons.mission, label: L('Misión', 'Mission'), text: ph.mission[lang] },
+            { icon: ph.icons.vision, label: L('Visión', 'Vision'), text: ph.vision[lang] },
+          ].map((c, i) => (
+            <a href={routes.philosophy[lang]} class="group flex flex-col rounded-[1.75rem] bg-white/8 p-8 ring-1 ring-white/12 transition-colors duration-500 hover:bg-white/14 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
+              <span class="grid size-24 place-items-center rounded-2xl bg-white">
+                <Image src={img(c.icon)} format="png" alt="" width={160} class="w-[72%] object-contain transition-transform duration-700 group-hover:scale-110" />
+              </span>
+              <span class="eyebrow mt-8 text-celeste-claro">{c.label}</span>
+              <span class="display mt-3 text-[1.9rem] leading-[1.12]">{c.text}</span>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>

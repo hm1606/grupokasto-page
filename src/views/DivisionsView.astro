@@ -52,14 +52,14 @@ const wide = (i: number) => i === 0 || i === divisions.length - 1;
         {
           divisions.map((d, i) => (
             <li class:list={[wide(i) && 'md:col-span-2']} data-reveal style={`--reveal-delay:${(i % 2) * 90}ms`}>
-              <a href={divisionUrl(lang, d)} class="group relative isolate flex min-h-[26rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-olivo p-8 text-white sm:p-10 lg:min-h-[32rem]">
+              <a href={divisionUrl(lang, d)} class="group relative isolate flex min-h-[26rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-marino p-8 text-white sm:p-10 lg:min-h-[32rem]">
                 <div class="zoom absolute inset-0 -z-10">
                   <Image src={img(`divisiones/${d.id}/hero`)} alt="" widths={[640, 1000, 1600]} sizes={wide(i) ? '(min-width:768px) 90vw, 100vw' : '(min-width:768px) 45vw, 100vw'} class="size-full object-cover" />
                 </div>
-                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-olivo via-olivo/40 to-transparent" />
+                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-marino via-marino/40 to-transparent" />
                 <div class="flex items-end justify-between gap-8">
                   <div>
-                    <p class="eyebrow text-trigo">
+                    <p class="eyebrow text-celeste">
                       {String(i + 1).padStart(2, '0')} · {d.region[lang]}
                     </p>
                     <h2 class="display mt-3 text-5xl uppercase sm:text-6xl">{d.short[lang]}</h2>
@@ -69,14 +69,14 @@ const wide = (i: number) => i === 0 || i === divisions.length - 1;
                         <div>
                           <dt class="sr-only">{h.label[lang]}</dt>
                           <dd>
-                            <span class="display block text-3xl text-trigo">{h.value[lang]}</span>
+                            <span class="display block text-3xl text-celeste">{h.value[lang]}</span>
                             <span class="text-sm text-white/70">{h.label[lang]}</span>
                           </dd>
                         </div>
                       ))}
                     </dl>
                   </div>
-                  <span class="grid size-14 shrink-0 place-items-center rounded-full bg-white/15 backdrop-blur transition-colors duration-500 group-hover:bg-trigo group-hover:text-olivo">
+                  <span class="grid size-14 shrink-0 place-items-center rounded-full bg-white/15 backdrop-blur transition-colors duration-500 group-hover:bg-celeste group-hover:text-marino">
                     <svg viewBox="0 0 16 16" class="arrow size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                       <path d="M3 8h10m-4-4 4 4-4 4" />
                     </svg>

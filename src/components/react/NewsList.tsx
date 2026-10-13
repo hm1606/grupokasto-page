@@ -35,7 +35,7 @@ export default function NewsList({ items, labels }: { items: NewsCard[]; labels:
 
   return (
     <div>
-      <div className="news-filter sticky top-3 z-20 -mx-2 flex flex-col gap-4 rounded-2xl bg-crema/90 p-2 backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
+      <div className="news-filter sticky top-3 z-20 -mx-2 flex flex-col gap-4 rounded-2xl bg-nube/90 p-2 backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
         <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] lg:flex-wrap" role="tablist" aria-label={labels.archive}>
           {categories.map(([id, label]) => (
             <button
@@ -45,7 +45,7 @@ export default function NewsList({ items, labels }: { items: NewsCard[]; labels:
               aria-selected={id === cat}
               onClick={() => setCat(id)}
               className={`shrink-0 rounded-lg px-4 py-2 font-serif text-[0.95rem] font-semibold tracking-[0.06em] uppercase transition-colors ${
-                id === cat ? 'bg-olivo text-crema' : 'bg-gris text-olivo/70 hover:text-olivo'
+                id === cat ? 'bg-marino text-nube' : 'bg-perla text-marino/70 hover:text-marino'
               }`}
             >
               {label}
@@ -63,7 +63,7 @@ export default function NewsList({ items, labels }: { items: NewsCard[]; labels:
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={labels.search}
-            className="w-full rounded-lg border border-olivo/15 bg-white py-2.5 pr-4 pl-11 text-sm outline-none focus:border-hoja"
+            className="w-full rounded-lg border border-marino/15 bg-white py-2.5 pr-4 pl-11 text-sm outline-none focus:border-azul"
           />
         </label>
       </div>
@@ -78,10 +78,10 @@ export default function NewsList({ items, labels }: { items: NewsCard[]; labels:
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease }}
-              className="grid gap-8 border-t border-olivo/15 pt-8 lg:grid-cols-[11rem_1fr] lg:gap-12"
+              className="grid gap-8 border-t border-marino/15 pt-8 lg:grid-cols-[11rem_1fr] lg:gap-12"
             >
               <div>
-                <p className="display text-7xl text-hoja lg:sticky lg:top-28">{year}</p>
+                <p className="display text-7xl text-azul lg:sticky lg:top-28">{year}</p>
                 <p className="mt-1 text-sm text-niebla">
                   {(() => {
                     const count = list.filter((n) => n.year === year).length;
@@ -95,9 +95,9 @@ export default function NewsList({ items, labels }: { items: NewsCard[]; labels:
                   .map((n) => (
                     <motion.li key={n.slug} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4, ease }}>
                       <a href={n.href} className="group block">
-                        <div className="zoom relative aspect-[4/3] overflow-hidden rounded-xl bg-gris">
+                        <div className="zoom relative aspect-[4/3] overflow-hidden rounded-xl bg-perla">
                           <img src={n.image.src} srcSet={n.image.srcset} sizes="(min-width: 1280px) 22vw, (min-width: 640px) 42vw, 100vw" alt="" loading="lazy" className="size-full object-cover" />
-                          <span className="absolute top-3 left-3 rounded-md bg-crema/95 px-2.5 py-1 font-serif text-[0.78rem] font-semibold tracking-[0.08em] text-hoja uppercase">
+                          <span className="absolute top-3 left-3 rounded-md bg-nube/95 px-2.5 py-1 font-serif text-[0.78rem] font-semibold tracking-[0.08em] text-azul uppercase">
                             {n.categoryLabel}
                           </span>
                         </div>
@@ -108,7 +108,7 @@ export default function NewsList({ items, labels }: { items: NewsCard[]; labels:
                             {n.minutes} {labels.minRead}
                           </span>
                         </p>
-                        <h3 className="display mt-2 text-[1.6rem] leading-[1.08] text-olivo transition-colors group-hover:text-hoja">{n.title}</h3>
+                        <h3 className="display mt-2 text-[1.6rem] leading-[1.08] text-marino transition-colors group-hover:text-azul">{n.title}</h3>
                         <p className="mt-2 line-clamp-2 text-[0.95rem] leading-relaxed text-tinta/65">{n.excerpt}</p>
                       </a>
                     </motion.li>

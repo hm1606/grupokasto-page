@@ -45,22 +45,22 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-12">
-      <ul className="border-t border-olivo/12">
+      <ul className="border-t border-marino/12">
         {places.map((pl, i) => {
           const on = i === sel;
           return (
-            <li key={pl.title + (pl.subtitle ?? '')} className="border-b border-olivo/12">
+            <li key={pl.title + (pl.subtitle ?? '')} className="border-b border-marino/12">
               <button type="button" onClick={() => setSel(i)} aria-pressed={on} className="group flex w-full items-center gap-5 py-5 text-left">
-                <span className={`font-serif text-lg font-semibold tabular-nums transition-colors ${on ? 'text-hoja' : 'text-olivo/30 group-hover:text-hoja/70'}`}>
+                <span className={`font-serif text-lg font-semibold tabular-nums transition-colors ${on ? 'text-azul' : 'text-marino/30 group-hover:text-azul/70'}`}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <span className="flex-1">
-                  {pl.subtitle && <span className="eyebrow block text-hoja">{pl.subtitle}</span>}
-                  <span className={`display block text-[1.65rem] leading-tight transition-colors ${on ? 'text-olivo' : 'text-olivo/55 group-hover:text-olivo'}`}>{pl.title}</span>
+                  {pl.subtitle && <span className="eyebrow block text-azul">{pl.subtitle}</span>}
+                  <span className={`display block text-[1.65rem] leading-tight transition-colors ${on ? 'text-marino' : 'text-marino/55 group-hover:text-marino'}`}>{pl.title}</span>
                   <span className="mt-1 block text-sm text-niebla">{where(pl.lines)}</span>
                 </span>
                 <span
-                  className={`grid size-10 shrink-0 place-items-center rounded-full border transition-colors ${on ? 'border-hoja bg-hoja text-white' : 'border-olivo/15 text-olivo/45 group-hover:border-hoja'}`}
+                  className={`grid size-10 shrink-0 place-items-center rounded-full border transition-colors ${on ? 'border-azul bg-azul text-white' : 'border-marino/15 text-marino/45 group-hover:border-azul'}`}
                   aria-hidden="true"
                 >
                   <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -92,7 +92,7 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
                             key={ph}
                             href={tel(ph)}
                             aria-label={`${labels.call} ${ph}`}
-                            className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-olivo ring-1 ring-olivo/10 transition-colors hover:bg-hoja hover:text-white hover:ring-hoja"
+                            className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-marino ring-1 ring-marino/10 transition-colors hover:bg-azul hover:text-white hover:ring-azul"
                           >
                             <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                               <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
@@ -101,7 +101,7 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
                           </a>
                         ))}
                         {pl.email && (
-                          <a href={`mailto:${pl.email}`} className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-olivo ring-1 ring-olivo/10 transition-colors hover:bg-hoja hover:text-white hover:ring-hoja">
+                          <a href={`mailto:${pl.email}`} className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-marino ring-1 ring-marino/10 transition-colors hover:bg-azul hover:text-white hover:ring-azul">
                             <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                               <rect x="3" y="5" width="18" height="14" rx="2" />
                               <path d="m3 7 9 6 9-6" />
@@ -113,7 +113,7 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
                           href={directions(pl.query)}
                           target="_blank"
                           rel="noopener"
-                          className="inline-flex items-center gap-2 rounded-lg border border-olivo/15 px-4 py-2.5 text-sm font-semibold text-olivo transition-colors hover:border-hoja hover:bg-hoja hover:text-white"
+                          className="inline-flex items-center gap-2 rounded-lg border border-marino/15 px-4 py-2.5 text-sm font-semibold text-marino transition-colors hover:border-azul hover:bg-azul hover:text-white"
                         >
                           {labels.directions}
                           <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
@@ -124,7 +124,7 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
                       {(pl.web || pl.social?.length) && (
                         <div className="mt-4 flex flex-wrap items-center gap-2">
                           {pl.web && (
-                            <a href={pl.web} target="_blank" rel="noopener" className="link-line mr-2 text-sm font-semibold text-hoja" aria-label={`${labels.website}: ${host(pl.web)}`}>
+                            <a href={pl.web} target="_blank" rel="noopener" className="link-line mr-2 text-sm font-semibold text-azul" aria-label={`${labels.website}: ${host(pl.web)}`}>
                               {host(pl.web)} ↗
                             </a>
                           )}
@@ -136,7 +136,7 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
                               rel="noopener"
                               aria-label={NAMES[s.network]}
                               title={NAMES[s.network]}
-                              className="grid size-9 place-items-center rounded-full border border-olivo/15 text-olivo transition-colors hover:border-hoja hover:bg-hoja hover:text-white"
+                              className="grid size-9 place-items-center rounded-full border border-marino/15 text-marino transition-colors hover:border-azul hover:bg-azul hover:text-white"
                             >
                               <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                 <path d={ICONS[s.network]} />
@@ -155,7 +155,7 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
       </ul>
 
       {/* Mapa */}
-      <div className="relative min-h-[400px] overflow-hidden rounded-[2rem] bg-gris shadow-[0_40px_80px_-50px_rgba(64,74,61,.8)] ring-1 ring-olivo/8 lg:sticky lg:top-40 lg:h-[600px]">
+      <div className="relative min-h-[400px] overflow-hidden rounded-[2rem] bg-perla shadow-[0_40px_80px_-50px_rgba(14,44,88,.8)] ring-1 ring-marino/8 lg:sticky lg:top-40 lg:h-[600px]">
         <AnimatePresence mode="wait">
           <motion.iframe
             key={p.query}
@@ -170,9 +170,9 @@ export default function DirectoryFinder({ places, labels }: { places: Place[]; l
             transition={{ duration: 0.5 }}
           />
         </AnimatePresence>
-        <div className="pointer-events-none absolute top-4 left-4 max-w-[80%] rounded-2xl bg-crema/95 px-5 py-4 shadow-lg backdrop-blur">
-          {p.subtitle && <p className="eyebrow text-hoja">{p.subtitle}</p>}
-          <p className="display mt-1 text-2xl leading-tight text-olivo">{p.title}</p>
+        <div className="pointer-events-none absolute top-4 left-4 max-w-[80%] rounded-2xl bg-nube/95 px-5 py-4 shadow-lg backdrop-blur">
+          {p.subtitle && <p className="eyebrow text-azul">{p.subtitle}</p>}
+          <p className="display mt-1 text-2xl leading-tight text-marino">{p.title}</p>
           <p className="mt-1 text-sm text-niebla">{where(p.lines)}</p>
         </div>
       </div>

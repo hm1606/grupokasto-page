@@ -21,7 +21,7 @@ const company = [
 ];
 ---
 
-<footer class="relative overflow-hidden bg-olivo text-crema">
+<footer class="relative overflow-hidden bg-marino text-nube">
   <!-- Al fondo: la granja grabada del sitio anterior, con su sol al atardecer -->
   <div class="farm pointer-events-none absolute select-none" aria-hidden="true" data-parallax="0.06">
     <span class="farm-sun"></span>
@@ -31,21 +31,21 @@ const company = [
   <div class="relative mx-auto max-w-[90rem] px-5 pt-20 pb-10 sm:px-8 lg:px-12 lg:pt-28">
     <div class="grid gap-14 lg:grid-cols-12">
       <div class="lg:col-span-4">
-        <a href={routes.home[lang]} class="inline-flex text-crema" aria-label={`Grupo Kasto, ${tx.home.toLowerCase()}`}>
+        <a href={routes.home[lang]} class="inline-flex text-nube" aria-label={`Grupo Kasto, ${tx.home.toLowerCase()}`}>
           <Logo class="text-[1.6rem]" />
         </a>
-        <p class="mt-8 max-w-sm text-lg leading-relaxed text-crema/75">{tx.footerAbout}</p>
+        <p class="mt-8 max-w-sm text-lg leading-relaxed text-nube/75">{tx.footerAbout}</p>
         <div class="mt-8 flex gap-2">
-          <SocialIcon network="linkedin" url={site.social.linkedin} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
-          <SocialIcon network="facebook" url={site.social.facebook} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
-          <SocialIcon network="instagram" url={site.social.instagram} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
+          <SocialIcon network="linkedin" url={site.social.linkedin} class="border-white/15 hover:border-celeste hover:bg-celeste hover:text-marino" />
+          <SocialIcon network="facebook" url={site.social.facebook} class="border-white/15 hover:border-celeste hover:bg-celeste hover:text-marino" />
+          <SocialIcon network="instagram" url={site.social.instagram} class="border-white/15 hover:border-celeste hover:bg-celeste hover:text-marino" />
         </div>
       </div>
 
       <div class="grid gap-10 sm:grid-cols-3 lg:col-span-8">
         <div>
-          <p class="eyebrow text-brote">{tx.footerDivisions}</p>
-          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-crema/75">
+          <p class="eyebrow text-celeste-claro">{tx.footerDivisions}</p>
+          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-nube/75">
             {
               divisions.map((d) => (
                 <li>
@@ -58,8 +58,8 @@ const company = [
           </ul>
         </div>
         <div>
-          <p class="eyebrow text-brote">{tx.footerCompany}</p>
-          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-crema/75">
+          <p class="eyebrow text-celeste-claro">{tx.footerCompany}</p>
+          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-nube/75">
             {
               company.map((c) => (
                 <li>
@@ -70,8 +70,8 @@ const company = [
               ))
             }
           </ul>
-          <p class="eyebrow mt-9 text-brote">{tx.footerServices}</p>
-          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-crema/75">
+          <p class="eyebrow mt-9 text-celeste-claro">{tx.footerServices}</p>
+          <ul class="mt-5 space-y-2.5 text-[0.95rem] text-nube/75">
             {
               services.map((s) => (
                 <li>
@@ -84,39 +84,39 @@ const company = [
           </ul>
         </div>
         <div>
-          <p class="eyebrow text-brote">{tx.footerOffices}</p>
-          <address class="mt-5 text-[0.95rem] leading-relaxed text-crema/75 not-italic">
+          <p class="eyebrow text-celeste-claro">{tx.footerOffices}</p>
+          <address class="mt-5 text-[0.95rem] leading-relaxed text-nube/75 not-italic">
             {site.address.street}<br />
             {site.address.city}, {site.address.stateShort}<br />
             C.P. {site.address.zip}
           </address>
           <ul class="mt-5 space-y-2.5 text-[0.95rem]">
-            <li><a href={`mailto:${site.email}`} class="link-line text-crema hover:text-trigo">{site.email}</a></li>
-            <li><a href={site.phoneHref} class="link-line text-crema hover:text-trigo">{site.phone}</a></li>
+            <li><a href={`mailto:${site.email}`} class="link-line text-nube hover:text-celeste">{site.email}</a></li>
+            <li><a href={site.phoneHref} class="link-line text-nube hover:text-celeste">{site.phone}</a></li>
           </ul>
-          <a href={routes.contact[lang]} class="btn btn-trigo mt-8 min-h-11 px-5 text-[0.85rem]">{tx.writeUs}</a>
+          <a href={routes.contact[lang]} class="btn btn-celeste mt-8 min-h-11 px-5 text-[0.85rem]">{tx.writeUs}</a>
         </div>
       </div>
     </div>
 
-    <div class="footer-bottom mt-20 flex flex-col gap-4 border-t border-white/10 pt-8 text-[0.82rem] text-crema/70 sm:flex-row sm:items-center sm:justify-between">
+    <div class="footer-bottom mt-20 flex flex-col gap-4 border-t border-white/10 pt-8 text-[0.82rem] text-nube/70 sm:flex-row sm:items-center sm:justify-between">
       <p>© {year} Grupo Kasto. {tx.rights}</p>
       <div class="flex flex-wrap gap-x-6 gap-y-2">
-        <a href={routes.privacy[lang]} class="link-line hover:text-crema">{tx.privacyNotices}</a>
-        <a href={`${routes.contact[lang]}?tema=quejas`} class="link-line hover:text-crema">{tx.complaints}</a>
-        <a href="/sitemap-index.xml" class="link-line hover:text-crema">{tx.sitemap}</a>
+        <a href={routes.privacy[lang]} class="link-line hover:text-nube">{tx.privacyNotices}</a>
+        <a href={`${routes.contact[lang]}?tema=quejas`} class="link-line hover:text-nube">{tx.complaints}</a>
+        <a href="/sitemap-index.xml" class="link-line hover:text-nube">{tx.sitemap}</a>
       </div>
     </div>
   </div>
 
   <!-- Al frente: el nombre, enorme -->
   <div class="footer-field relative overflow-hidden" aria-hidden="true" data-field>
-    <p class="footer-mark font-marca text-center text-[15.2vw] leading-[0.78] whitespace-nowrap text-crema/[0.09] select-none">Grupo Kasto</p>
+    <p class="footer-mark font-marca text-center text-[15.2vw] leading-[0.78] whitespace-nowrap text-nube/[0.09] select-none">Grupo Kasto</p>
   </div>
 </footer>
 
 <style>
-  /* Pie: la granja al fondo y el nombre enorme en crema, que sube cuando el bloque entra en pantalla
+  /* Pie: la granja al fondo y el nombre enorme en nube, que sube cuando el bloque entra en pantalla
      (el nombre queda tan abajo que no podría detectarse solo). */
   .footer-field {
     padding-top: 3vw;
@@ -126,8 +126,8 @@ const company = [
   .farm ~ div ul,
   .farm ~ div address {
     text-shadow:
-      0 0 8px var(--color-olivo),
-      0 0 16px var(--color-olivo);
+      0 0 8px var(--color-marino),
+      0 0 16px var(--color-marino);
   }
   /* Granja: grande a la derecha en escritorio; centrada detrás del nombre en celular */
   .farm {
@@ -162,7 +162,7 @@ const company = [
     aspect-ratio: 1;
     translate: -50% -50%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgb(237 221 94 / 0.3), rgb(237 221 94 / 0.08) 45%, transparent 70%);
+    background: radial-gradient(circle, rgb(131 167 203 / 0.3), rgb(131 167 203 / 0.08) 45%, transparent 70%);
     animation: farm-sun 7s ease-in-out infinite;
   }
   @keyframes farm-sun {

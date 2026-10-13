@@ -7,14 +7,14 @@ const { eyebrow, title, text, align = 'left', light = false, class: className = 
 ---
 
 <div class:list={[align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl', className]}>
-  <p class:list={['eyebrow', light ? 'text-brote' : 'text-hoja']} data-reveal>{eyebrow}</p>
-  <Tag class:list={['display mt-3 text-[2.6rem] text-balance sm:text-6xl lg:text-[4.25rem]', light ? 'text-crema' : 'text-olivo']} data-reveal style="--reveal-delay:80ms">
+  <p class:list={['eyebrow', light ? 'text-celeste-claro' : 'text-azul']} data-reveal>{eyebrow}</p>
+  <Tag class:list={['display mt-3 text-[2.6rem] text-balance sm:text-6xl lg:text-[4.25rem]', light ? 'text-nube' : 'text-marino']} data-reveal style="--reveal-delay:80ms">
     <Fragment set:html={title} />
   </Tag>
   <div class:list={['mt-5 flex', align === 'center' && 'justify-center']} data-reveal style="--reveal-delay:140ms"><Espiga /></div>
   {
     text && (
-      <p class:list={['mt-6 text-lg leading-relaxed text-pretty', light ? 'text-crema/75' : 'text-tinta/70']} data-reveal style="--reveal-delay:180ms">
+      <p class:list={['mt-6 text-lg leading-relaxed text-pretty', light ? 'text-nube/75' : 'text-tinta/70']} data-reveal style="--reveal-delay:180ms">
         {text}
       </p>
     )

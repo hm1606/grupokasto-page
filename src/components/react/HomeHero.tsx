@@ -80,7 +80,7 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
   return (
     <div ref={wrap} className={reduce ? '' : 'h-[150svh]'}>
       <motion.section
-        className="sticky top-0 isolate flex h-[100svh] min-h-[38rem] flex-col justify-end overflow-hidden bg-olivo text-white"
+        className="sticky top-0 isolate flex h-[100svh] min-h-[38rem] flex-col justify-end overflow-hidden bg-marino text-white"
         style={reduce ? undefined : { clipPath }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
@@ -115,16 +115,16 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 z-[999] bg-gradient-to-t from-olivo via-olivo/35 to-olivo/30" />
-          <div className="absolute inset-0 z-[999] bg-gradient-to-r from-olivo/85 via-olivo/25 to-transparent" />
+          <div className="absolute inset-0 z-[999] bg-gradient-to-t from-marino via-marino/25 to-marino/15" />
+          <div className="absolute inset-0 z-[999] bg-gradient-to-r from-marino/85 via-marino/25 to-transparent" />
           {/* Trigo en silueta, firma del sitio anterior */}
           <img src={wheat} alt="" aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[999] h-44 w-full object-cover object-top opacity-[0.13] select-none" />
         </motion.div>
 
         <motion.div className="mx-auto w-full max-w-[90rem] px-5 pt-36 pb-10 sm:px-8 lg:px-12 lg:pb-14" style={reduce ? undefined : { y: textY, opacity: textOpacity }}>
           {/* Las animaciones del texto son CSS (se ven sin esperar a React; se pausan durante el telón) */}
-          <p className="eyebrow animate-fade-up flex items-center gap-3 text-trigo" data-intro-wait>
-            <span className="h-px w-8 bg-trigo/60" aria-hidden="true" />
+          <p className="eyebrow animate-fade-up flex items-center gap-3 text-celeste" data-intro-wait>
+            <span className="h-px w-8 bg-celeste/60" aria-hidden="true" />
             {copy.eyebrow}
           </p>
           <h1 className="hero-title display mt-5 max-w-6xl uppercase" aria-label={`${copy.brand}: ${words.join(' ')}`}>
@@ -137,7 +137,7 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
             {words.map((w, k) => (
               <span key={k} className="inline-block overflow-hidden pb-[0.12em] align-bottom" aria-hidden="true">
                 <span
-                  className={`hero-word inline-block ${w === copy.highlight ? 'hero-highlight text-trigo' : ''}`}
+                  className={`hero-word inline-block ${w === copy.highlight ? 'hero-highlight text-celeste' : ''}`}
                   style={{ animationDelay: `${260 + k * 80}ms` }}
                   data-intro-wait
                 >
@@ -157,7 +157,7 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
           >
             <p className="max-w-xl text-lg leading-relaxed text-white/80 sm:text-xl">{copy.text}</p>
             <div className="flex flex-wrap gap-3">
-              <a href={copy.primary.href} className="btn btn-trigo group">
+              <a href={copy.primary.href} className="btn btn-celeste group">
                 {copy.primary.label}
                 <svg viewBox="0 0 16 16" className="arrow size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                   <path d="M3 8h10m-4-4 4 4-4 4" />
@@ -191,7 +191,7 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
                     {k === i && (
                       <span
                         key={`bar-${i}-${layer}`}
-                        className="absolute inset-0 origin-left bg-trigo"
+                        className="absolute inset-0 origin-left bg-celeste"
                         style={
                           reduce
                             ? undefined
@@ -236,7 +236,7 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
 
         <a
           href={s.href}
-          className="absolute top-1/2 right-5 hidden -translate-y-1/2 rotate-90 text-[0.66rem] font-semibold tracking-[0.3em] text-white/60 uppercase transition-colors hover:text-trigo lg:right-8 lg:block"
+          className="absolute top-1/2 right-5 hidden -translate-y-1/2 rotate-90 text-[0.66rem] font-semibold tracking-[0.3em] text-white/60 uppercase transition-colors hover:text-celeste lg:right-8 lg:block"
           style={{ transformOrigin: 'right center' }}
         >
           {s.label} →

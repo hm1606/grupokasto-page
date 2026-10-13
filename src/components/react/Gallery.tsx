@@ -52,7 +52,7 @@ export default function Gallery({ items, layout = 'mosaic', lang = 'es' }: { ite
             <button
               type="button"
               onClick={() => setOpen(k)}
-              className={`group zoom relative block w-full overflow-hidden rounded-2xl bg-gris text-left ${layout === 'mosaic' ? 'h-full' : 'aspect-[4/3]'}`}
+              className={`group zoom relative block w-full overflow-hidden rounded-2xl bg-perla text-left ${layout === 'mosaic' ? 'h-full' : 'aspect-[4/3]'}`}
               aria-label={`${tx.zoom}: ${it.caption}`}
             >
               <img
@@ -65,10 +65,10 @@ export default function Gallery({ items, layout = 'mosaic', lang = 'es' }: { ite
                 height={it.thumb.height}
                 className="size-full object-cover"
               />
-              <span className="absolute inset-0 bg-gradient-to-t from-olivo/75 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+              <span className="absolute inset-0 bg-gradient-to-t from-marino/75 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
               <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white">
                 <span>
-                  {it.note && <span className="eyebrow block text-[0.6rem] text-trigo">{it.note}</span>}
+                  {it.note && <span className="eyebrow block text-[0.6rem] text-celeste">{it.note}</span>}
                   <span className="mt-1 block text-sm font-semibold">{it.caption}</span>
                 </span>
                 <span className="grid size-8 shrink-0 scale-75 place-items-center rounded-full bg-white/15 opacity-0 backdrop-blur transition-all duration-500 group-hover:scale-100 group-hover:opacity-100" aria-hidden="true">
@@ -142,7 +142,7 @@ export default function Gallery({ items, layout = 'mosaic', lang = 'es' }: { ite
               )}
             </div>
             <p className="px-5 py-6 text-center text-sm text-white/80">
-              {items[open].note && <span className="eyebrow mr-3 text-[0.6rem] text-trigo">{items[open].note}</span>}
+              {items[open].note && <span className="eyebrow mr-3 text-[0.6rem] text-celeste">{items[open].note}</span>}
               {items[open].caption}
             </p>
           </motion.div>

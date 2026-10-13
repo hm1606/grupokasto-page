@@ -61,7 +61,7 @@ const sections = [
           <div>
             <dt class="sr-only">{h.label[lang]}</dt>
             <dd>
-              <span class="display block text-2xl text-trigo sm:text-4xl">{h.value[lang]}</span>
+              <span class="display block text-2xl text-celeste sm:text-4xl">{h.value[lang]}</span>
               <span class="mt-1 block text-xs text-white/75 sm:text-sm">{h.label[lang]}</span>
             </dd>
           </div>
@@ -71,11 +71,11 @@ const sections = [
   </PageHero>
 
   <!-- Navegación dentro de la división -->
-  <nav aria-label={d.short[lang]} class="subnav sticky top-0 z-30 border-b border-olivo/10 bg-crema/90 backdrop-blur-xl">
+  <nav aria-label={d.short[lang]} class="subnav sticky top-0 z-30 border-b border-marino/10 bg-nube/90 backdrop-blur-xl">
     <div class="mx-auto flex max-w-[90rem] items-center gap-1 overflow-x-auto px-5 [scrollbar-width:none] sm:px-8 lg:px-12">
       {
         sections.map((s) => (
-          <a href={`#${s.id}`} class="shrink-0 px-4 py-4 font-serif text-[0.95rem] font-semibold tracking-[0.08em] text-olivo/60 uppercase transition-colors hover:text-hoja">
+          <a href={`#${s.id}`} class="shrink-0 px-4 py-4 font-serif text-[0.95rem] font-semibold tracking-[0.08em] text-marino/60 uppercase transition-colors hover:text-azul">
             {s.label}
           </a>
         ))
@@ -83,7 +83,7 @@ const sections = [
       <!-- Contacto con el tema de esta división ya elegido (el botón general "Contáctanos" está en el encabezado) -->
       <a
         href={`${routes.contact[lang]}?tema=${encodeURIComponent(d.short.es.toLowerCase())}`}
-        class="group ml-auto hidden shrink-0 items-center gap-2 px-4 py-4 font-serif text-[0.95rem] font-semibold tracking-[0.08em] text-hoja uppercase transition-colors hover:text-hoja-oscuro md:inline-flex"
+        class="group ml-auto hidden shrink-0 items-center gap-2 px-4 py-4 font-serif text-[0.95rem] font-semibold tracking-[0.08em] text-azul uppercase transition-colors hover:text-azul-oscuro md:inline-flex"
       >
         {L(`Escribir a ${d.short.es}`, `Contact ${d.short.en}`)}
         <svg viewBox="0 0 16 16" class="arrow size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"></path></svg>
@@ -100,7 +100,7 @@ const sections = [
           {d.intro.map((p) => <p>{p[lang]}</p>)}
         </div>
         <p class="mt-10 flex items-center gap-2 font-serif text-[0.95rem] font-semibold tracking-[0.1em] text-niebla uppercase" data-reveal style="--reveal-delay:260ms">
-          <svg viewBox="0 0 24 24" class="size-4 text-hoja" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+          <svg viewBox="0 0 24 24" class="size-4 text-azul" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
           {d.region[lang]}
         </p>
       </div>
@@ -113,18 +113,18 @@ const sections = [
   </section>
 
   <!-- Unidades de negocio -->
-  <section id="unidades" class="relative overflow-hidden bg-olivo text-crema">
+  <section id="unidades" class="relative overflow-hidden bg-marino text-nube">
     <div class="surcos-claro absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto grid max-w-[90rem] gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
       <div class="lg:col-span-5">
         <SectionHead light eyebrow={L('¿Quiénes participan en la división?', 'Who is part of the division?')} title={L('Unidades de negocio', 'Business units')} />
-        <p class="mt-8 text-lg leading-relaxed text-crema/75" data-reveal style="--reveal-delay:200ms">{d.unitsNote[lang]}</p>
+        <p class="mt-8 text-lg leading-relaxed text-nube/75" data-reveal style="--reveal-delay:200ms">{d.unitsNote[lang]}</p>
       </div>
       <ol class="lg:col-span-6 lg:col-start-7">
         {
           d.units.map((u, i) => (
             <li class="flex items-baseline gap-6 border-b border-white/10 py-6 first:border-t" data-reveal style={`--reveal-delay:${i * 70}ms`}>
-              <span class="font-serif text-lg font-semibold text-trigo tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+              <span class="font-serif text-lg font-semibold text-celeste tabular-nums">{String(i + 1).padStart(2, '0')}</span>
               <span class="display text-2xl sm:text-3xl">{u[lang]}</span>
             </li>
           ))
@@ -134,7 +134,7 @@ const sections = [
   </section>
 
   <!-- Directorio -->
-  <section id="directorio" class="bg-gris/60">
+  <section id="directorio" class="bg-perla/60">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <SectionHead eyebrow={L('Directorio', 'Directory')} title={L('Dónde encontrarnos', 'Where to find us')} />
       <div class="mt-14" data-reveal>
@@ -168,12 +168,12 @@ const sections = [
             <p class="eyebrow text-niebla">{tx.relatedService}</p>
             <div class="mt-5 grid gap-4 md:grid-cols-2">
               {related.map((s) => (
-                <a href={serviceUrl(lang, s)} class="group flex items-center justify-between gap-6 rounded-[1.75rem] bg-white p-8 ring-1 ring-olivo/8 transition-shadow hover:shadow-xl hover:shadow-olivo/8">
+                <a href={serviceUrl(lang, s)} class="group flex items-center justify-between gap-6 rounded-[1.75rem] bg-white p-8 ring-1 ring-marino/8 transition-shadow hover:shadow-xl hover:shadow-marino/8">
                   <span>
-                    <span class="display block text-3xl text-olivo">{s.name[lang]}</span>
+                    <span class="display block text-3xl text-marino">{s.name[lang]}</span>
                     <span class="mt-2 block text-tinta/65">{s.summary[lang]}</span>
                   </span>
-                  <span class="grid size-12 shrink-0 place-items-center rounded-full bg-olivo text-crema transition-colors group-hover:bg-hoja">
+                  <span class="grid size-12 shrink-0 place-items-center rounded-full bg-marino text-nube transition-colors group-hover:bg-azul">
                     <svg viewBox="0 0 16 16" class="arrow size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                       <path d="M3 8h10m-4-4 4 4-4 4" />
                     </svg>
@@ -188,24 +188,24 @@ const sections = [
   </section>
 
   <!-- Otras divisiones -->
-  <nav aria-label={L('Otras divisiones', 'Other divisions')} class="border-t border-olivo/10 bg-crema">
+  <nav aria-label={L('Otras divisiones', 'Other divisions')} class="border-t border-marino/10 bg-nube">
     <div class="mx-auto grid max-w-[90rem] sm:grid-cols-2">
       <a href={divisionUrl(lang, prev)} class="group relative isolate flex min-h-44 flex-col justify-end gap-2 overflow-hidden px-5 py-10 text-white sm:px-8 lg:px-12">
         <Image src={img(`divisiones/${prev.id}/hero`)} alt="" widths={[640, 1000]} sizes="50vw" class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-        <span class="absolute inset-0 -z-10 bg-olivo/75 transition-colors duration-500 group-hover:bg-olivo/60"></span>
-        <span class="eyebrow text-trigo">{tx.prevDivision}</span>
+        <span class="absolute inset-0 -z-10 bg-marino/75 transition-colors duration-500 group-hover:bg-marino/60"></span>
+        <span class="eyebrow text-celeste">{tx.prevDivision}</span>
         <span class="display text-4xl">{prev.short[lang]}</span>
       </a>
       <a href={divisionUrl(lang, next)} class="group relative isolate flex min-h-44 flex-col items-end justify-end gap-2 overflow-hidden px-5 py-10 text-right text-white sm:px-8 lg:px-12">
         <Image src={img(`divisiones/${next.id}/hero`)} alt="" widths={[640, 1000]} sizes="50vw" class="absolute inset-0 -z-10 size-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-        <span class="absolute inset-0 -z-10 bg-olivo/75 transition-colors duration-500 group-hover:bg-olivo/60"></span>
-        <span class="eyebrow text-trigo">{tx.nextDivision}</span>
+        <span class="absolute inset-0 -z-10 bg-marino/75 transition-colors duration-500 group-hover:bg-marino/60"></span>
+        <span class="eyebrow text-celeste">{tx.nextDivision}</span>
         <span class="display text-4xl">{next.short[lang]}</span>
       </a>
     </div>
   </nav>
 
-  <CtaBand lang={lang} title={L(`¿Te interesa <span class="text-trigo">${d.short.es.toLowerCase()}</span>?`, `Interested in <span class="text-trigo">${d.short.en.toLowerCase()}</span>?`)} />
+  <CtaBand lang={lang} title={L(`¿Te interesa <span class="text-celeste">${d.short.es.toLowerCase()}</span>?`, `Interested in <span class="text-celeste">${d.short.en.toLowerCase()}</span>?`)} />
 </Layout>
 
 <style is:global>

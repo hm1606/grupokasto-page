@@ -84,8 +84,10 @@ export const aboutIntro: T = {
   en: 'We are a solid, well-established group of agribusiness companies with a strong social commitment, with production, trading, services and consumer goods distribution operations.',
 };
 
-/* ---------- Filosofía (texto exacto del sitio anterior) ---------- */
+/* ---------- Filosofía (texto exacto del sitio anterior) ----------
+   Íconos: los oficiales de la filosofía GK (src/assets/filosofia/, idénticos a los de Folapsa). No se recolorean ni se editan. */
 export const philosophy = {
+  icons: { purpose: 'filosofia/proposito', mission: 'filosofia/mision', vision: 'filosofia/vision' },
   purposeEyebrow: { es: 'Nuestra razón de ser', en: 'Why we exist' } as T,
   purposeTitle: { es: 'Nuestro Propósito', en: 'Our Purpose' } as T,
   purpose: {
@@ -103,6 +105,7 @@ export const philosophy = {
   valuesTitle: { es: 'Nuestros Valores', en: 'Our Values' } as T,
   values: [
     {
+      icon: 'filosofia/compromiso',
       name: { es: 'Compromiso', en: 'Commitment' },
       text: {
         es: 'Nos caracterizamos por ser congruentes y comprometidos en cada uno de nuestros servicios, siempre buscando ofrecer soluciones adecuadas para las diferentes necesidades.',
@@ -110,6 +113,7 @@ export const philosophy = {
       },
     },
     {
+      icon: 'filosofia/responsabilidad',
       name: { es: 'Responsabilidad', en: 'Responsibility' },
       text: {
         es: 'Enfocamos nuestros esfuerzos en las necesidades de cada cliente, para darle un excelente servicio, siempre bajo la filosofia de ganar-ganar, asegurándonos de cumplir sus expectativas y protegiendo el medio ambiente.',
@@ -117,10 +121,12 @@ export const philosophy = {
       },
     },
     {
+      icon: 'filosofia/honestidad',
       name: { es: 'Honestidad', en: 'Honesty' },
       text: { es: 'Siempre nos conducimos actuando con rectitud y veracidad.', en: 'We always act with integrity and truthfulness.' },
     },
     {
+      icon: 'filosofia/respeto',
       name: { es: 'Respeto a la persona', en: 'Respect for people' },
       text: {
         es: 'Cuidamos el trato humano en nuestras relaciones, protegemos la dignidad e integridad de las personas.',
@@ -128,6 +134,7 @@ export const philosophy = {
       },
     },
     {
+      icon: 'filosofia/humildad',
       name: { es: 'Humildad', en: 'Humility' },
       text: {
         es: 'Reconocemos nuestras debilidades, cualidades y capacidades, escuchando y aceptando las opiniones que nos aporten en aprendizaje para mejorar y obrar en bien de los demás.',
@@ -135,14 +142,16 @@ export const philosophy = {
       },
     },
     {
+      icon: 'filosofia/lealtad',
       name: { es: 'Lealtad', en: 'Loyalty' },
       text: { es: 'Nuestras relaciones se basan en la disposición, confianza y transparencia.', en: 'Our relationships are built on willingness, trust and transparency.' },
     },
-  ] as { name: T; text: T }[],
+  ] as { icon: string; name: T; text: T }[],
   waysEyebrow: { es: 'Conoce la cultura corporativa', en: 'Our corporate culture' } as T,
   waysTitle: { es: 'Formas de Trabajo', en: 'How We Work' } as T,
   ways: [
     {
+      icon: 'filosofia/trabajo-en-equipo',
       name: { es: 'Trabajo en equipo', en: 'Teamwork' },
       text: {
         es: 'Fomentamos una organización en la que sumamos el trabajo y las aportaciones de cada persona para el logro de un mismo fin.',
@@ -150,6 +159,7 @@ export const philosophy = {
       },
     },
     {
+      icon: 'filosofia/pasion-calidad',
       name: { es: 'Pasión por la calidad y servicio', en: 'Passion for quality and service' },
       text: {
         es: 'Entregamos el corazón en lo que hacemos y ofrecemos, nos preocupamos por la eficiencia y oportunidad en los servicios y en la calidad de nuestros productos.',
@@ -157,6 +167,7 @@ export const philosophy = {
       },
     },
     {
+      icon: 'filosofia/mejora-continua',
       name: { es: 'Mejora Continua', en: 'Continuous Improvement' },
       text: {
         es: 'Contamos con procesos de mejora para nuestros productos y servicios, lo que contribuye al crecimiento y satisfacción de nuestros clientes.',
@@ -164,13 +175,14 @@ export const philosophy = {
       },
     },
     {
+      icon: 'filosofia/innovacion',
       name: { es: 'Innovación', en: 'Innovation' },
       text: {
         es: 'Apoyamos la creación de soluciones para nuestros clientes a través de quienes conformamos Grupo Kasto.',
         en: 'We support the creation of solutions for our customers through the people who make up Grupo Kasto.',
       },
     },
-  ] as { name: T; text: T }[],
+  ] as { icon: string; name: T; text: T }[],
 };
 
 /* ---------- Testimonios (texto exacto del sitio anterior; son citas de personas reales) ---------- */

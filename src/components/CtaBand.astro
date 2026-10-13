@@ -11,19 +11,19 @@ const { title = tx.ctaTitle, text = tx.ctaText, image = 'portada/espigas-cielo',
 ---
 
 <section class="px-3 pb-3 sm:px-4 sm:pb-4">
-  <div class="relative isolate overflow-hidden rounded-[2rem] bg-olivo px-6 py-20 text-crema sm:px-12 lg:rounded-[2.5rem] lg:px-20 lg:py-28">
+  <div class="relative isolate overflow-hidden rounded-[2rem] bg-marino px-6 py-20 text-nube sm:px-12 lg:rounded-[2.5rem] lg:px-20 lg:py-28">
     <div class="absolute inset-0 -z-10 opacity-45" data-parallax="0.08">
       <Image src={img(image)} alt="" widths={[640, 1200, 1920]} sizes="100vw" class="size-full scale-110 object-cover" />
     </div>
-    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-olivo via-olivo/85 to-olivo/30"></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-marino via-marino/85 to-marino/30"></div>
     <div class="grid items-end gap-10 lg:grid-cols-[1.4fr_1fr]">
       <div>
-        <p class="eyebrow text-trigo" data-reveal>{tx.ctaEyebrow}</p>
+        <p class="eyebrow text-celeste" data-reveal>{tx.ctaEyebrow}</p>
         <h2 class="display mt-5 text-4xl text-balance sm:text-6xl" data-reveal style="--reveal-delay:80ms"><Fragment set:html={title} /></h2>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-crema/75" data-reveal style="--reveal-delay:160ms">{text}</p>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-nube/75" data-reveal style="--reveal-delay:160ms">{text}</p>
       </div>
       <div class="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-end" data-reveal style="--reveal-delay:240ms">
-        <a href={routes.contact[lang]} class="btn btn-trigo group">
+        <a href={routes.contact[lang]} class="btn btn-celeste group">
           {tx.writeUs}
           <svg viewBox="0 0 16 16" class="arrow size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4"></path></svg>
         </a>

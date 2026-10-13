@@ -81,7 +81,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
   <!-- Declaración: se ilumina palabra por palabra al hacer scroll -->
   <section class="grano">
     <div class="mx-auto max-w-6xl px-5 pt-24 pb-6 text-center sm:px-8 lg:pt-36">
-      <p class="eyebrow text-hoja" data-reveal>{L('Acerca de nosotros', 'About us')}</p>
+      <p class="eyebrow text-azul" data-reveal>{L('Acerca de nosotros', 'About us')}</p>
       <ScrollText
         client:visible
         text={L(
@@ -89,7 +89,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
           'We are a solid, well-established group of agribusiness companies with a strong social commitment: production, trading, services and distribution, from the field to your home.',
         )}
         highlight={lang === 'es' ? ['agroindustriales', 'compromiso', 'social:', 'hogar.'] : ['agribusiness', 'social', 'commitment:', 'home.']}
-        className="display mt-6 text-[2.3rem] leading-[1.08] text-olivo sm:text-5xl lg:text-[4.1rem]"
+        className="display mt-6 text-[2.3rem] leading-[1.08] text-marino sm:text-5xl lg:text-[4.1rem]"
       />
     </div>
   </section>
@@ -100,7 +100,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
       <div class="lg:col-span-6 lg:pr-10">
         <SectionHead
           eyebrow={L('Líderes en el mercado agrícola', 'Leaders in the agricultural market')}
-          title={L('Del campo hasta <span class="text-hoja">su hogar</span>', 'From the field to <span class="text-hoja">your home</span>')}
+          title={L('Del campo hasta <span class="text-azul">su hogar</span>', 'From the field to <span class="text-azul">your home</span>')}
         />
         <div class="mt-8 space-y-5 text-lg leading-relaxed text-tinta/75" data-reveal style="--reveal-delay:200ms">
           <p>
@@ -114,20 +114,20 @@ const maxYears = Math.max(...experience.map((e) => e.years));
         </div>
         <div class="mt-10 grid gap-6 sm:grid-cols-2" data-reveal style="--reveal-delay:260ms">
           <div class="flex gap-4">
-            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-hoja/12 text-hoja">
+            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-azul/12 text-azul">
               <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21V9m0 0c0-3 2-5 6-5 0 4-2 6-6 5Zm0 4c0-3-2-5-6-5 0 4 2 6 6 5Z"></path></svg>
             </span>
             <p>
-              <strong class="block font-semibold text-olivo">{L('Ofrecemos los mejores productos', 'We offer the best products')}</strong>
+              <strong class="block font-semibold text-marino">{L('Ofrecemos los mejores productos', 'We offer the best products')}</strong>
               <span class="text-[0.95rem] text-tinta/65">{L('y servicios en nuestra zona de influencia.', 'and services in our region.')}</span>
             </p>
           </div>
           <div class="flex gap-4">
-            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-trigo/35 text-hoja">
+            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-celeste/35 text-azul">
               <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 20h18M5 20V10l7-5 7 5v10M10 20v-5h4v5"></path></svg>
             </span>
             <p>
-              <strong class="block font-semibold text-olivo">{L('Presencia regional', 'Regional presence')}</strong>
+              <strong class="block font-semibold text-marino">{L('Presencia regional', 'Regional presence')}</strong>
               <span class="text-[0.95rem] text-tinta/65">{L('en el Bajío, Occidente y Noroeste de México.', 'across central, western and northwestern Mexico.')}</span>
             </p>
           </div>
@@ -141,26 +141,26 @@ const maxYears = Math.max(...experience.map((e) => e.years));
         <div class="relative ml-auto w-[82%] overflow-hidden rounded-[2rem]" data-reveal="mask">
           <Image src={img('portada/silos')} alt={L('Silos de almacenamiento de granos', 'Grain storage silos')} widths={[480, 800, 1200]} sizes="(min-width:1024px) 40vw, 80vw" class="aspect-[4/5] w-full object-cover" />
         </div>
-        <div class="absolute -bottom-10 left-0 w-[46%] overflow-hidden rounded-[1.5rem] border-8 border-crema shadow-xl shadow-olivo/10" data-reveal="mask" style="--reveal-delay:250ms" data-parallax="0.06">
+        <div class="absolute -bottom-10 left-0 w-[46%] overflow-hidden rounded-[1.5rem] border-8 border-nube shadow-xl shadow-marino/10" data-reveal="mask" style="--reveal-delay:250ms" data-parallax="0.06">
           <Image src={img('portada/costal')} alt={L('Costal de harina con el logotipo de Grupo Kasto', 'Flour sack with the Grupo Kasto logo')} widths={[320, 640]} sizes="(min-width:1024px) 20vw, 45vw" class="aspect-[4/5] w-full object-cover" />
         </div>
-        <div class="absolute top-8 -left-2 rounded-2xl bg-olivo px-6 py-5 text-crema shadow-xl sm:left-6 lg:-left-6" data-reveal style="--reveal-delay:400ms">
-          <p class="display text-5xl text-trigo">1945</p>
-          <p class="mt-1 text-sm text-crema/70">La Piedad, Michoacán</p>
+        <div class="absolute top-8 -left-2 rounded-2xl bg-marino px-6 py-5 text-nube shadow-xl sm:left-6 lg:-left-6" data-reveal style="--reveal-delay:400ms">
+          <p class="display text-5xl text-celeste">1945</p>
+          <p class="mt-1 text-sm text-nube/70">La Piedad, Michoacán</p>
         </div>
       </div>
     </div>
 
     <!-- Cifras -->
     <div class="mx-auto max-w-[90rem] px-5 pb-24 sm:px-8 lg:px-12 lg:pb-32">
-      <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-olivo/10 lg:grid-cols-4">
+      <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-marino/10 lg:grid-cols-4">
         {
           stats.map((s, i) => (
-            <div class="bg-crema p-7 sm:p-10" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+            <div class="bg-nube p-7 sm:p-10" data-reveal style={`--reveal-delay:${i * 90}ms`}>
               <dt class="sr-only">{s.label[lang]}</dt>
               <dd>
-                <CountUp client:visible to={s.value} suffix={s.suffix} className="display block text-5xl text-olivo sm:text-6xl lg:text-7xl" />
-                <p class="mt-3 font-semibold text-olivo">{s.label[lang]}</p>
+                <CountUp client:visible to={s.value} suffix={s.suffix} className="display block text-5xl text-marino sm:text-6xl lg:text-7xl" />
+                <p class="mt-3 font-semibold text-marino">{s.label[lang]}</p>
                 <p class="mt-1 text-sm text-niebla">{s.note[lang]}</p>
               </dd>
             </div>
@@ -176,7 +176,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     items={divisionCards}
     copy={{
       eyebrow: L('Nuestras divisiones', 'Our divisions'),
-      title: L("Ocho divisiones, <span class='text-trigo'>una sola</span> cadena de valor", "Eight divisions, <span class='text-trigo'>one</span> value chain"),
+      title: L("Ocho divisiones, <span class='text-celeste'>una sola</span> cadena de valor", "Eight divisions, <span class='text-celeste'>one</span> value chain"),
       text: valueOffer.intro[lang],
       cta: tx.viewDivision,
       all: L('Ver todas', 'See all'),
@@ -196,7 +196,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
   <PresenceMap lang={lang} />
 
   <!-- Experiencia -->
-  <section class="relative overflow-hidden bg-gris/70">
+  <section class="relative overflow-hidden bg-perla/70">
     <div class="relative mx-auto grid max-w-[90rem] gap-16 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-24 lg:px-12 lg:py-32">
       <div>
         <SectionHead
@@ -212,20 +212,20 @@ const maxYears = Math.max(...experience.map((e) => e.years));
         </div>
       </div>
       <div class="lg:pt-6">
-        <p class="eyebrow text-hoja" data-reveal>{L('Años en cada giro', 'Years in each business')}</p>
+        <p class="eyebrow text-azul" data-reveal>{L('Años en cada giro', 'Years in each business')}</p>
         <ul class="mt-8 space-y-7">
           {
             experience.map((e, i) => (
               <li data-reveal style={`--reveal-delay:${i * 70}ms`} class="exp">
                 <div class="flex items-baseline justify-between gap-4">
-                  <span class="text-lg font-semibold text-olivo">{e.label[lang]}</span>
-                  <span class="display text-4xl text-hoja tabular-nums">
+                  <span class="text-lg font-semibold text-marino">{e.label[lang]}</span>
+                  <span class="display text-4xl text-azul tabular-nums">
                     {e.years}
                     <span class="ml-1 font-sans text-sm text-niebla">{tx.years}</span>
                   </span>
                 </div>
-                <div class="mt-3 h-1 overflow-hidden rounded-full bg-olivo/10">
-                  <span class="exp-bar block h-full rounded-full bg-gradient-to-r from-hoja to-trigo" style={`--w:${(e.years / maxYears) * 100}%`} />
+                <div class="mt-3 h-1 overflow-hidden rounded-full bg-marino/10">
+                  <span class="exp-bar block h-full rounded-full bg-gradient-to-r from-azul to-celeste" style={`--w:${(e.years / maxYears) * 100}%`} />
                 </div>
               </li>
             ))
@@ -242,14 +242,14 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     </div>
     <div class="absolute inset-0 -z-10 bg-gradient-to-b from-sombra/85 via-sombra/55 to-sombra/85"></div>
     <div class="mx-auto max-w-[90rem] px-5 py-32 text-center sm:px-8 lg:px-12">
-      <p class="eyebrow flex items-center justify-center gap-3 text-trigo" data-reveal>
-        <span class="h-px w-8 bg-trigo/60" aria-hidden="true"></span>Grupo Kasto<span class="h-px w-8 bg-trigo/60" aria-hidden="true"></span>
+      <p class="eyebrow flex items-center justify-center gap-3 text-celeste" data-reveal>
+        <span class="h-px w-8 bg-celeste/60" aria-hidden="true"></span>Grupo Kasto<span class="h-px w-8 bg-celeste/60" aria-hidden="true"></span>
       </p>
       <ScrollText
         client:visible
         text={L('La agricultura es importante para el desarrollo futuro', 'Agriculture matters for our future')}
         highlight={lang === 'es' ? ['desarrollo', 'futuro'] : ['our', 'future']}
-        highlightClass="text-trigo"
+        highlightClass="text-celeste"
         dim={0.14}
         className="display mx-auto mt-8 max-w-6xl text-[3.4rem] leading-[0.95] uppercase sm:text-8xl lg:text-[8.5rem]"
       />
@@ -261,21 +261,21 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
       <SectionHead align="center" eyebrow={L('Con un enfoque centrado en el cliente', 'Customer-centered')} title={L('Nuestra oferta de valor', 'Our value proposition')} text={valueOffer.body[lang]} />
       <div class="mx-auto mt-14 flex max-w-3xl flex-col items-center gap-2 text-center" data-reveal>
-        <CountUp client:visible to={3300} className="display text-7xl text-hoja sm:text-8xl" />
-        <p class="eyebrow text-olivo">{L('Clientes satisfechos', 'Satisfied customers')}</p>
+        <CountUp client:visible to={3300} className="display text-7xl text-azul sm:text-8xl" />
+        <p class="eyebrow text-marino">{L('Clientes satisfechos', 'Satisfied customers')}</p>
       </div>
       <div class="mt-14 grid gap-5 lg:grid-cols-3">
         {
           leaders.map((l, i) => (
-            <figure class="flex flex-col justify-between rounded-[2rem] bg-white/70 p-8 ring-1 ring-olivo/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
-              <svg viewBox="0 0 32 24" class="h-6 w-8 text-trigo" fill="currentColor" aria-hidden="true">
+            <figure class="flex flex-col justify-between rounded-[2rem] bg-white/70 p-8 ring-1 ring-marino/8 sm:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
+              <svg viewBox="0 0 32 24" class="h-6 w-8 text-celeste" fill="currentColor" aria-hidden="true">
                 <path d="M0 24V14C0 6 4 1 12 0l1 4c-4 1-6 4-6 8h5v12H0Zm19 0V14c0-8 4-13 12-14l1 4c-4 1-6 4-6 8h5v12H19Z" />
               </svg>
-              <blockquote class="mt-6 text-lg leading-relaxed text-olivo">{l.quote[lang]}</blockquote>
-              <figcaption class="mt-8 flex items-center gap-4 border-t border-olivo/10 pt-6">
+              <blockquote class="mt-6 text-lg leading-relaxed text-marino">{l.quote[lang]}</blockquote>
+              <figcaption class="mt-8 flex items-center gap-4 border-t border-marino/10 pt-6">
                 <Image src={img(`personas/${l.image}`)} alt="" widths={[96, 192]} sizes="48px" class="size-12 rounded-full object-cover" />
                 <span>
-                  <span class="block font-semibold text-olivo">{l.name}</span>
+                  <span class="block font-semibold text-marino">{l.name}</span>
                   <span class="text-sm text-niebla">{l.role[lang]}</span>
                 </span>
               </figcaption>
@@ -287,22 +287,22 @@ const maxYears = Math.max(...experience.map((e) => e.years));
   </section>
 
   <!-- Sostenibilidad -->
-  <section class="bg-gris/60">
+  <section class="bg-perla/60">
     <div class="mx-auto grid max-w-[90rem] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-24 lg:px-12 lg:py-32">
       <div class="relative order-2 lg:order-1">
         <div class="overflow-hidden rounded-[2rem]" data-reveal="mask">
           <Image src={img('portada/contacto')} alt={L('Campo de cultivo en flor con sistema de riego', 'Flowering crop field with irrigation')} widths={[640, 1000, 1400]} sizes="(min-width:1024px) 45vw, 100vw" class="aspect-[5/4] w-full object-cover" />
         </div>
-        <div class="absolute -right-3 -bottom-8 grid grid-cols-3 gap-2 rounded-2xl bg-white p-3 shadow-xl shadow-olivo/10 sm:right-8" data-reveal style="--reveal-delay:250ms">
-          <span class="rounded-xl bg-hoja px-4 py-3 text-center font-serif text-sm font-semibold tracking-[0.06em] text-white uppercase">{L('Ambiental', 'Environmental')}</span>
-          <span class="rounded-xl bg-trigo px-4 py-3 text-center font-serif text-sm font-semibold tracking-[0.06em] text-olivo uppercase">Social</span>
-          <span class="rounded-xl bg-olivo px-4 py-3 text-center font-serif text-sm font-semibold tracking-[0.06em] text-crema uppercase">{L('Gobernanza', 'Governance')}</span>
+        <div class="absolute -right-3 -bottom-8 grid grid-cols-3 gap-2 rounded-2xl bg-white p-3 shadow-xl shadow-marino/10 sm:right-8" data-reveal style="--reveal-delay:250ms">
+          <span class="rounded-xl bg-azul px-4 py-3 text-center font-serif text-sm font-semibold tracking-[0.06em] text-white uppercase">{L('Ambiental', 'Environmental')}</span>
+          <span class="rounded-xl bg-celeste px-4 py-3 text-center font-serif text-sm font-semibold tracking-[0.06em] text-marino uppercase">Social</span>
+          <span class="rounded-xl bg-marino px-4 py-3 text-center font-serif text-sm font-semibold tracking-[0.06em] text-nube uppercase">{L('Gobernanza', 'Governance')}</span>
         </div>
       </div>
       <div class="order-1 lg:order-2">
         <SectionHead
           eyebrow={L('Rumbo a la sostenibilidad', 'On the road to sustainability')}
-          title={L("Un modelo para crecer <span class='text-hoja'>cuidando</span> el entorno", "A model to grow while <span class='text-hoja'>caring</span> for our world")}
+          title={L("Un modelo para crecer <span class='text-azul'>cuidando</span> el entorno", "A model to grow while <span class='text-azul'>caring</span> for our world")}
           text={L(
             'Desde 2024 integramos los criterios ASG —Ambiental, Social y Gobernanza— a la operación diaria, alineados con los Objetivos de Desarrollo Sostenible de la ONU.',
             'Since 2024 we have brought ESG —Environmental, Social and Governance— criteria into daily operations, aligned with the UN Sustainable Development Goals.',
@@ -330,13 +330,13 @@ const maxYears = Math.max(...experience.map((e) => e.years));
         </a>
       </div>
       <div class="mt-14 grid gap-6 lg:grid-cols-12">
-        <a href={newsUrl(lang, lead.slug)} class="group relative isolate flex min-h-[28rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-olivo p-8 text-white sm:p-10 lg:col-span-7 lg:min-h-[36rem]" data-reveal>
+        <a href={newsUrl(lang, lead.slug)} class="group relative isolate flex min-h-[28rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-marino p-8 text-white sm:p-10 lg:col-span-7 lg:min-h-[36rem]" data-reveal>
           <div class="zoom absolute inset-0 -z-10">
             <Image src={lead.data.cover} alt="" widths={[640, 1000, 1400]} sizes="(min-width:1024px) 55vw, 100vw" class="size-full object-cover" />
           </div>
-          <div class="absolute inset-0 -z-10 bg-gradient-to-t from-olivo via-olivo/50 to-transparent"></div>
+          <div class="absolute inset-0 -z-10 bg-gradient-to-t from-marino via-marino/50 to-transparent"></div>
           <p class="flex items-center gap-3 text-sm">
-            <span class="rounded-md bg-trigo px-2.5 py-1 font-serif font-semibold tracking-[0.08em] text-olivo uppercase">{categoryLabel(lead.data.category, lang)}</span>
+            <span class="rounded-md bg-celeste px-2.5 py-1 font-serif font-semibold tracking-[0.08em] text-marino uppercase">{categoryLabel(lead.data.category, lang)}</span>
             <time datetime={lead.data.date.toISOString().slice(0, 10)} class="text-white/80">{formatDate(lead.data.date, lang)}</time>
           </p>
           <h3 class="display mt-4 max-w-2xl text-4xl sm:text-5xl">{lead.data.title}</h3>
@@ -345,13 +345,13 @@ const maxYears = Math.max(...experience.map((e) => e.years));
         <div class="grid gap-6 lg:col-span-5">
           {
             rest.map((n, i) => (
-              <a href={newsUrl(lang, n.slug)} class="group grid grid-cols-[9rem_1fr] items-center gap-5 rounded-[1.5rem] bg-white/70 p-4 ring-1 ring-olivo/8 sm:grid-cols-[12rem_1fr]" data-reveal style={`--reveal-delay:${(i + 1) * 100}ms`}>
-                <div class="zoom aspect-square overflow-hidden rounded-xl bg-gris">
+              <a href={newsUrl(lang, n.slug)} class="group grid grid-cols-[9rem_1fr] items-center gap-5 rounded-[1.5rem] bg-white/70 p-4 ring-1 ring-marino/8 sm:grid-cols-[12rem_1fr]" data-reveal style={`--reveal-delay:${(i + 1) * 100}ms`}>
+                <div class="zoom aspect-square overflow-hidden rounded-xl bg-perla">
                   <Image src={n.data.cover} alt="" widths={[320, 480]} sizes="12rem" class="size-full object-cover" />
                 </div>
                 <div>
-                  <p class="font-serif text-sm font-semibold tracking-[0.08em] text-hoja uppercase">{categoryLabel(n.data.category, lang)}</p>
-                  <h3 class="display mt-2 text-2xl leading-tight text-olivo transition-colors group-hover:text-hoja">{n.data.title}</h3>
+                  <p class="font-serif text-sm font-semibold tracking-[0.08em] text-azul uppercase">{categoryLabel(n.data.category, lang)}</p>
+                  <h3 class="display mt-2 text-2xl leading-tight text-marino transition-colors group-hover:text-azul">{n.data.title}</h3>
                   <time datetime={n.data.date.toISOString().slice(0, 10)} class="mt-2 block text-sm text-niebla">{formatDate(n.data.date, lang)}</time>
                 </div>
               </a>
@@ -363,7 +363,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
   </section>
 
   <!-- Marcas -->
-  <section class="overflow-hidden border-y border-olivo/8 bg-white/60 py-14" aria-label={L('Empresas y marcas de Grupo Kasto', 'Grupo Kasto companies and brands')}>
+  <section class="overflow-hidden border-y border-marino/8 bg-white/60 py-14" aria-label={L('Empresas y marcas de Grupo Kasto', 'Grupo Kasto companies and brands')}>
     <p class="eyebrow text-center text-niebla">{L('Empresas y marcas del grupo', 'Our companies and brands')}</p>
     <div class="marquee mt-10 flex w-max animate-marquee items-center gap-16 hover:[animation-play-state:paused]">
       {

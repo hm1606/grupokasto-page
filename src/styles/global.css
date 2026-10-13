@@ -67,18 +67,20 @@
 }
 
 @theme {
-  /* Paleta oficial de Grupo Kasto (variables --thm-* del sitio anterior) */
-  --color-trigo: #eddd5e; /* --thm-base: amarillo */
-  --color-hoja: #5b8c51; /* --thm-primary: verde */
-  --color-olivo: #404a3d; /* --thm-black: oscuro de la marca */
-  --color-gris: #eceeef; /* --thm-gray */
-  --color-crema: #f5f0e9; /* fondo claro del sitio anterior */
-  /* Tonos derivados (solo para profundidad, sobre la misma familia) */
-  --color-sombra: #2f372d;
-  --color-tinta: #262b24;
-  --color-hoja-oscuro: #4a7542;
-  --color-brote: #a9c89f;
-  --color-niebla: #6c706a;
+  /* Paleta oficial de Grupo Kasto (entregada por el cliente, octubre 2026): blanco, azul, celeste y gris.
+     El naranja #f69a13 de la misma lámina quedó descartado: no se usa en ninguna parte del sitio. */
+  --color-azul: #14407f; /* principal: botones, enlaces, etiquetas */
+  --color-celeste: #83a7cb; /* acento: sobre fondos oscuros y detalles */
+  --color-gris: #7c878e; /* neutro: líneas, iconos y textos grandes (no para texto chico sobre blanco) */
+  /* Tonos derivados (solo para profundidad y fondos, sobre la misma familia) */
+  --color-marino: #0e2c58; /* azul profundo: titulares y secciones oscuras */
+  --color-sombra: #091f40; /* aún más profundo: franjas y pie */
+  --color-azul-oscuro: #0f3266; /* hover del azul */
+  --color-celeste-claro: #bcd0e5; /* celeste suave */
+  --color-perla: #e7ecf2; /* gris-azul muy claro: secciones alternas */
+  --color-nube: #f5f8fb; /* fondo general (casi blanco, frío) */
+  --color-tinta: #0f1c2e; /* texto */
+  --color-niebla: #5b666e; /* el gris oficial oscurecido para texto chico legible (AA) */
 
   --font-serif: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
   --font-sans: 'Barlow', 'Helvetica Neue', system-ui, sans-serif;
@@ -133,14 +135,14 @@
     }
   }
   body {
-    @apply bg-crema font-sans text-tinta antialiased;
+    @apply bg-nube font-sans text-tinta antialiased;
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    @apply bg-hoja text-crema;
+    @apply bg-azul text-nube;
   }
   :focus-visible {
-    @apply outline-2 outline-offset-4 outline-hoja;
+    @apply outline-2 outline-offset-4 outline-azul;
   }
   [id] {
     scroll-margin-top: calc(var(--header-now) + 1rem);
@@ -198,7 +200,7 @@
     @apply mt-5;
   }
   .prose-gk a {
-    @apply text-hoja underline decoration-hoja/40 underline-offset-4 hover:decoration-hoja;
+    @apply text-azul underline decoration-azul/40 underline-offset-4 hover:decoration-azul;
   }
   .prose-gk strong {
     @apply font-semibold text-tinta;
@@ -211,7 +213,7 @@
   }
   .prose-gk ul li::before {
     content: '';
-    @apply absolute top-[0.8em] left-0 h-px w-3 bg-hoja;
+    @apply absolute top-[0.8em] left-0 h-px w-3 bg-azul;
   }
   /* Botones */
   .btn {
@@ -238,16 +240,16 @@
     transform: scale(0.98);
   }
   .btn-primary {
-    @apply bg-hoja text-white hover:bg-hoja-oscuro;
+    @apply bg-azul text-white hover:bg-azul-oscuro;
   }
-  .btn-trigo {
-    @apply bg-trigo text-olivo hover:bg-white;
+  .btn-celeste {
+    @apply bg-celeste text-marino hover:bg-white;
   }
   .btn-ghost {
-    @apply border border-olivo/25 text-olivo hover:border-olivo hover:bg-olivo hover:text-crema;
+    @apply border border-marino/25 text-marino hover:border-marino hover:bg-marino hover:text-nube;
   }
   .btn-outline-light {
-    @apply border border-white/35 text-white hover:border-white hover:bg-white hover:text-olivo;
+    @apply border border-white/35 text-white hover:border-white hover:bg-white hover:text-marino;
   }
   /* Flecha que avanza al pasar el mouse sobre el enlace/tarjeta (.group) */
   .arrow {
@@ -270,10 +272,10 @@
   }
   /* Surcos: líneas de campo arado, muy sutiles */
   .surcos {
-    background-image: repeating-linear-gradient(-12deg, rgb(64 74 61 / 0.06) 0 1px, transparent 1px 22px);
+    background-image: repeating-linear-gradient(-12deg, rgb(14 44 88 / 0.06) 0 1px, transparent 1px 22px);
   }
   .surcos-claro {
-    background-image: repeating-linear-gradient(-12deg, rgb(245 240 233 / 0.05) 0 1px, transparent 1px 22px);
+    background-image: repeating-linear-gradient(-12deg, rgb(245 248 251 / 0.05) 0 1px, transparent 1px 22px);
   }
   /* Grano de papel (muy sutil) */
   .grano {
@@ -288,7 +290,7 @@
     pointer-events: none;
     opacity: 0.4;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .06 0 0 0 0 .17 0 0 0 0 .35 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   /* Tarjeta de imagen con zoom suave */
   .zoom img {

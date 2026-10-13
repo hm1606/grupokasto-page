@@ -34,16 +34,16 @@ const crumbs = [
 
   <section class="grano">
     <div class="mx-auto max-w-[90rem] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
-      {lang === 'en' && <p class="mb-10 rounded-xl bg-gris/80 px-5 py-3 text-sm text-niebla">{translationDisclaimer.en}</p>}
+      {lang === 'en' && <p class="mb-10 rounded-xl bg-perla/80 px-5 py-3 text-sm text-niebla">{translationDisclaimer.en}</p>}
       <PrivacyPicker client:load lang={lang} companies={privacyCompanies} />
     </div>
   </section>
 
-  <section class="bg-crema">
+  <section class="bg-nube">
     <div class="prose-gk mx-auto max-w-3xl px-5 pb-28 sm:px-8">
-      <h2 class="display text-5xl text-olivo">{L('Aviso de privacidad', 'Privacy notice')}</h2>
+      <h2 class="display text-5xl text-marino">{L('Aviso de privacidad', 'Privacy notice')}</h2>
       <p class="mt-6">{noticeIntro[lang]}</p>
-      <p class="rounded-xl bg-gris/70 px-5 py-3 text-base">{L('La empresa que elegiste arriba', 'The company you selected above')}</p>
+      <p class="rounded-xl bg-perla/70 px-5 py-3 text-base">{L('La empresa que elegiste arriba', 'The company you selected above')}</p>
       <p>{noticeResponsible[lang]}</p>
       <ul>
         {purposes.map((p) => <li>{p[lang]}</li>)}
@@ -51,7 +51,7 @@ const crumbs = [
       {
         noticeSections.map((s) => (
           <>
-            {s.title && <h3 class="display mt-12 text-3xl text-olivo">{s.title[lang]}</h3>}
+            {s.title && <h3 class="display mt-12 text-3xl text-marino">{s.title[lang]}</h3>}
             {s.paragraphs.map((p) => (
               <p>{p[lang]}</p>
             ))}

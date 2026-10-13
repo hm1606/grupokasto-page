@@ -131,21 +131,21 @@ async function handleContact(req, res) {
     ['Aviso de privacidad', `Aceptado (versión ${d.privacyVersion || '—'}) · ${new Date().toISOString()}`],
   ];
   const text = `Se recibió un nuevo mensaje:\n\n${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\nMensaje:\n${d.message}\n\nEnviado desde grupokasto.com`;
-  // Mismos colores del correo que mandaba el sitio anterior (amarillo #eddd5e y verde #5b8c51)
+  // Colores de la paleta oficial de Grupo Kasto (azul #14407f, celeste #83a7cb, gris #7c878e)
   const html = `
-  <div style="width:100%;background-color:#eceeef;padding:20px 0;font-family:Arial,sans-serif;">
+  <div style="width:100%;background-color:#e7ecf2;padding:20px 0;font-family:Arial,sans-serif;">
     <table align="center" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;">
-      <tr><td style="background-color:#eddd5e;padding:20px;text-align:center;">
-        <h2 style="color:#5b8c51;margin:0;">${d.kind === 'queja' ? 'Queja o sugerencia' : 'Nueva consulta'} desde grupokasto.com</h2>
+      <tr><td style="background-color:#14407f;padding:20px;text-align:center;">
+        <h2 style="color:#ffffff;margin:0;">${d.kind === 'queja' ? 'Queja o sugerencia' : 'Nueva consulta'} desde grupokasto.com</h2>
       </td></tr>
       <tr><td style="padding:20px;">
-        <table cellpadding="6" cellspacing="0" width="100%" style="color:#404a3d;">
+        <table cellpadding="6" cellspacing="0" width="100%" style="color:#0e2c58;">
           ${rows.map(([k, v]) => `<tr><td style="font-weight:bold;width:34%;vertical-align:top;">${esc(k)}:</td><td>${esc(v)}</td></tr>`).join('')}
           <tr><td style="font-weight:bold;vertical-align:top;">Mensaje:</td>
-            <td style="background-color:#f9f9f9;padding:10px;border-left:4px solid #5b8c51;white-space:pre-wrap;">${esc(d.message)}</td></tr>
+            <td style="background-color:#f5f8fb;padding:10px;border-left:4px solid #83a7cb;white-space:pre-wrap;">${esc(d.message)}</td></tr>
         </table>
         <hr style="margin:30px 0;border:none;border-top:1px solid #ccc;">
-        <p style="font-size:12px;color:#888888;text-align:center;">Este correo fue generado automáticamente desde <strong>grupokasto.com</strong></p>
+        <p style="font-size:12px;color:#7c878e;text-align:center;">Este correo fue generado automáticamente desde <strong>grupokasto.com</strong></p>
       </td></tr>
     </table>
   </div>`;

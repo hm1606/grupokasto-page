@@ -41,7 +41,7 @@ const division = divisionById(s.division);
       <!-- Menú de servicios -->
       <aside class="lg:col-span-4">
         <div class="space-y-5 lg:sticky lg:top-32">
-          <nav aria-label={L('Servicios', 'Services')} class="rounded-[1.75rem] bg-white p-3 ring-1 ring-olivo/8">
+          <nav aria-label={L('Servicios', 'Services')} class="rounded-[1.75rem] bg-white p-3 ring-1 ring-marino/8">
             <ul>
               {
                 services.map((x) => (
@@ -49,7 +49,7 @@ const division = divisionById(s.division);
                     <a
                       href={serviceUrl(lang, x)}
                       aria-current={x.id === s.id ? 'page' : undefined}
-                      class="group flex items-center justify-between rounded-2xl px-5 py-4 font-semibold text-olivo/70 transition-colors hover:bg-gris/60 hover:text-olivo aria-[current=page]:bg-olivo aria-[current=page]:text-crema"
+                      class="group flex items-center justify-between rounded-2xl px-5 py-4 font-semibold text-marino/70 transition-colors hover:bg-perla/60 hover:text-marino aria-[current=page]:bg-marino aria-[current=page]:text-nube"
                     >
                       {x.name[lang]}
                       <svg viewBox="0 0 16 16" class="arrow size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -61,30 +61,30 @@ const division = divisionById(s.division);
               }
             </ul>
           </nav>
-          <div class="rounded-[1.75rem] bg-hoja p-8 text-white">
+          <div class="rounded-[1.75rem] bg-azul p-8 text-white">
             <p class="eyebrow text-white/80">{tx.needHelp}</p>
             <p class="mt-4 leading-relaxed text-white/90">{tx.needHelpText}</p>
-            <a href={telHref(s.phone)} class="display mt-5 block text-3xl hover:text-trigo">{s.phone}</a>
-            <a href={routes.contact[lang]} class="btn btn-trigo mt-6 min-h-11 w-full text-[0.9rem]">{tx.writeUs}</a>
+            <a href={telHref(s.phone)} class="display mt-5 block text-3xl hover:text-celeste">{s.phone}</a>
+            <a href={routes.contact[lang]} class="btn btn-celeste mt-6 min-h-11 w-full text-[0.9rem]">{tx.writeUs}</a>
           </div>
         </div>
       </aside>
 
       <div class="lg:col-span-7 lg:col-start-6">
-        <h2 class="display text-4xl text-balance text-olivo sm:text-5xl" data-reveal>{s.headline[lang]}</h2>
+        <h2 class="display text-4xl text-balance text-marino sm:text-5xl" data-reveal>{s.headline[lang]}</h2>
         <div class="prose-gk mt-8" data-reveal style="--reveal-delay:120ms">
           {s.body.map((p) => <p>{p[lang]}</p>)}
         </div>
         <ul class="mt-10 grid gap-3 sm:grid-cols-2" data-reveal style="--reveal-delay:180ms">
           {
             s.points.map((p) => (
-              <li class="flex items-start gap-3 rounded-xl bg-gris/70 p-5">
-                <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-hoja text-white">
+              <li class="flex items-start gap-3 rounded-xl bg-perla/70 p-5">
+                <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-azul text-white">
                   <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
                     <path d="m5 12 5 5 9-10" />
                   </svg>
                 </span>
-                <span class="font-medium text-olivo">{p[lang]}</span>
+                <span class="font-medium text-marino">{p[lang]}</span>
               </li>
             ))
           }
@@ -99,12 +99,12 @@ const division = divisionById(s.division);
         </div>
         {
           division && (
-            <a href={divisionUrl(lang, division)} class="group mt-12 flex items-center justify-between gap-6 border-t border-olivo/10 pt-8" data-reveal>
+            <a href={divisionUrl(lang, division)} class="group mt-12 flex items-center justify-between gap-6 border-t border-marino/10 pt-8" data-reveal>
               <span>
                 <span class="eyebrow block text-niebla">{tx.backedBy}</span>
-                <span class="display mt-2 block text-3xl text-olivo transition-colors group-hover:text-hoja">{division.name[lang]}</span>
+                <span class="display mt-2 block text-3xl text-marino transition-colors group-hover:text-azul">{division.name[lang]}</span>
               </span>
-              <svg viewBox="0 0 16 16" class="arrow size-5 text-hoja" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <svg viewBox="0 0 16 16" class="arrow size-5 text-azul" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <path d="M3 8h10m-4-4 4 4-4 4" />
               </svg>
             </a>

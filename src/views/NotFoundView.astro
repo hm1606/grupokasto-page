@@ -14,10 +14,10 @@ const map = await legacyMap();
   <!-- Si alguien llega con un enlace viejo de APEX (…/f?p=102:…), lo mandamos a la página nueva -->
   <script is:inline set:html={legacyRedirectScript(map)} />
   <section class="grano relative overflow-hidden">
-    <svg viewBox="0 0 60 48" class="pointer-events-none absolute -right-20 bottom-0 w-[36rem] text-olivo/5" aria-hidden="true"><use href="#gk-mark"></use></svg>
+    <svg viewBox="0 0 60 48" class="pointer-events-none absolute -right-20 bottom-0 w-[36rem] text-marino/5" aria-hidden="true"><use href="#gk-mark"></use></svg>
     <div class="mx-auto flex min-h-[80svh] max-w-[90rem] flex-col justify-center px-5 pt-[calc(var(--header-h)+3rem)] pb-20 sm:px-8 lg:px-12">
-      <p class="eyebrow text-hoja">Error 404</p>
-      <h1 class="display mt-4 max-w-3xl text-6xl text-olivo uppercase sm:text-8xl">{tx.notFoundTitle}</h1>
+      <p class="eyebrow text-azul">Error 404</p>
+      <h1 class="display mt-4 max-w-3xl text-6xl text-marino uppercase sm:text-8xl">{tx.notFoundTitle}</h1>
       <p class="mt-6 max-w-xl text-lg text-tinta/70">{tx.notFoundText}</p>
       <div class="mt-10 flex flex-wrap gap-3">
         <a href={routes.home[lang]} class="btn btn-primary">{tx.goHome}</a>
@@ -27,7 +27,7 @@ const map = await legacyMap();
         {
           divisions.map((d) => (
             <li>
-              <a href={divisionUrl(lang, d)} class="inline-block rounded-lg bg-gris px-4 py-2 font-serif font-semibold tracking-[0.06em] text-olivo uppercase transition-colors hover:bg-hoja hover:text-white">
+              <a href={divisionUrl(lang, d)} class="inline-block rounded-lg bg-perla px-4 py-2 font-serif font-semibold tracking-[0.06em] text-marino uppercase transition-colors hover:bg-azul hover:text-white">
                 {d.short[lang]}
               </a>
             </li>

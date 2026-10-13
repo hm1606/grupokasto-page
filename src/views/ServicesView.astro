@@ -54,17 +54,17 @@ const list = {
       <ul class="mt-14 flex flex-col">
         {
           services.map((s, i) => (
-            <li class="border-b border-olivo/12 first:border-t" data-reveal style={`--reveal-delay:${i * 80}ms`}>
+            <li class="border-b border-marino/12 first:border-t" data-reveal style={`--reveal-delay:${i * 80}ms`}>
               <a href={serviceUrl(lang, s)} class="group grid items-center gap-6 py-8 md:grid-cols-[4rem_1fr_16rem_3.5rem] md:gap-10 lg:py-10">
-                <span class="font-serif text-lg text-hoja tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span class="font-serif text-lg text-azul tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                 <span>
-                  <span class="display block text-4xl text-olivo transition-colors group-hover:text-hoja sm:text-5xl">{s.name[lang]}</span>
+                  <span class="display block text-4xl text-marino transition-colors group-hover:text-azul sm:text-5xl">{s.name[lang]}</span>
                   <span class="mt-3 block max-w-xl text-tinta/65">{s.summary[lang]}</span>
                 </span>
                 <span class="zoom hidden aspect-[4/3] overflow-hidden rounded-2xl md:block">
                   <Image src={img(`servicios/${s.id}/hero`)} alt="" widths={[320, 640]} sizes="16rem" class="size-full object-cover" />
                 </span>
-                <span class="hidden size-14 place-items-center rounded-full border border-olivo/15 text-olivo transition-colors duration-500 group-hover:border-hoja group-hover:bg-hoja group-hover:text-white md:grid">
+                <span class="hidden size-14 place-items-center rounded-full border border-marino/15 text-marino transition-colors duration-500 group-hover:border-azul group-hover:bg-azul group-hover:text-white md:grid">
                   <svg viewBox="0 0 16 16" class="arrow size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                     <path d="M3 8h10m-4-4 4 4-4 4" />
                   </svg>

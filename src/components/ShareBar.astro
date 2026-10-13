@@ -25,7 +25,7 @@ const links = [
         rel="noopener"
         aria-label={`${tx.share}: ${l.name}`}
         title={l.name}
-        class="grid size-10 place-items-center rounded-full border border-olivo/15 text-olivo transition-colors hover:border-hoja hover:bg-hoja hover:text-white"
+        class="grid size-10 place-items-center rounded-full border border-marino/15 text-marino transition-colors hover:border-azul hover:bg-azul hover:text-white"
       >
         <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={l.icon} />
       </a>
@@ -37,12 +37,12 @@ const links = [
     data-copied={tx.copied}
     aria-label={tx.copyLink}
     title={tx.copyLink}
-    class="relative grid size-10 place-items-center rounded-full border border-olivo/15 text-olivo transition-colors hover:border-hoja hover:bg-hoja hover:text-white"
+    class="relative grid size-10 place-items-center rounded-full border border-marino/15 text-marino transition-colors hover:border-azul hover:bg-azul hover:text-white"
   >
     <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
       <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path>
     </svg>
-    <span class="copied pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-olivo px-2.5 py-1 text-xs whitespace-nowrap text-crema opacity-0 transition-opacity" role="status"></span>
+    <span class="copied pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-marino px-2.5 py-1 text-xs whitespace-nowrap text-nube opacity-0 transition-opacity" role="status"></span>
   </button>
 </div>
 

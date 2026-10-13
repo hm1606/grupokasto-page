@@ -34,27 +34,27 @@ const menus: Record<string, MenuItem[]> = {
 <header
   id="site-header"
   data-over={String(overHero)}
-  class="group/h fixed inset-x-0 top-0 z-50 text-olivo transition-[transform,background-color,box-shadow,color] duration-500 ease-[cubic-bezier(.2,.7,.2,1)] data-[hidden=true]:-translate-y-full data-[over=true]:text-white data-[solid=true]:bg-crema/92 data-[solid=true]:text-olivo data-[solid=true]:shadow-[0_1px_0_rgba(64,74,61,.1)] data-[solid=true]:backdrop-blur-xl"
+  class="group/h fixed inset-x-0 top-0 z-50 text-marino transition-[transform,background-color,box-shadow,color] duration-500 ease-[cubic-bezier(.2,.7,.2,1)] data-[hidden=true]:-translate-y-full data-[over=true]:text-white data-[solid=true]:bg-nube/92 data-[solid=true]:text-marino data-[solid=true]:shadow-[0_1px_0_rgba(14,44,88,.1)] data-[solid=true]:backdrop-blur-xl"
 >
   <!-- Barra superior (como el sitio anterior): contacto y redes; se pliega al bajar -->
   <div class="topbar hidden overflow-hidden border-b border-current/12 transition-[height,opacity] duration-500 lg:block">
     <div class="mx-auto flex h-10 max-w-[90rem] items-center justify-between px-12 text-[0.8rem] font-medium opacity-85">
       <div class="flex items-center gap-7">
-        <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 hover:text-trigo">
+        <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 hover:text-celeste">
           <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
           {site.email}
         </a>
-        <a href={site.phoneHref} class="inline-flex items-center gap-2 hover:text-trigo">
+        <a href={site.phoneHref} class="inline-flex items-center gap-2 hover:text-celeste">
           <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
           {site.phone}
         </a>
       </div>
       <div class="flex items-center gap-6">
-        <a href={`${contact}?tema=quejas`} class="hover:text-trigo">{tx.complaints}</a>
-        <a href={site.social.linkedin} target="_blank" rel="noopener" class="hover:text-trigo">LinkedIn</a>
-        <a href={site.social.facebook} target="_blank" rel="noopener" class="hover:text-trigo">Facebook</a>
-        <a href={site.social.instagram} target="_blank" rel="noopener" class="hover:text-trigo">Instagram</a>
-        <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} lang={lang === 'es' ? 'en' : 'es'} class="lang-switch inline-flex items-center gap-1.5 rounded border border-current/25 px-2 py-0.5 font-serif font-semibold tracking-[0.12em] hover:border-trigo hover:text-trigo" aria-label={tx.switchLangLabel}>
+        <a href={`${contact}?tema=quejas`} class="hover:text-celeste">{tx.complaints}</a>
+        <a href={site.social.linkedin} target="_blank" rel="noopener" class="hover:text-celeste">LinkedIn</a>
+        <a href={site.social.facebook} target="_blank" rel="noopener" class="hover:text-celeste">Facebook</a>
+        <a href={site.social.instagram} target="_blank" rel="noopener" class="hover:text-celeste">Instagram</a>
+        <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} lang={lang === 'es' ? 'en' : 'es'} class="lang-switch inline-flex items-center gap-1.5 rounded border border-current/25 px-2 py-0.5 font-serif font-semibold tracking-[0.12em] hover:border-celeste hover:text-celeste" aria-label={tx.switchLangLabel}>
           {tx.switchLangShort}
         </a>
       </div>
@@ -76,7 +76,7 @@ const menus: Record<string, MenuItem[]> = {
                 <a
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
-                  class="flex items-center gap-1.5 rounded-md px-3.5 py-2 font-serif text-[1.02rem] font-semibold tracking-[0.08em] uppercase transition-colors hover:bg-current/8 aria-[current=page]:text-hoja group-data-[over=true]/h:aria-[current=page]:text-trigo group-data-[solid=true]/h:aria-[current=page]:text-hoja"
+                  class="flex items-center gap-1.5 rounded-md px-3.5 py-2 font-serif text-[1.02rem] font-semibold tracking-[0.08em] uppercase transition-colors hover:bg-current/8 aria-[current=page]:text-azul group-data-[over=true]/h:aria-[current=page]:text-celeste group-data-[solid=true]/h:aria-[current=page]:text-azul"
                   aria-haspopup={sub ? 'true' : undefined}
                 >
                   {item.label}
@@ -88,15 +88,15 @@ const menus: Record<string, MenuItem[]> = {
                 </a>
                 {sub && (
                   <div class="menu-panel invisible absolute top-[calc(100%-0.75rem)] left-1/2 w-max -translate-x-1/2 pt-3 opacity-0 transition-[opacity,visibility,translate] duration-300">
-                    <div class:list={['menu-box grid rounded-2xl bg-crema p-3 text-olivo shadow-2xl ring-1 shadow-olivo/15 ring-olivo/8', sub[0]?.image && 'grid-cols-[1fr_15rem] gap-3']}>
+                    <div class:list={['menu-box grid rounded-2xl bg-nube p-3 text-marino shadow-2xl ring-1 shadow-marino/15 ring-marino/8', sub[0]?.image && 'grid-cols-[1fr_15rem] gap-3']}>
                       <div class:list={['grid content-start gap-1', sub.length > 5 ? 'w-[36rem] grid-cols-2' : 'w-[22rem]']}>
                         {sub.map((s, i) => (
-                          <a href={s.href} data-preview={s.image ? i : undefined} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-gris/70 focus-visible:bg-gris/70">
-                            <span class="mt-0.5 font-serif text-sm text-hoja tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                          <a href={s.href} data-preview={s.image ? i : undefined} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-perla/70 focus-visible:bg-perla/70">
+                            <span class="mt-0.5 font-serif text-sm text-azul tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                             <span class="flex flex-col gap-0.5">
                               <span class="flex items-center gap-2 text-[0.92rem] font-semibold">
                                 {s.label}
-                                <svg viewBox="0 0 16 16" class="arrow size-3 text-hoja opacity-0 transition-opacity group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                <svg viewBox="0 0 16 16" class="arrow size-3 text-azul opacity-0 transition-opacity group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                                   <path d="M3 8h10m-4-4 4 4-4 4" />
                                 </svg>
                               </span>
@@ -107,7 +107,7 @@ const menus: Record<string, MenuItem[]> = {
                         {item.key !== 'about' && (
                           <a
                             href={item.href}
-                            class:list={['mt-1 flex items-center justify-between rounded-2xl bg-olivo px-5 py-3.5 text-[0.8rem] font-semibold text-crema transition-colors hover:bg-hoja', sub.length > 5 && 'col-span-2']}
+                            class:list={['mt-1 flex items-center justify-between rounded-2xl bg-marino px-5 py-3.5 text-[0.8rem] font-semibold text-nube transition-colors hover:bg-azul', sub.length > 5 && 'col-span-2']}
                           >
                             {tx.seeAll} {item.label.toLowerCase()}
                             <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -117,12 +117,12 @@ const menus: Record<string, MenuItem[]> = {
                         )}
                       </div>
                       {sub[0]?.image && (
-                        <div class="menu-preview relative overflow-hidden rounded-xl bg-olivo" aria-hidden="true">
+                        <div class="menu-preview relative overflow-hidden rounded-xl bg-marino" aria-hidden="true">
                           {sub.map((s, i) => (
                             <img src={s.image} alt="" loading="lazy" decoding="async" data-k={i} class:list={['absolute inset-0 size-full object-cover', i === 0 && 'is-on']} />
                           ))}
-                          <div class="absolute inset-0 bg-gradient-to-t from-olivo/70 to-transparent" />
-                          <span class="menu-preview-label display absolute inset-x-4 bottom-3.5 text-2xl text-crema">{sub[0].label}</span>
+                          <div class="absolute inset-0 bg-gradient-to-t from-marino/70 to-transparent" />
+                          <span class="menu-preview-label display absolute inset-x-4 bottom-3.5 text-2xl text-nube">{sub[0].label}</span>
                         </div>
                       )}
                     </div>
@@ -137,7 +137,7 @@ const menus: Record<string, MenuItem[]> = {
 
     <div class="relative z-10 flex items-center gap-2">
       <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} class="lang-switch grid size-11 place-items-center rounded-full font-serif text-[0.95rem] font-semibold tracking-[0.1em] lg:hidden" aria-label={tx.switchLangLabel}>{tx.switchLangShort}</a>
-      <a href={contact} aria-current={here.startsWith(contact) ? 'page' : undefined} class="btn btn-trigo hidden min-h-11 px-5 text-[0.9rem] ring-offset-2 ring-offset-transparent aria-[current=page]:ring-2 aria-[current=page]:ring-trigo/50 md:inline-flex">{tx.contactUs}</a>
+      <a href={contact} aria-current={here.startsWith(contact) ? 'page' : undefined} class="btn btn-celeste hidden min-h-11 px-5 text-[0.9rem] ring-offset-2 ring-offset-transparent aria-[current=page]:ring-2 aria-[current=page]:ring-celeste/50 md:inline-flex">{tx.contactUs}</a>
       <button
         type="button"
         id="menu-toggle"
@@ -160,7 +160,7 @@ const menus: Record<string, MenuItem[]> = {
 <!-- Menú en celular -->
 <div
   id="mobile-menu"
-  class="surcos-claro invisible fixed inset-0 z-[45] flex flex-col overflow-y-auto bg-olivo px-6 pt-[calc(var(--header-h)+1.5rem)] pb-10 text-crema opacity-0 transition-[opacity,visibility] duration-500 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
+  class="surcos-claro invisible fixed inset-0 z-[45] flex flex-col overflow-y-auto bg-marino px-6 pt-[calc(var(--header-h)+1.5rem)] pb-10 text-nube opacity-0 transition-[opacity,visibility] duration-500 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
   data-lenis-prevent
 >
   <nav aria-label={tx.menu} class="flex-1">
@@ -186,14 +186,14 @@ const menus: Record<string, MenuItem[]> = {
                   <ul class="grid gap-1 pb-5">
                     {item.key !== 'about' && (
                       <li>
-                        <a href={item.href} class="block py-1.5 text-base font-semibold text-trigo">
+                        <a href={item.href} class="block py-1.5 text-base font-semibold text-celeste">
                           {tx.seeAllShort}
                         </a>
                       </li>
                     )}
                     {sub.map((s) => (
                       <li>
-                        <a href={s.href} class="block py-1.5 text-base text-crema/80">
+                        <a href={s.href} class="block py-1.5 text-base text-nube/80">
                           {s.label}
                         </a>
                       </li>
@@ -212,10 +212,10 @@ const menus: Record<string, MenuItem[]> = {
     </ul>
   </nav>
   <div class="mt-8 flex flex-col gap-3">
-    <a href={contact} class="btn btn-trigo">{tx.writeUs}</a>
+    <a href={contact} class="btn btn-celeste">{tx.writeUs}</a>
     <a href={site.phoneHref} class="btn btn-outline-light">{tx.callUs} {site.phone}</a>
     <a href={alternate} hreflang={lang === 'es' ? 'en' : 'es'} class="btn btn-outline-light">{tx.switchLang}</a>
-    <p class="eyebrow mt-3 text-center text-[0.6rem] text-brote">Grupo Kasto · {tx.since} {site.foundingYear}</p>
+    <p class="eyebrow mt-3 text-center text-[0.6rem] text-celeste-claro">Grupo Kasto · {tx.since} {site.foundingYear}</p>
   </div>
 </div>
 
@@ -273,7 +273,7 @@ const menus: Record<string, MenuItem[]> = {
     transform: translateY(-5.25px) rotate(-45deg);
   }
   html:has(#mobile-menu[data-open='true']) #site-header {
-    color: var(--color-crema) !important;
+    color: var(--color-nube) !important;
     background: transparent !important;
     box-shadow: none !important;
     backdrop-filter: none !important;

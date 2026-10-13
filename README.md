@@ -54,59 +54,27 @@ el idioma; `src/pages/` (español) y `src/pages/en/` (inglés) solo las llaman.
 > trabajo), la historia, los testimonios y el aviso de privacidad están copiados **palabra por palabra** del sitio
 > anterior. Así nadie puede decir que se cambió la filosofía o el texto legal.
 
-### Identidad (la misma del sitio anterior)
+### Identidad
 
-- **Paleta oficial** (variables `--thm-*` del sitio anterior): amarillo `#eddd5e`, verde `#5b8c51`, olivo `#404a3d`,
-  gris `#eceeef` y crema `#f5f0e9`. En `global.css` se llaman `trigo`, `hoja`, `olivo`, `gris` y `crema`.
+- **Paleta oficial** (entregada por el cliente en octubre de 2026): blanco `#ffffff`, azul `#14407f`, celeste `#83a7cb` y
+  gris `#7c878e`. El naranja `#f69a13` de la misma lámina **quedó descartado** y no se usa. En `global.css` (`@theme`) se
+  llaman `azul`, `celeste` y `gris`; los tonos derivados (`marino`, `sombra`, `azul-oscuro`, `celeste-claro`, `perla`, `nube`,
+  `tinta`, `niebla`) son la misma familia más clara u oscura, solo para fondos, titulares y texto legible.
+  `npm run og` regenera favicon, íconos e imágenes para compartir con estos colores.
 - **Tipografías** (en `public/fonts/`, sin depender de Google): Barlow Condensed para títulos y Barlow para texto, como el
   sitio anterior; Marcellus SC solo para el nombre del logotipo.
 - **Logotipo:** la balanza redibujada en SVG sobre el logotipo oficial (`src/lib/brand.ts`, `src/components/Logo.astro`).
-- **Elementos gráficos del sitio anterior:** la rama de hojas amarilla bajo cada título (`src/components/Espiga.astro`), el trigo
-  en silueta al pie de las fotos y la granja dibujada a línea del pie de página (`src/assets/marca/`).
-
-### Agregar una noticia
-
-1. Copia las fotos a `src/assets/noticias/<slug>/` (la primera será la portada).
-2. Crea `src/content/noticias/es/<slug>.md`:
-
-   ```md
-   ---
-   title: "Título de la noticia"
-   date: 2026-10-15
-   excerpt: "Resumen de una o dos líneas (aparece en el listado y al compartir)."
-   category: "Sostenibilidad"   # Comunidad, Divisiones, Eventos, Grupo Kasto, Nuestra gente, Seguridad y bienestar, Sostenibilidad
-   cover: "../../../assets/noticias/<slug>/portada.jpg"
-   gallery:
-     - "../../../assets/noticias/<slug>/foto-1.jpg"
-   ---
-   Texto de la noticia en párrafos…
-   ```
-
-3. (Opcional) La versión en inglés: `src/content/noticias/en/<slug-en-ingles>.md` con los mismos campos y
-   `translationOf: "<slug>"` (el de español). Así ambas versiones se enlazan entre sí.
-4. Corre `npm run og` para generar sus imágenes para compartir. Aparece sola en noticias, la portada y el sitemap.
-
-### Sostenibilidad: el documento completo
-
-La página resume el Modelo de Sostenibilidad y, al final, tiene el **visor del documento completo**: se consulta lámina
-por lámina (flechas, teclado, deslizar con el dedo, miniaturas y pantalla completa) y **no se puede descargar**; el PDF
-no se publica en ninguno de los dos sitios y sus URLs viejas llevan al visor. Las láminas son imágenes en
-`src/assets/sostenibilidad/modelo/pagina-NN.jpg`. Si cambia el documento, regenéralas con `scripts/model-pages.py`
-(instrucciones dentro del archivo) y corre `npm run legacy` para que el sitio anterior también las tome.
-
-> Nada que se ve en una página es imposible de copiar (alguien puede hacer captura de pantalla), pero ya no hay archivo
-> que descargar, ni clic derecho → "Guardar imagen", ni toque largo en celular.
-
-### Mapa de presencia
-
-El mapa de México usa [`@svg-maps/mexico`](https://github.com/VictorCazanave/svg-maps) (licencia CC BY 4.0: el crédito
-aparece bajo el mapa). Los estados y empresas que se muestran están en `presence` (`src/data/company.ts`).
+- **Íconos de la filosofía** (propósito, misión, visión, valores y formas de trabajo): los oficiales, en
+  `src/assets/filosofia/`, **idénticos byte por byte** a los de folapsa-page (`src/assets/valores/`). No se recolorean ni se
+  editan, y se sirven en PNG (sin compresión con pérdida). Se usan en Filosofía y en Nosotros.
+- **Elementos gráficos del sitio anterior:** la rama de hojas bajo cada título (`src/components/Espiga.astro`, ahora en
+  celeste), el trigo en silueta al pie de las fotos y la granja dibujada a línea del pie de página (`src/assets/marca/`).
 
 ## Formulario de contacto
 
 `src/components/react/ContactForm.tsx` envía a `/api/contacto` → `server/api.mjs` (Node sin dependencias, PM2
 `grupokasto-api`, puerto 4012), que manda el correo a **comunicacion@grupokasto.com** (igual que el `APEX_MAIL` del sitio
-anterior) con el mismo diseño verde/amarillo. Con `RESEND_API_KEY` usa Resend; sin ella, FormSubmit (la primera vez
+anterior) con los colores de la paleta oficial. Con `RESEND_API_KEY` usa Resend; sin ella, FormSubmit (la primera vez
 FormSubmit manda un correo de activación a esa dirección). Tiene trampa para bots, límite de envíos por IP y exige aceptar
 el aviso de privacidad. **El sitio anterior usa la misma API**, así su formulario de Contacto sigue funcionando.
 

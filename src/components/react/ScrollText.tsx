@@ -23,7 +23,7 @@ function Word({ word, progress, range, mark, dim }: { word: string; progress: Mo
   );
 }
 
-export default function ScrollText({ text, highlight = [], highlightClass = 'text-hoja', dim = 0.18, className }: Props) {
+export default function ScrollText({ text, highlight = [], highlightClass = 'text-azul', dim = 0.18, className }: Props) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.45'] });

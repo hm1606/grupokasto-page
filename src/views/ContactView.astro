@@ -70,23 +70,23 @@ const crumbs = [
 
       <aside class="lg:col-span-4 lg:col-start-9">
         <div class="space-y-4 lg:sticky lg:top-32">
-          <div class="relative isolate overflow-hidden rounded-[1.75rem] bg-olivo p-8 text-crema">
+          <div class="relative isolate overflow-hidden rounded-[1.75rem] bg-marino p-8 text-nube">
             <svg viewBox="0 0 60 48" class="absolute -right-10 -bottom-10 -z-10 w-56 text-white/5" aria-hidden="true"><use href="#gk-mark"></use></svg>
-            <p class="eyebrow text-trigo">{L('Directo', 'Direct')}</p>
-            <a href={site.phoneHref} class="display mt-4 block text-4xl hover:text-trigo">{site.phone}</a>
-            <a href={`mailto:${site.email}`} class="link-line mt-2 inline-block text-crema/85 hover:text-white">{site.email}</a>
-            <address class="mt-6 border-t border-white/10 pt-5 text-sm leading-relaxed text-crema/70 not-italic">
+            <p class="eyebrow text-celeste">{L('Directo', 'Direct')}</p>
+            <a href={site.phoneHref} class="display mt-4 block text-4xl hover:text-celeste">{site.phone}</a>
+            <a href={`mailto:${site.email}`} class="link-line mt-2 inline-block text-nube/85 hover:text-white">{site.email}</a>
+            <address class="mt-6 border-t border-white/10 pt-5 text-sm leading-relaxed text-nube/70 not-italic">
               {site.address.street}<br />{site.address.city}, {site.address.stateShort} · C.P. {site.address.zip}
             </address>
             <div class="mt-6 flex gap-2">
-              <SocialIcon network="linkedin" url={site.social.linkedin} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
-              <SocialIcon network="facebook" url={site.social.facebook} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
-              <SocialIcon network="instagram" url={site.social.instagram} class="border-white/15 hover:border-trigo hover:bg-trigo hover:text-olivo" />
+              <SocialIcon network="linkedin" url={site.social.linkedin} class="border-white/15 hover:border-celeste hover:bg-celeste hover:text-marino" />
+              <SocialIcon network="facebook" url={site.social.facebook} class="border-white/15 hover:border-celeste hover:bg-celeste hover:text-marino" />
+              <SocialIcon network="instagram" url={site.social.instagram} class="border-white/15 hover:border-celeste hover:bg-celeste hover:text-marino" />
             </div>
           </div>
           <p class="px-2 text-sm leading-relaxed text-niebla">
             {L('¿Buscas empleo? Elige “Bolsa de trabajo” en el formulario. Para temas de datos personales escribe a', 'Looking for a job? Choose “Careers” in the form. For personal data matters, write to')}
-            <a href={`mailto:${site.privacyEmail}`} class="font-semibold text-hoja">{site.privacyEmail}</a>.
+            <a href={`mailto:${site.privacyEmail}`} class="font-semibold text-azul">{site.privacyEmail}</a>.
           </p>
         </div>
       </aside>
@@ -94,7 +94,7 @@ const crumbs = [
   </section>
 
   <!-- Oficinas -->
-  <section class="bg-gris/60">
+  <section class="bg-perla/60">
     <div class="mx-auto max-w-[90rem] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
       <SectionHead eyebrow={L('Oficinas', 'Offices')} title={L('Dónde estamos', 'Where we are')} />
       <div class="mt-12" data-reveal>
@@ -113,7 +113,7 @@ const crumbs = [
       </div>
       <p class="mt-10 text-tinta/70" data-reveal>
         {L('¿Buscas otra empresa del grupo? Consulta el directorio completo en cada', 'Looking for another company in the group? See the full directory in each')}
-        <a href={routes.divisions[lang]} class="font-semibold text-hoja underline decoration-hoja/40 underline-offset-4">{L('división', 'division')}</a>.
+        <a href={routes.divisions[lang]} class="font-semibold text-azul underline decoration-azul/40 underline-offset-4">{L('división', 'division')}</a>.
       </p>
     </div>
   </section>

@@ -60,10 +60,10 @@ const list = {
   <section class="grano">
     <div class="mx-auto max-w-[90rem] px-5 pt-[calc(var(--header-h)+3rem)] pb-16 sm:px-8 lg:px-12 lg:pt-[calc(var(--header-h)+4rem)]">
       <Breadcrumbs crumbs={crumbs} />
-      <div class="mt-8 flex flex-col gap-6 border-b border-olivo/15 pb-10 lg:flex-row lg:items-end lg:justify-between">
+      <div class="mt-8 flex flex-col gap-6 border-b border-marino/15 pb-10 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p class="eyebrow animate-fade-up text-hoja">{L('Sala de prensa', 'Newsroom')}</p>
-          <h1 class="display animate-fade-up mt-2 text-7xl text-olivo uppercase sm:text-8xl lg:text-[9rem]" style="animation-delay:100ms">{L('Noticias', 'News')}</h1>
+          <p class="eyebrow animate-fade-up text-azul">{L('Sala de prensa', 'Newsroom')}</p>
+          <h1 class="display animate-fade-up mt-2 text-7xl text-marino uppercase sm:text-8xl lg:text-[9rem]" style="animation-delay:100ms">{L('Noticias', 'News')}</h1>
           <div class="animate-fade-up mt-3" style="animation-delay:180ms"><Espiga /></div>
         </div>
         <p class="animate-fade-up max-w-md text-lg leading-relaxed text-tinta/70" style="animation-delay:240ms">
@@ -73,31 +73,31 @@ const list = {
 
       <div class="mt-10 grid gap-10 lg:grid-cols-12">
         <a href={newsUrl(lang, lead.slug)} class="group lg:col-span-8" data-reveal>
-          <div class="zoom relative aspect-[16/10] overflow-hidden rounded-[1.75rem] bg-gris">
+          <div class="zoom relative aspect-[16/10] overflow-hidden rounded-[1.75rem] bg-perla">
             <Image src={lead.data.cover} alt="" widths={[640, 1000, 1400]} sizes="(min-width:1024px) 60vw, 100vw" class="size-full object-cover" loading="eager" />
-            <span class="absolute top-5 left-5 rounded-md bg-trigo px-3 py-1.5 font-serif text-sm font-semibold tracking-[0.1em] text-olivo uppercase">{tx.latest}</span>
+            <span class="absolute top-5 left-5 rounded-md bg-celeste px-3 py-1.5 font-serif text-sm font-semibold tracking-[0.1em] text-marino uppercase">{tx.latest}</span>
           </div>
           <p class="mt-6 flex flex-wrap items-center gap-3 text-sm text-niebla">
-            <span class="font-serif font-semibold tracking-[0.1em] text-hoja uppercase">{categoryLabel(lead.data.category, lang)}</span>
+            <span class="font-serif font-semibold tracking-[0.1em] text-azul uppercase">{categoryLabel(lead.data.category, lang)}</span>
             <span aria-hidden="true">·</span>
             <time datetime={lead.data.date.toISOString().slice(0, 10)}>{formatDate(lead.data.date, lang)}</time>
             <span aria-hidden="true">·</span>
             <span>{readingTime(lead.body)} {tx.minRead}</span>
           </p>
-          <h2 class="display mt-3 text-4xl text-balance text-olivo transition-colors group-hover:text-hoja sm:text-5xl lg:text-6xl">{lead.data.title}</h2>
+          <h2 class="display mt-3 text-4xl text-balance text-marino transition-colors group-hover:text-azul sm:text-5xl lg:text-6xl">{lead.data.title}</h2>
           <p class="mt-4 max-w-3xl text-lg leading-relaxed text-tinta/70">{lead.data.excerpt}</p>
         </a>
-        <ol class="flex flex-col divide-y divide-olivo/12 lg:col-span-4">
+        <ol class="flex flex-col divide-y divide-marino/12 lg:col-span-4">
           {
             side.map((n, i) => (
               <li class="py-6 first:pt-0" data-reveal style={`--reveal-delay:${(i + 1) * 90}ms`}>
                 <a href={newsUrl(lang, n.slug)} class="group grid grid-cols-[1fr_7.5rem] gap-5">
                   <div>
-                    <p class="font-serif text-sm font-semibold tracking-[0.1em] text-hoja uppercase">{categoryLabel(n.data.category, lang)}</p>
-                    <h3 class="display mt-2 text-[1.55rem] leading-[1.08] text-olivo transition-colors group-hover:text-hoja">{n.data.title}</h3>
+                    <p class="font-serif text-sm font-semibold tracking-[0.1em] text-azul uppercase">{categoryLabel(n.data.category, lang)}</p>
+                    <h3 class="display mt-2 text-[1.55rem] leading-[1.08] text-marino transition-colors group-hover:text-azul">{n.data.title}</h3>
                     <time datetime={n.data.date.toISOString().slice(0, 10)} class="mt-2 block text-sm text-niebla">{formatDate(n.data.date, lang, 'short')}</time>
                   </div>
-                  <div class="zoom aspect-square overflow-hidden rounded-xl bg-gris">
+                  <div class="zoom aspect-square overflow-hidden rounded-xl bg-perla">
                     <Image src={n.data.cover} alt="" widths={[240, 480]} sizes="7.5rem" class="size-full object-cover" />
                   </div>
                 </a>
@@ -110,10 +110,10 @@ const list = {
   </section>
 
   <!-- Archivo -->
-  <section class="bg-crema">
+  <section class="bg-nube">
     <div class="mx-auto max-w-[90rem] px-5 pt-10 pb-24 sm:px-8 lg:px-12 lg:pb-32">
-      <p class="eyebrow text-hoja">{L('Archivo', 'Archive')}</p>
-      <h2 class="display mt-2 text-5xl text-olivo">{L('Todas las noticias', 'All stories')}</h2>
+      <p class="eyebrow text-azul">{L('Archivo', 'Archive')}</p>
+      <h2 class="display mt-2 text-5xl text-marino">{L('Todas las noticias', 'All stories')}</h2>
       <div class="mt-8">
         <NewsList
           client:visible

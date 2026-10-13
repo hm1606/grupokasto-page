@@ -99,7 +99,7 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#404a3d" />
+    <meta name="theme-color" content="#0e2c58" />
     <link rel="preload" href="/fonts/barlow-condensed-600-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/barlow-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/marcellus-sc-400-normal.woff2" as="font" type="font/woff2" crossorigin />
@@ -173,7 +173,7 @@ const jsonLd = {
     </script>
     <a
       href="#contenido"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-full focus:bg-crema focus:px-4 focus:py-2"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-full focus:bg-nube focus:px-4 focus:py-2"
       >{tx.skip}</a
     >
     <Header lang={lang} alternate={otherPath} overHero={headerOverHero} />
@@ -187,11 +187,11 @@ const jsonLd = {
       href="#contenido"
       id="to-top"
       aria-label={tx.backToTop}
-      class="fixed right-5 bottom-5 z-30 grid size-13 translate-y-4 place-items-center rounded-full bg-olivo text-trigo opacity-0 shadow-lg shadow-olivo/20 transition duration-500 hover:bg-hoja hover:text-white data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:right-8 sm:bottom-8"
+      class="fixed right-5 bottom-5 z-30 grid size-13 translate-y-4 place-items-center rounded-full bg-marino text-celeste opacity-0 shadow-lg shadow-marino/20 transition duration-500 hover:bg-azul hover:text-white data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:right-8 sm:bottom-8"
     >
       <svg viewBox="0 0 56 56" class="absolute inset-0 size-full -rotate-90" aria-hidden="true">
-        <circle cx="28" cy="28" r="27" fill="none" stroke="rgb(237 221 94 / .2)" stroke-width="1.5"></circle>
-        <circle id="to-top-ring" cx="28" cy="28" r="27" fill="none" stroke="#eddd5e" stroke-width="1.5" stroke-dasharray="169.6" stroke-dashoffset="169.6"></circle>
+        <circle cx="28" cy="28" r="27" fill="none" stroke="rgb(131 167 203 / .2)" stroke-width="1.5"></circle>
+        <circle id="to-top-ring" cx="28" cy="28" r="27" fill="none" stroke="#83a7cb" stroke-width="1.5" stroke-dasharray="169.6" stroke-dashoffset="169.6"></circle>
       </svg>
       <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"></path></svg>
     </a>
@@ -205,8 +205,8 @@ const jsonLd = {
         place-items: center;
         align-content: center;
         gap: 1.1rem;
-        background: #404a3d;
-        color: #f5f0e9;
+        background: #14407f;
+        color: #ffffff;
         transition: clip-path 1.2s cubic-bezier(0.7, 0, 0.2, 1);
         clip-path: inset(0 0 0 0);
       }
@@ -215,7 +215,7 @@ const jsonLd = {
       }
       #intro svg {
         width: 6.5rem;
-        color: #eddd5e;
+        color: #ffffff;
       }
       #intro svg > g {
         animation: intro-piece 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
@@ -239,7 +239,7 @@ const jsonLd = {
         letter-spacing: 0.34em;
         padding-left: 0.34em;
         text-transform: uppercase;
-        color: #a9c89f;
+        color: #bcd0e5;
         animation: fade-up 1s 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
       }
       @keyframes intro-piece {

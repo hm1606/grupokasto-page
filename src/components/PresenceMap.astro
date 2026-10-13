@@ -59,12 +59,12 @@ const curve = (from: { x: number; y: number }, bend: number) =>
   `M${from.x.toFixed(1)} ${from.y.toFixed(1)} Q${((from.x + exportTo.x) / 2 + bend).toFixed(1)} ${(Math.min(from.y, exportTo.y) - 10).toFixed(1)} ${exportTo.x} ${exportTo.y + 16}`;
 ---
 
-<section class="presence relative overflow-hidden bg-crema" data-mode="sites">
+<section class="presence relative overflow-hidden bg-nube" data-mode="sites">
   <div class="mx-auto grid max-w-[90rem] items-center gap-12 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
     <div class="lg:col-span-4">
       <SectionHead
         eyebrow={L('Presencia', 'Where we are')}
-        title={L('Del Bajío al Noroeste, <span class="text-hoja">y más allá</span>', 'From the Bajío to the Northwest, <span class="text-hoja">and beyond</span>')}
+        title={L('Del Bajío al Noroeste, <span class="text-azul">y más allá</span>', 'From the Bajío to the Northwest, <span class="text-azul">and beyond</span>')}
         text={L(
           'Operamos desde el Bajío, Occidente y Noroeste de México; nuestros productos llegan a más de 25 estados y se exportan a Estados Unidos y Canadá.',
           'We operate from central, western and northwestern Mexico; our products reach more than 25 states and are exported to the United States and Canada.',
@@ -72,7 +72,7 @@ const curve = (from: { x: number; y: number }, bend: number) =>
       />
 
       <!-- Cambio de vista -->
-      <div class="mode-switch mt-9 inline-grid grid-cols-2 rounded-xl bg-gris p-1" role="tablist" aria-label={L('Vista del mapa', 'Map view')} data-reveal>
+      <div class="mode-switch mt-9 inline-grid grid-cols-2 rounded-xl bg-perla p-1" role="tablist" aria-label={L('Vista del mapa', 'Map view')} data-reveal>
         <button type="button" role="tab" data-mode-btn="sites" aria-selected="true">{L('Dónde estamos', 'Where we operate')}</button>
         <button type="button" role="tab" data-mode-btn="reach" aria-selected="false">{L('Hasta dónde llegamos', 'How far we reach')}</button>
       </div>
@@ -83,10 +83,10 @@ const curve = (from: { x: number; y: number }, bend: number) =>
           <dl class="grid grid-cols-2 gap-x-6 gap-y-7">
             {
               reach.stats.map((s) => (
-                <div class="border-t border-olivo/15 pt-4">
+                <div class="border-t border-marino/15 pt-4">
                   <dt class="sr-only">{s.label[lang]}</dt>
                   <dd>
-                    <span class="display block text-5xl text-olivo tabular-nums">{s.value[lang]}</span>
+                    <span class="display block text-5xl text-marino tabular-nums">{s.value[lang]}</span>
                     <span class="mt-1.5 block text-[0.92rem] leading-snug text-tinta/70">{s.label[lang]}</span>
                   </dd>
                 </div>
@@ -97,9 +97,9 @@ const curve = (from: { x: number; y: number }, bend: number) =>
             {
               reach.lines.map((r) => (
                 <li class="flex gap-3 leading-snug text-tinta/75">
-                  <span class="mt-2 size-1.5 shrink-0 rounded-full bg-trigo ring-2 ring-trigo/30" aria-hidden="true" />
+                  <span class="mt-2 size-1.5 shrink-0 rounded-full bg-celeste ring-2 ring-celeste/30" aria-hidden="true" />
                   <span>
-                    <strong class="font-semibold text-olivo">{r.unit[lang]}:</strong> {r.text[lang]}
+                    <strong class="font-semibold text-marino">{r.unit[lang]}:</strong> {r.text[lang]}
                   </span>
                 </li>
               ))
@@ -113,12 +113,12 @@ const curve = (from: { x: number; y: number }, bend: number) =>
             {
               presence.map((p, i) => (
                 <div class:list={['map-panel', i === 0 && 'is-active']} data-state={p.state} role="region" aria-live="polite">
-                  <p class="display text-4xl text-olivo">{p.name}</p>
-                  <p class="mt-1 text-sm font-semibold tracking-[0.04em] text-hoja">{p.cities}</p>
+                  <p class="display text-4xl text-marino">{p.name}</p>
+                  <p class="mt-1 text-sm font-semibold tracking-[0.04em] text-azul">{p.cities}</p>
                   <ul class="mt-5 space-y-2.5">
                     {p.companies.map((c) => (
                       <li class="flex gap-3 leading-snug text-tinta/75">
-                        <span class="mt-2 size-1.5 shrink-0 rounded-full bg-trigo ring-2 ring-trigo/30" aria-hidden="true" />
+                        <span class="mt-2 size-1.5 shrink-0 rounded-full bg-celeste ring-2 ring-celeste/30" aria-hidden="true" />
                         {c[lang]}
                       </li>
                     ))}
@@ -135,7 +135,7 @@ const curve = (from: { x: number; y: number }, bend: number) =>
                   role="tab"
                   data-pick={p.state}
                   aria-selected={i === 0 ? 'true' : 'false'}
-                  class="rounded-lg bg-gris px-4 py-2 font-serif text-[0.95rem] font-semibold tracking-[0.06em] text-olivo/70 uppercase transition-colors hover:text-olivo aria-selected:bg-olivo aria-selected:text-crema"
+                  class="rounded-lg bg-perla px-4 py-2 font-serif text-[0.95rem] font-semibold tracking-[0.06em] text-marino/70 uppercase transition-colors hover:text-marino aria-selected:bg-marino aria-selected:text-nube"
                 >
                   {p.name}
                 </button>
@@ -150,11 +150,11 @@ const curve = (from: { x: number; y: number }, bend: number) =>
       <svg viewBox={viewBox} class="mexico-map h-auto w-full" role="img" aria-label={L('Mapa de México con la presencia de Grupo Kasto', 'Map of Mexico showing where Grupo Kasto operates')}>
         <defs>
           <radialGradient id="map-glow">
-            <stop offset="0" stop-color="#eddd5e" stop-opacity="0.55"></stop>
-            <stop offset="1" stop-color="#eddd5e" stop-opacity="0"></stop>
+            <stop offset="0" stop-color="#83a7cb" stop-opacity="0.55"></stop>
+            <stop offset="1" stop-color="#83a7cb" stop-opacity="0"></stop>
           </radialGradient>
           <marker id="map-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0 0 10 5 0 10z" fill="#5b8c51"></path>
+            <path d="M0 0 10 5 0 10z" fill="#14407f"></path>
           </marker>
         </defs>
         {
@@ -200,8 +200,8 @@ const curve = (from: { x: number; y: number }, bend: number) =>
       <!-- Leyenda -->
       <div class="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[0.8rem] text-niebla">
         <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
-          <span class="flex items-center gap-2"><span class="size-3 rounded-sm bg-hoja"></span>{L('Plantas y oficinas', 'Plants and offices')}</span>
-          <span class="legend-reach flex items-center gap-2"><span class="size-3 rounded-sm bg-[#c9dcc1]"></span>{L('Llegan nuestros productos', 'Where our products reach')}</span>
+          <span class="flex items-center gap-2"><span class="size-3 rounded-sm bg-azul"></span>{L('Plantas y oficinas', 'Plants and offices')}</span>
+          <span class="legend-reach flex items-center gap-2"><span class="size-3 rounded-sm bg-[#c4d5e7]"></span>{L('Llegan nuestros productos', 'Where our products reach')}</span>
         </div>
         <p class="text-[0.7rem] text-niebla/70">{tx.mapCredit}</p>
       </div>
@@ -219,7 +219,7 @@ const curve = (from: { x: number; y: number }, bend: number) =>
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgb(64 74 61 / 0.65);
+    color: rgb(14 44 88 / 0.65);
     transition:
       background-color 0.4s var(--ease-out-soft),
       color 0.4s var(--ease-out-soft),
@@ -234,8 +234,8 @@ const curve = (from: { x: number; y: number }, bend: number) =>
   }
   .presence .mode-switch button[aria-selected='true'] {
     background: #fff;
-    color: var(--color-olivo);
-    box-shadow: 0 6px 18px rgb(64 74 61 / 0.12);
+    color: var(--color-marino);
+    box-shadow: 0 6px 18px rgb(14 44 88 / 0.12);
   }
   .presence .mode-panel {
     grid-area: 1 / 1;
@@ -253,17 +253,17 @@ const curve = (from: { x: number; y: number }, bend: number) =>
 
   /* Mapa */
   .mexico-map .state {
-    fill: #e2e0d8;
-    stroke: #f5f0e9;
+    fill: #dbe3ec;
+    stroke: #f5f8fb;
     stroke-width: 1.2;
     transition: fill 0.7s var(--ease-out-soft);
   }
   .presence[data-mode='reach'] .mexico-map .state:not(.is-ours) {
-    fill: #c9dcc1;
+    fill: #c4d5e7;
     transition-delay: calc(var(--d) * 0.9s);
   }
   .mexico-map .state.is-ours {
-    fill: #a9c89f;
+    fill: #83a7cb;
     cursor: pointer;
     outline: none;
   }
@@ -271,15 +271,15 @@ const curve = (from: { x: number; y: number }, bend: number) =>
   .mexico-map .state.is-ours:hover,
   .mexico-map .state.is-ours:focus-visible,
   .mexico-map .state.is-ours.is-active {
-    fill: #5b8c51;
+    fill: #14407f;
   }
   .mexico-map .pin .dot {
-    fill: #eddd5e;
-    stroke: #404a3d;
+    fill: #ffffff;
+    stroke: #0e2c58;
     stroke-width: 2;
   }
   .mexico-map .pin .pulse {
-    fill: #eddd5e;
+    fill: #83a7cb;
     opacity: 0;
     transform-origin: center;
     transform-box: fill-box;
@@ -309,7 +309,7 @@ const curve = (from: { x: number; y: number }, bend: number) =>
   }
   .mexico-map .reach-ring {
     fill: none;
-    stroke: #5b8c51;
+    stroke: #14407f;
     stroke-width: 1.5;
     opacity: 0;
     transform-origin: center;
@@ -330,7 +330,7 @@ const curve = (from: { x: number; y: number }, bend: number) =>
   }
   .mexico-map .export-route {
     fill: none;
-    stroke: #5b8c51;
+    stroke: #14407f;
     stroke-width: 2;
     stroke-dasharray: 6 7;
   }
@@ -343,10 +343,10 @@ const curve = (from: { x: number; y: number }, bend: number) =>
     }
   }
   .mexico-map .export-pill {
-    fill: #404a3d;
+    fill: #0e2c58;
   }
   .mexico-map .export-text {
-    fill: #eddd5e;
+    fill: #83a7cb;
     font-family: var(--font-serif);
     font-size: 15px;
     font-weight: 600;

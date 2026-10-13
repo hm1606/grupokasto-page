@@ -21,8 +21,8 @@ const fonts = [
   { name: 'Marcellus SC', data: await font('marcellus-sc', 'marcellus-sc-latin-400-normal.woff'), weight: 400, style: 'normal' },
 ];
 
-// Paleta oficial de Grupo Kasto
-const C = { olivo: '#404a3d', hoja: '#5b8c51', trigo: '#eddd5e', crema: '#f5f0e9' };
+// Paleta oficial de Grupo Kasto (azul, celeste, blanco) + el azul profundo derivado de src/styles/global.css
+const C = { azul: '#14407f', marino: '#0e2c58', celeste: '#83a7cb', blanco: '#ffffff', nube: '#f5f8fb' };
 const W = 1200;
 const H = 630;
 // La balanza de Grupo Kasto (misma geometría que src/lib/brand.ts), viewBox 0 0 60 48
@@ -39,19 +39,19 @@ async function photoUri(file) {
 async function card({ photo, eyebrow, title, out }) {
   const foot = out.includes(`${path.sep}og${path.sep}en${path.sep}`) ? 'grupokasto.com · Since 1945' : 'grupokasto.com · Desde 1945';
   const size = title.length > 70 ? 56 : title.length > 45 ? 66 : 80;
-  const tree = h({ width: W, height: H, position: 'relative', background: C.olivo, fontFamily: 'Barlow' }, [
+  const tree = h({ width: W, height: H, position: 'relative', background: C.marino, fontFamily: 'Barlow' }, [
     { type: 'img', props: { src: await photoUri(photo), style: { position: 'absolute', left: 0, top: 0, width: W, height: H } } },
-    h({ position: 'absolute', left: 0, top: 0, width: W, height: H, backgroundImage: 'linear-gradient(90deg, rgba(64,74,61,.95) 0%, rgba(64,74,61,.8) 50%, rgba(64,74,61,.2) 100%)' }),
+    h({ position: 'absolute', left: 0, top: 0, width: W, height: H, backgroundImage: 'linear-gradient(90deg, rgba(14,44,88,.95) 0%, rgba(14,44,88,.78) 50%, rgba(20,64,127,.2) 100%)' }),
     h({ position: 'absolute', left: 72, top: 64, right: 72, bottom: 64, flexDirection: 'column', justifyContent: 'space-between' }, [
       h({ flexDirection: 'column', alignItems: 'center', width: 150 }, [
-        { type: 'img', props: { src: markUri(C.crema), width: 80, height: 64 } },
-        h({ marginTop: 8, color: C.crema, fontFamily: 'Marcellus SC', fontSize: 23 }, 'Grupo Kasto'),
+        { type: 'img', props: { src: markUri(C.blanco), width: 80, height: 64 } },
+        h({ marginTop: 8, color: C.blanco, fontFamily: 'Marcellus SC', fontSize: 23 }, 'Grupo Kasto'),
       ]),
       h({ flexDirection: 'column', maxWidth: 820 }, [
-        h({ color: C.trigo, fontFamily: 'Barlow Condensed', fontSize: 24, fontWeight: 600, letterSpacing: 4, textTransform: 'uppercase' }, eyebrow),
-        h({ marginTop: 14, color: C.crema, fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: size, lineHeight: 1.02, textTransform: 'uppercase' }, title.replace(/\.$/, '')),
+        h({ color: C.celeste, fontFamily: 'Barlow Condensed', fontSize: 24, fontWeight: 600, letterSpacing: 4, textTransform: 'uppercase' }, eyebrow),
+        h({ marginTop: 14, color: C.blanco, fontFamily: 'Barlow Condensed', fontWeight: 600, fontSize: size, lineHeight: 1.02, textTransform: 'uppercase' }, title.replace(/\.$/, '')),
       ]),
-      h({ color: 'rgba(245,240,233,.75)', fontSize: 21 }, foot),
+      h({ color: 'rgba(255,255,255,.75)', fontSize: 21 }, foot),
     ]),
   ]);
   const svg = await satori(tree, { width: W, height: H, fonts });
@@ -112,9 +112,9 @@ for (const lang of ['es', 'en']) {
   }
 }
 
-// Íconos: balanza amarilla sobre el olivo de la marca
+// Íconos: balanza blanca sobre el azul oficial de la marca
 const iconSvg = (size, radius) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" rx="${radius}" fill="${C.olivo}"/><svg x="${size * 0.17}" y="${size * 0.2}" width="${size * 0.66}" height="${size * 0.6}" viewBox="-1 -1 62 50" color="${C.trigo}">${MARK}</svg></svg>`;
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" rx="${radius}" fill="${C.azul}"/><svg x="${size * 0.17}" y="${size * 0.2}" width="${size * 0.66}" height="${size * 0.6}" viewBox="-1 -1 62 50" color="${C.blanco}">${MARK}</svg></svg>`;
 await fs.writeFile(pub('favicon.svg'), iconSvg(64, 14));
 const png = (size, radius) => sharp(Buffer.from(iconSvg(size, radius))).png().toBuffer();
 await fs.writeFile(pub('apple-touch-icon.png'), await png(180, 0));
@@ -142,8 +142,8 @@ await fs.writeFile(
       description: 'Grupo agroindustrial mexicano desde 1945',
       start_url: '/',
       display: 'standalone',
-      background_color: C.crema,
-      theme_color: C.olivo,
+      background_color: C.blanco,
+      theme_color: C.marino,
       lang: 'es-MX',
       icons: [
         { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },

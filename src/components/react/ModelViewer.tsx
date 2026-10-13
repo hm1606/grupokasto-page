@@ -95,7 +95,7 @@ export default function ModelViewer({ pages, title, copy }: { pages: ModelPage[]
       onClick={() => go(i + d)}
       disabled={d === 1 ? i === n - 1 : i === 0}
       aria-label={d === 1 ? copy.next : copy.prev}
-      className={`grid size-9 place-items-center rounded-full bg-olivo/85 sm:size-12 text-crema shadow-lg ring-1 ring-white/15 backdrop-blur transition hover:bg-trigo hover:text-olivo disabled:pointer-events-none disabled:opacity-0 ${cls}`}
+      className={`grid size-9 place-items-center rounded-full bg-marino/85 sm:size-12 text-nube shadow-lg ring-1 ring-white/15 backdrop-blur transition hover:bg-celeste hover:text-marino disabled:pointer-events-none disabled:opacity-0 ${cls}`}
     >
       <svg viewBox="0 0 16 16" className={`size-4 ${d === -1 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <path d="M3 8h10m-4-4 4 4-4 4" />
@@ -150,12 +150,12 @@ export default function ModelViewer({ pages, title, copy }: { pages: ModelPage[]
           aria-label={`${copy.page} ${k + 1}`}
           aria-current={k === i}
           className={`gk-noselect relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-white ring-2 transition sm:w-32 ${
-            k === i ? 'opacity-100 ring-trigo' : 'opacity-50 ring-transparent hover:opacity-90'
+            k === i ? 'opacity-100 ring-celeste' : 'opacity-50 ring-transparent hover:opacity-90'
           }`}
           {...noSave}
         >
           <img src={pg.thumb} alt="" draggable={false} loading="lazy" decoding="async" className="size-full object-cover" />
-          <span className="absolute bottom-1 left-1.5 rounded bg-olivo/85 px-1.5 text-[0.65rem] font-semibold text-crema tabular-nums">{k + 1}</span>
+          <span className="absolute bottom-1 left-1.5 rounded bg-marino/85 px-1.5 text-[0.65rem] font-semibold text-nube tabular-nums">{k + 1}</span>
         </button>
       ))}
     </div>
@@ -164,12 +164,12 @@ export default function ModelViewer({ pages, title, copy }: { pages: ModelPage[]
   return (
     <div ref={root} role="region" aria-roledescription={copy.pages} aria-label={title}>
       {stage(false)}
-      <div className="mt-5 flex items-center justify-between gap-4 text-crema">
+      <div className="mt-5 flex items-center justify-between gap-4 text-nube">
         {counter}
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-2 rounded-lg border border-white/25 px-4 py-2 font-serif text-sm font-semibold tracking-[0.1em] uppercase transition hover:border-trigo hover:text-trigo"
+          className="inline-flex items-center gap-2 rounded-lg border border-white/25 px-4 py-2 font-serif text-sm font-semibold tracking-[0.1em] uppercase transition hover:border-celeste hover:text-celeste"
         >
           <svg viewBox="0 0 16 16" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
             <path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4" />
@@ -182,7 +182,7 @@ export default function ModelViewer({ pages, title, copy }: { pages: ModelPage[]
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[90] flex flex-col bg-sombra/97 text-crema backdrop-blur"
+            className="fixed inset-0 z-[90] flex flex-col bg-sombra/97 text-nube backdrop-blur"
             role="dialog"
             aria-modal="true"
             aria-label={title}
@@ -196,7 +196,7 @@ export default function ModelViewer({ pages, title, copy }: { pages: ModelPage[]
               <p className="line-clamp-1 font-serif text-sm font-semibold tracking-[0.14em] uppercase">{title}</p>
               <div className="flex items-center gap-4">
                 {counter}
-                <button type="button" onClick={() => setOpen(false)} aria-label={copy.close} className="grid size-11 place-items-center rounded-full ring-1 ring-white/20 transition hover:bg-trigo hover:text-olivo">
+                <button type="button" onClick={() => setOpen(false)} aria-label={copy.close} className="grid size-11 place-items-center rounded-full ring-1 ring-white/20 transition hover:bg-celeste hover:text-marino">
                   <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                     <path d="m3 3 10 10M13 3 3 13" />
                   </svg>

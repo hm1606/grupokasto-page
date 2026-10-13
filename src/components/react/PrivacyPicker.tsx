@@ -35,7 +35,7 @@ export default function PrivacyPicker({ companies, lang = 'es' }: { companies: P
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
       <div>
-        <label htmlFor="pp-company" className="eyebrow text-hoja">
+        <label htmlFor="pp-company" className="eyebrow text-azul">
           {tx.pick}
         </label>
         <div className="relative mt-3 lg:hidden">
@@ -43,7 +43,7 @@ export default function PrivacyPicker({ companies, lang = 'es' }: { companies: P
             id="pp-company"
             value={id}
             onChange={(e) => pick(e.target.value)}
-            className="w-full appearance-none rounded-2xl border border-olivo/15 bg-white px-5 py-4 pr-12 text-base font-semibold text-olivo outline-none focus:border-hoja"
+            className="w-full appearance-none rounded-2xl border border-marino/15 bg-white px-5 py-4 pr-12 text-base font-semibold text-marino outline-none focus:border-azul"
           >
             {groups.map(([division, list]) => (
               <optgroup key={division} label={division}>
@@ -71,7 +71,7 @@ export default function PrivacyPicker({ companies, lang = 'es' }: { companies: P
                       onClick={() => pick(c.id)}
                       aria-pressed={c.id === id}
                       className={`w-full rounded-xl px-4 py-2.5 text-left text-[0.92rem] transition-colors ${
-                        c.id === id ? 'bg-olivo font-semibold text-crema' : 'text-tinta/75 hover:bg-gris'
+                        c.id === id ? 'bg-marino font-semibold text-nube' : 'text-tinta/75 hover:bg-perla'
                       }`}
                     >
                       {c.name}
@@ -85,27 +85,27 @@ export default function PrivacyPicker({ companies, lang = 'es' }: { companies: P
       </div>
 
       <div className="lg:sticky lg:top-28 lg:self-start">
-        <div className="relative overflow-hidden rounded-[2rem] bg-olivo p-8 text-crema sm:p-10">
-          <p className="eyebrow text-trigo">{tx.responsible}</p>
+        <div className="relative overflow-hidden rounded-[2rem] bg-marino p-8 text-nube sm:p-10">
+          <p className="eyebrow text-celeste">{tx.responsible}</p>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={current.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.35 }} aria-live="polite">
               <p className="display mt-4 text-3xl">{current.name}</p>
-              <address className="mt-5 leading-relaxed text-crema/75 not-italic">
+              <address className="mt-5 leading-relaxed text-nube/75 not-italic">
                 {current.address.map((l) => (
                   <span key={l} className="block">
                     {l}
                   </span>
                 ))}
               </address>
-              <p className="mt-4 text-crema/75">
+              <p className="mt-4 text-nube/75">
                 {current.phones.length > 1 ? tx.phones : tx.phone}: {current.phones.join(' · ')}
               </p>
-              {current.web && <p className="mt-1 text-crema/75">{current.web}</p>}
+              {current.web && <p className="mt-1 text-nube/75">{current.web}</p>}
             </motion.div>
           </AnimatePresence>
-          <div className="mt-8 border-t border-white/15 pt-6 text-sm leading-relaxed text-crema/70">
+          <div className="mt-8 border-t border-white/15 pt-6 text-sm leading-relaxed text-nube/70">
             {tx.arco}{' '}
-            <a href="mailto:datospersonales@grupokasto.com" className="font-semibold text-trigo underline decoration-trigo/40 underline-offset-4">
+            <a href="mailto:datospersonales@grupokasto.com" className="font-semibold text-celeste underline decoration-celeste/40 underline-offset-4">
               datospersonales@grupokasto.com
             </a>
             .
