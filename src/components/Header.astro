@@ -76,7 +76,7 @@ const menus: Record<string, MenuItem[]> = {
                 <a
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
-                  class="flex items-center gap-1.5 rounded-md px-3.5 py-2 font-serif text-[1.02rem] font-semibold tracking-[0.08em] uppercase transition-colors hover:bg-current/8 aria-[current=page]:text-azul group-data-[over=true]/h:aria-[current=page]:text-celeste group-data-[solid=true]/h:aria-[current=page]:text-azul"
+                  class="nav-link relative flex items-center gap-1.5 rounded-md px-3.5 py-2 font-serif text-[1.02rem] font-semibold tracking-[0.08em] uppercase transition-colors hover:bg-current/8 aria-[current=page]:text-azul group-data-[over=true]/h:aria-[current=page]:text-white group-data-[solid=true]/h:aria-[current=page]:text-azul"
                   aria-haspopup={sub ? 'true' : undefined}
                 >
                   {item.label}
@@ -91,7 +91,7 @@ const menus: Record<string, MenuItem[]> = {
                     <div class:list={['menu-box grid rounded-2xl bg-nube p-3 text-marino shadow-2xl ring-1 shadow-marino/15 ring-marino/8', sub[0]?.image && 'grid-cols-[1fr_15rem] gap-3']}>
                       <div class:list={['grid content-start gap-1', sub.length > 5 ? 'w-[36rem] grid-cols-2' : 'w-[22rem]']}>
                         {sub.map((s, i) => (
-                          <a href={s.href} data-preview={s.image ? i : undefined} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-perla/70 focus-visible:bg-perla/70">
+                          <a href={s.href} aria-current={here === s.href ? 'page' : undefined} data-preview={s.image ? i : undefined} class="group flex items-start gap-4 rounded-2xl px-4 py-3.5 transition-colors hover:bg-perla/70 focus-visible:bg-perla/70 aria-[current=page]:bg-perla aria-[current=page]:text-azul">
                             <span class="mt-0.5 font-serif text-sm text-azul tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                             <span class="flex flex-col gap-0.5">
                               <span class="flex items-center gap-2 text-[0.92rem] font-semibold">
@@ -121,7 +121,7 @@ const menus: Record<string, MenuItem[]> = {
                           {sub.map((s, i) => (
                             <img src={s.image} alt="" loading="lazy" decoding="async" data-k={i} class:list={['absolute inset-0 size-full object-cover', i === 0 && 'is-on']} />
                           ))}
-                          <div class="absolute inset-0 bg-gradient-to-t from-marino/70 to-transparent" />
+                          <div class="absolute inset-0 bg-gradient-to-t from-velo/70 to-transparent" />
                           <span class="menu-preview-label display absolute inset-x-4 bottom-3.5 text-2xl text-nube">{sub[0].label}</span>
                         </div>
                       )}
@@ -166,17 +166,18 @@ const menus: Record<string, MenuItem[]> = {
   <nav aria-label={tx.menu} class="flex-1">
     <ul class="flex flex-col">
       <li class="menu-item border-b border-white/10" style="--i:0">
-        <a href={routes.home[lang]} class="display block py-4 text-4xl">{tx.home}</a>
+        <a href={routes.home[lang]} aria-current={here === routes.home[lang] ? 'page' : undefined} class="m-link display block py-4 text-4xl aria-[current=page]:text-celeste">{tx.home}</a>
       </li>
       {
         nav.map((item, i) => {
           const sub = menus[item.key];
+          const active = isActive(item.href, item.children);
           return (
             <li class="menu-item border-b border-white/10" style={`--i:${i + 1}`}>
               {sub ? (
                 <details class="group/d">
                   <summary class="flex cursor-pointer list-none items-center justify-between py-4">
-                    <span class="display text-4xl">{item.label}</span>
+                    <span class:list={['display text-4xl', active && 'm-active text-celeste']}>{item.label}</span>
                     <span class="grid size-9 place-items-center rounded-full border border-white/20 transition-transform duration-300 group-open/d:rotate-45">
                       <svg viewBox="0 0 16 16" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                         <path d="M8 3v10M3 8h10" />
@@ -186,14 +187,14 @@ const menus: Record<string, MenuItem[]> = {
                   <ul class="grid gap-1 pb-5">
                     {item.key !== 'about' && (
                       <li>
-                        <a href={item.href} class="block py-1.5 text-base font-semibold text-celeste">
+                        <a href={item.href} aria-current={here === item.href ? 'page' : undefined} class="m-sub block py-1.5 text-base font-semibold text-celeste">
                           {tx.seeAllShort}
                         </a>
                       </li>
                     )}
                     {sub.map((s) => (
                       <li>
-                        <a href={s.href} class="block py-1.5 text-base text-nube/80">
+                        <a href={s.href} aria-current={here === s.href ? 'page' : undefined} class="m-sub block py-1.5 text-base text-nube/80 aria-[current=page]:font-semibold aria-[current=page]:text-white">
                           {s.label}
                         </a>
                       </li>
@@ -201,7 +202,7 @@ const menus: Record<string, MenuItem[]> = {
                   </ul>
                 </details>
               ) : (
-                <a href={item.href} class="display block py-4 text-4xl">
+                <a href={item.href} aria-current={active ? 'page' : undefined} class="m-link display block py-4 text-4xl aria-[current=page]:text-celeste">
                   {item.label}
                 </a>
               )}
@@ -220,6 +221,60 @@ const menus: Record<string, MenuItem[]> = {
 </div>
 
 <style>
+  /* Menú activo: barra bajo el enlace (al pasar el mouse aparece tenue en los demás) */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0.875rem;
+    right: 0.875rem;
+    bottom: 0.15rem;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--color-azul);
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0.35;
+    transition:
+      transform 0.5s var(--ease-out-soft),
+      opacity 0.3s;
+  }
+  .nav-link:has(.chev)::after {
+    right: 1.75rem;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+  .nav-link[aria-current='page']::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  #site-header[data-over='true']:not([data-solid='true']) .nav-link::after {
+    background: var(--color-celeste);
+  }
+  /* Los no activos un poco más tenues para que el activo resalte */
+  .nav-link:not([aria-current='page']) {
+    opacity: 0.82;
+  }
+  .nav-link:not([aria-current='page']):hover,
+  .has-menu:focus-within > .nav-link {
+    opacity: 1;
+  }
+  /* Celular: punto junto a la sección actual y barra junto a la subpágina actual */
+  .m-link[aria-current='page']::after,
+  .m-active::after {
+    content: '';
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-left: 0.75rem;
+    border-radius: 9999px;
+    background: currentColor;
+    vertical-align: middle;
+  }
+  .m-sub[aria-current='page'] {
+    box-shadow: inset 2px 0 0 var(--color-celeste);
+    padding-left: 0.75rem;
+  }
   .has-menu:hover .menu-panel,
   .has-menu:focus-within .menu-panel {
     visibility: visible;

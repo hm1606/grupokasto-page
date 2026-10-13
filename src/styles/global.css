@@ -81,6 +81,7 @@
   --color-nube: #f5f8fb; /* fondo general (casi blanco, frío) */
   --color-tinta: #0f1c2e; /* texto */
   --color-niebla: #5b666e; /* el gris oficial oscurecido para texto chico legible (AA) */
+  --color-velo: #0b1729; /* oscuro casi neutro para los velos sobre fotos: oscurece sin teñir de azul */
 
   --font-serif: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
   --font-sans: 'Barlow', 'Helvetica Neue', system-ui, sans-serif;
@@ -485,4 +486,25 @@ html:has(#site-header:not([data-hidden='true'])) .news-filter {
 #reading-progress {
   transform-origin: left;
   transform: scaleX(var(--p, 0));
+}
+
+/* Portada en pantallas bajas (laptops de ~650-780 px de alto): el texto no debe subir debajo del encabezado */
+@media (min-width: 640px) and (max-height: 780px) {
+  .hero-eyebrow {
+    display: none;
+  }
+  .hero-lede {
+    margin-top: 1.25rem;
+  }
+  .hero-tabs {
+    margin-top: 1.75rem;
+  }
+  .hero-lede p {
+    font-size: 1.0625rem;
+  }
+}
+@media (min-width: 1024px) and (max-height: 780px) {
+  .hero-title {
+    font-size: clamp(3.6rem, min(8.6vw, 10svh), 8.4rem);
+  }
 }

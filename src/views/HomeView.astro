@@ -240,7 +240,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
     <div class="absolute inset-0 -z-10" data-parallax="0.18">
       <Image src={img('portada/bodega')} alt="" widths={[800, 1400, 2000, 2400]} sizes="100vw" class="h-[130%] w-full object-cover" />
     </div>
-    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-sombra/85 via-sombra/55 to-sombra/85"></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-velo/75 via-velo/45 to-velo/75"></div>
     <div class="mx-auto max-w-[90rem] px-5 py-32 text-center sm:px-8 lg:px-12">
       <p class="eyebrow flex items-center justify-center gap-3 text-celeste" data-reveal>
         <span class="h-px w-8 bg-celeste/60" aria-hidden="true"></span>Grupo Kasto<span class="h-px w-8 bg-celeste/60" aria-hidden="true"></span>
@@ -334,7 +334,7 @@ const maxYears = Math.max(...experience.map((e) => e.years));
           <div class="zoom absolute inset-0 -z-10">
             <Image src={lead.data.cover} alt="" widths={[640, 1000, 1400]} sizes="(min-width:1024px) 55vw, 100vw" class="size-full object-cover" />
           </div>
-          <div class="absolute inset-0 -z-10 bg-gradient-to-t from-marino via-marino/50 to-transparent"></div>
+          <div class="absolute inset-0 -z-10 bg-gradient-to-t from-velo/90 via-velo/35 to-transparent"></div>
           <p class="flex items-center gap-3 text-sm">
             <span class="rounded-md bg-celeste px-2.5 py-1 font-serif font-semibold tracking-[0.08em] text-marino uppercase">{categoryLabel(lead.data.category, lang)}</span>
             <time datetime={lead.data.date.toISOString().slice(0, 10)} class="text-white/80">{formatDate(lead.data.date, lang)}</time>

@@ -110,7 +110,7 @@ export default function DivisionsRail({ items, copy }: { items: DivisionCard[]; 
                 decoding="async"
                 className="absolute inset-0 -z-10 size-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.2,.7,.2,1)] group-hover:scale-[1.07]"
               />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-sombra via-sombra/45 to-sombra/5 transition-colors duration-700 group-hover:via-sombra/60" />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-velo/90 via-velo/35 to-transparent transition-colors duration-700 group-hover:via-velo/50" />
               <span className="display absolute top-5 right-7 text-[5.5rem] leading-none text-nube/15 tabular-nums transition-colors duration-700 group-hover:text-celeste/80 lg:top-7 lg:right-9 lg:text-[7rem]">
                 {String(k + 1).padStart(2, '0')}
               </span>

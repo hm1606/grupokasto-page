@@ -115,15 +115,15 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 z-[999] bg-gradient-to-t from-marino via-marino/25 to-marino/15" />
-          <div className="absolute inset-0 z-[999] bg-gradient-to-r from-marino/85 via-marino/25 to-transparent" />
+          <div className="absolute inset-0 z-[999] bg-gradient-to-t from-velo/80 via-velo/20 to-velo/5" />
+          <div className="absolute inset-0 z-[999] bg-gradient-to-r from-velo/70 via-velo/20 to-transparent" />
           {/* Trigo en silueta, firma del sitio anterior */}
           <img src={wheat} alt="" aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-[999] h-44 w-full object-cover object-top opacity-[0.13] select-none" />
         </motion.div>
 
         <motion.div className="mx-auto w-full max-w-[90rem] px-5 pt-36 pb-10 sm:px-8 lg:px-12 lg:pb-14" style={reduce ? undefined : { y: textY, opacity: textOpacity }}>
           {/* Las animaciones del texto son CSS (se ven sin esperar a React; se pausan durante el telón) */}
-          <p className="eyebrow animate-fade-up flex items-center gap-3 text-celeste" data-intro-wait>
+          <p className="hero-eyebrow eyebrow animate-fade-up flex items-center gap-3 text-celeste" data-intro-wait>
             <span className="h-px w-8 bg-celeste/60" aria-hidden="true" />
             {copy.eyebrow}
           </p>
@@ -151,7 +151,7 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
             )}
           </h1>
           <div
-            className="animate-fade-up mt-8 flex max-w-5xl flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
+            className="hero-lede animate-fade-up mt-8 flex max-w-5xl flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
             style={{ animationDelay: '850ms' }}
             data-intro-wait
           >
@@ -176,7 +176,7 @@ export default function HomeHero({ slides, wheat, copy }: { slides: HeroSlide[];
               {String(i + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
             </span>
           </p>
-          <div className="mt-3 flex items-end gap-6 sm:mt-14 lg:gap-10">
+          <div className="hero-tabs mt-3 flex items-end gap-6 sm:mt-14 lg:gap-10">
             <div className="grid flex-1 grid-cols-6 gap-x-2 border-white/15 sm:gap-x-4 sm:border-t sm:pt-5">
               {slides.map((sl, k) => (
                 <button
