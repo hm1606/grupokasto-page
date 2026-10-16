@@ -111,7 +111,8 @@ const company = [
 
   <!-- Al frente: el nombre, enorme -->
   <div class="footer-field relative overflow-hidden" aria-hidden="true" data-field>
-    <p class="footer-mark font-marca text-center text-[15.2vw] leading-[0.78] whitespace-nowrap text-nube/[0.09] select-none">Grupo Kasto</p>
+    <!-- Decorativo: el texto va en un pseudo-elemento (no es contenido ni cuenta para contraste) -->
+    <p class="footer-mark font-marca text-center text-[15.2vw] leading-[0.78] whitespace-nowrap text-nube/[0.09] select-none" data-mark="Grupo Kasto"></p>
   </div>
 </footer>
 
@@ -175,6 +176,9 @@ const company = [
     .farm-sun {
       animation: none;
     }
+  }
+  .footer-mark::before {
+    content: attr(data-mark);
   }
   .footer-mark {
     position: relative;
