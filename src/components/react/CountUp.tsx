@@ -17,7 +17,9 @@ export default function CountUp({ to, suffix = '', duration = 2.2, className = '
   }, [inView, reduce, to, duration]);
 
   return (
-    <span ref={ref} className={`tabular-nums ${className}`} aria-label={`${fmt.format(to)}${suffix}`}>
+    <span ref={ref} className={`tabular-nums ${className}`}>
+      {/* El número final para lectores de pantalla (aria-label no se permite en <span>) */}
+      <span className="sr-only">{`${fmt.format(to)}${suffix}`}</span>
       <span aria-hidden="true">
         {fmt.format(n)}
         {suffix}
