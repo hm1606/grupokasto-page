@@ -38,7 +38,9 @@ export default function ScrollText({ text, highlight = [], highlightClass = 'tex
   }
 
   return (
-    <p ref={ref} className={className} aria-label={text}>
+    <p ref={ref} className={className}>
+      {/* Lectores de pantalla: el texto completo (aria-label no se permite en <p>) */}
+      <span className="sr-only">{text}</span>
       <span aria-hidden="true">
         {words.map((w, i) => {
           const start = i / words.length;
